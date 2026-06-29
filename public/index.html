@@ -4,86 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>IMC ER</title>
+  <!-- Google Fonts for Modern Stitch Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <!-- Ambient Glassmorphism Glow Backgrounds -->
+  <div class="ambient-glow glow-primary"></div>
+  <div class="ambient-glow glow-secondary"></div>
+
   <!-- Loading Overlay -->
   <div id="loading-overlay">
-    <div data-i="ld">Loading...</div>
+    <div class="spinner"></div>
+    <div data-i="ld" style="margin-top:15px">Loading...</div>
   </div>
 
   <!-- Authentication Section -->
   <div id="auth-section" class="wrapper hidden">
-    <h2 style="color:var(--primary);margin:0 0 5px" data-i="t">IMC ER</h2>
+    <h2 style="color:var(--primary);margin:0 0 5px;font-family:'Outfit',sans-serif" data-i="t">IMC ER</h2>
     <p style="color:var(--text-muted);margin:0 0 20px" data-i="s">Console</p>
     <div id="auth-error"></div>
-    <input type="email" id="auth-email" data-p="ep">
-    <input type="password" id="auth-password" data-p="pp">
-    <button class="btn btn-primary" id="btn-login" data-i="lB"></button>
-    <button class="btn btn-success" id="btn-signup" data-i="sB"></button>
+    <input type="email" id="auth-email" data-p="ep" placeholder="Email">
+    <input type="password" id="auth-password" data-p="pp" placeholder="Password">
+    <button class="btn btn-primary" id="btn-login" data-i="lB">Log In</button>
+    <button class="btn btn-success" id="btn-signup" data-i="sB">Sign Up</button>
     <hr style="border:0;border-top:1px solid var(--border-light);margin:20px 0">
-    <button class="btn btn-google" id="btn-google" data-i="gB"></button>
+    <button class="btn btn-google" id="btn-google" data-i="gB">Google Login</button>
   </div>
 
   <!-- Access Gate Section -->
   <div id="access-gate" class="wrapper hidden">
-    <h2 style="color:var(--danger);margin:0 0 15px">Access Gate</h2>
+    <h2 style="color:var(--danger);margin:0 0 15px;font-family:'Outfit',sans-serif">Access Gate</h2>
     <p id="gate-message" style="color:var(--text-muted);font-weight:700"></p>
-    <button class="btn btn-mini btn-danger" style="margin-top:20px" id="btn-gate-logout" data-i="oB"></button>
+    <button class="btn btn-mini btn-danger" style="margin-top:20px" id="btn-gate-logout" data-i="oB">Logout</button>
   </div>
 
   <!-- Main Application Section -->
   <div id="app-section" class="wrapper hidden">
-    <div class="nav-bar">
+    <div class="nav-bar glass-panel">
       <div>
         <h1 data-i="bT">ER Management</h1>
         <div id="user-info"></div>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-mini" style="background:#14b8a6" id="btn-lang-toggle">عربي</button>
-        <button class="btn btn-mini" style="background:var(--text-muted)" id="btn-app-logout" data-i="oB"></button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-mini btn-outline" id="btn-theme-toggle" style="font-size:16px;padding:6px 12px">🌓</button>
+        <button class="btn btn-mini" style="background:linear-gradient(135deg,#0d9488,#14b8a6);box-shadow:0 4px 12px rgba(20,184,166,0.3)" id="btn-lang-toggle">عربي</button>
+        <button class="btn btn-mini btn-outline" id="btn-app-logout" data-i="oB">Logout</button>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="tabs-bar">
-      <button class="tab-btn active" id="tab-live-board" data-i="tE"></button>
-      <button class="tab-btn hidden" id="tab-manager" data-i="tM"></button>
+      <button class="tab-btn active" id="tab-live-board" data-i="tE">Live Board</button>
+      <button class="tab-btn hidden" id="tab-manager" data-i="tM">Manager</button>
       <button class="tab-btn hidden" id="tab-owner">
-        <span data-i="tO"></span>
-        <span id="badge-pending-users" style="color:var(--danger);display:none"></span>
+        <span data-i="tO">Owner</span>
+        <span id="badge-pending-users" class="badge-pulse" style="color:#fff;background:var(--danger);padding:2px 8px;border-radius:12px;margin-left:6px;display:none"></span>
       </button>
     </div>
 
     <!-- Live Board View -->
     <div id="view-live-board">
-      <button class="btn btn-primary" id="btn-open-register" data-i="aB" style="box-shadow:0 4px 10px rgba(10,83,168,.3)"></button>
+      <button class="btn btn-primary btn-hero" id="btn-open-register" data-i="aB">➕ Register Patient</button>
       
-      <div class="section-title" data-i="sT"></div>
+      <div class="section-title" data-i="sT">Length of Stay</div>
       <div class="metrics-grid">
-        <div class="metric-card card-time-4" id="filter-time-4"><h3 data-i="t4"></h3><div class="count" id="count-time-4">0</div></div>
-        <div class="metric-card card-time-6" id="filter-time-6"><h3 data-i="t6"></h3><div class="count" id="count-time-6">0</div></div>
-        <div class="metric-card card-time-12" id="filter-time-12"><h3 data-i="t12"></h3><div class="count" id="count-time-12">0</div></div>
-        <div class="metric-card card-time-24" id="filter-time-24"><h3 data-i="t24"></h3><div class="count" id="count-time-24">0</div></div>
-        <div class="metric-card card-time-48" id="filter-time-48"><h3 data-i="t48"></h3><div class="count" id="count-time-48">0</div></div>
-        <div class="metric-card card-time-72" id="filter-time-72"><h3 data-i="t72"></h3><div class="count" id="count-time-72">0</div></div>
+        <div class="metric-card card-time-4" id="filter-time-4"><h3 data-i="t4">> 4 Hrs</h3><div class="count" id="count-time-4">0</div></div>
+        <div class="metric-card card-time-6" id="filter-time-6"><h3 data-i="t6">> 6 Hrs</h3><div class="count" id="count-time-6">0</div></div>
+        <div class="metric-card card-time-12" id="filter-time-12"><h3 data-i="t12">> 12 Hrs</h3><div class="count" id="count-time-12">0</div></div>
+        <div class="metric-card card-time-24" id="filter-time-24"><h3 data-i="t24">> 24 Hrs</h3><div class="count" id="count-time-24">0</div></div>
+        <div class="metric-card card-time-48" id="filter-time-48"><h3 data-i="t48">> 48 Hrs</h3><div class="count" id="count-time-48">0</div></div>
+        <div class="metric-card card-time-72" id="filter-time-72"><h3 data-i="t72">> 72 Hrs</h3><div class="count" id="count-time-72">0</div></div>
       </div>
 
-      <div class="section-title" data-i="sW"></div>
+      <div class="section-title" data-i="sW">Waitlists</div>
       <div class="metrics-grid">
-        <div class="metric-card card-wait" id="filter-wait-icu"><h3 data-i="wi"></h3><div class="count" id="count-wait-icu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-ccu"><h3 data-i="wc"></h3><div class="count" id="count-wait-ccu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-picu"><h3 data-i="wp"></h3><div class="count" id="count-wait-picu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-ward"><h3 data-i="ww"></h3><div class="count" id="count-wait-ward">0</div></div>
+        <div class="metric-card card-wait" id="filter-wait-icu"><h3 data-i="wi">Wait ICU</h3><div class="count" id="count-wait-icu">0</div></div>
+        <div class="metric-card card-wait" id="filter-wait-ccu"><h3 data-i="wc">Wait CCU</h3><div class="count" id="count-wait-ccu">0</div></div>
+        <div class="metric-card card-wait" id="filter-wait-picu"><h3 data-i="wp">Wait PICU</h3><div class="count" id="count-wait-picu">0</div></div>
+        <div class="metric-card card-wait" id="filter-wait-ward"><h3 data-i="ww">Wait Ward</h3><div class="count" id="count-wait-ward">0</div></div>
       </div>
 
-      <div class="section-title" data-i="sR"></div>
+      <div class="section-title" data-i="sR">ER Rooms</div>
       <div class="metrics-grid" id="rooms-grid"></div>
 
       <div style="margin-top:25px">
-        <div class="list-header">
-          <span id="list-header-title"></span>
+        <div class="list-header glass-panel">
+          <span id="list-header-title">All Patients</span>
           <span class="count-pill" id="list-header-count">0</span>
         </div>
         <div id="patient-list-container"></div>
@@ -92,78 +102,78 @@
 
     <!-- Manager View -->
     <div id="view-manager" class="hidden">
-      <h2 style="color:var(--primary);margin-top:0" data-i="mS"></h2>
-      <div class="stat-row"><span data-i="mT"></span><span id="stat-total-visits" style="color:var(--primary)">0</span></div>
+      <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="mS">Shift Analytics (From 8 AM)</h2>
+      <div class="stat-row glass-panel"><span data-i="mT">Total Visits</span><span id="stat-total-visits" style="color:var(--primary)">0</span></div>
       
-      <div class="stat-row dropdown-header" id="analytics-admissions-header">
-        <span data-i="mA"></span><span id="stat-admissions" style="color:var(--success)">0</span>
+      <div class="stat-row dropdown-header glass-panel" id="analytics-admissions-header">
+        <span data-i="mA">Admissions ▾</span><span id="stat-admissions" style="color:var(--success)">0</span>
       </div>
       <div id="analytics-admissions-body" class="dropdown-body hidden">
-        <div class="dropdown-item"><span data-i="oW"></span><span id="stat-adm-ward">0</span></div>
+        <div class="dropdown-item"><span data-i="oW">Ward</span><span id="stat-adm-ward">0</span></div>
         <div class="dropdown-item"><span>ICU</span><span id="stat-adm-icu">0</span></div>
         <div class="dropdown-item"><span>CCU</span><span id="stat-adm-ccu">0</span></div>
         <div class="dropdown-item"><span>PICU</span><span id="stat-adm-picu">0</span></div>
       </div>
       
-      <div class="stat-row"><span data-i="mI"></span><span id="stat-improved" style="color:var(--primary)">0</span></div>
-      <div class="stat-row"><span data-i="mD"></span><span id="stat-mortality" style="color:var(--danger)">0</span></div>
-      <div class="stat-row"><span data-i="mDa"></span><span id="stat-dama" style="color:var(--warning)">0</span></div>
+      <div class="stat-row glass-panel"><span data-i="mI">Improved</span><span id="stat-improved" style="color:var(--primary)">0</span></div>
+      <div class="stat-row glass-panel"><span data-i="mD">Mortality</span><span id="stat-mortality" style="color:var(--danger)">0</span></div>
+      <div class="stat-row glass-panel"><span data-i="mDa">DAMA</span><span id="stat-dama" style="color:var(--warning)">0</span></div>
 
-      <h2 style="color:var(--primary);margin-top:30px" data-i="dPH"></h2>
+      <h2 style="color:var(--primary);margin-top:30px;font-family:'Outfit',sans-serif" data-i="dPH">Discharged Patients</h2>
       <div id="discharged-list-container"></div>
 
-      <h2 style="color:var(--danger);margin-top:30px" data-i="mC"></h2>
-      <p data-i="mW" style="color:var(--text-muted);font-size:14px;margin-bottom:20px"></p>
-      <button class="btn btn-warning" id="btn-delete-discharged" data-i="p1"></button>
-      <button class="btn btn-danger" id="btn-delete-all" data-i="p2"></button>
+      <h2 style="color:var(--danger);margin-top:30px;font-family:'Outfit',sans-serif" data-i="mC">Data Control</h2>
+      <p data-i="mW" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Warning: Deletes DB.</p>
+      <button class="btn btn-warning" id="btn-delete-discharged" data-i="p1">Delete Discharged</button>
+      <button class="btn btn-danger" id="btn-delete-all" data-i="p2">Delete ALL</button>
     </div>
 
     <!-- Owner View -->
     <div id="view-owner" class="hidden">
-      <h2 style="color:var(--primary);margin-top:0" data-i="oM"></h2>
-      <p data-i="oD" style="color:var(--text-muted);font-size:14px"></p>
+      <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="oM">Account Management</h2>
+      <p data-i="oD" style="color:var(--text-muted);font-size:14px">Assign roles or block access entirely. Auto-saves.</p>
       <div id="users-list-container" style="margin-top:20px"></div>
     </div>
   </div>
 
   <!-- Register Patient Modal -->
   <div id="modal-register" class="modal-overlay hidden">
-    <div class="modal-content">
+    <div class="modal-content glass-panel">
       <span class="close-modal">&times;</span>
-      <h2 style="color:var(--primary);margin-top:0" data-i="aT"></h2>
-      <label class="field-label" data-i="lN"></label>
+      <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="aT">Register Patient</h2>
+      <label class="field-label" data-i="lN">Name (Arabic)</label>
       <input type="text" id="reg-name" dir="rtl">
-      <label class="field-label" data-i="lH"></label>
+      <label class="field-label" data-i="lH">Hospital ID (1 Letter+9 Nums)</label>
       <input type="text" id="reg-hospital-id" style="text-transform:uppercase">
-      <label class="field-label" data-i="lI"></label>
+      <label class="field-label" data-i="lI">Nat ID (Optional)</label>
       <input type="text" inputmode="numeric" pattern="[0-9]*" id="reg-national-id">
       <div id="reg-age-display" class="age-display" style="margin:-8px 0 12px;min-height:18px"></div>
-      <label class="field-label" data-i="lL"></label>
+      <label class="field-label" data-i="lL">Room</label>
       <select id="reg-room"></select>
-      <label class="field-label" data-i="lT"></label>
+      <label class="field-label" data-i="lT">Time</label>
       <input type="datetime-local" id="reg-time">
-      <button class="btn btn-success" id="btn-submit-register" data-i="sB2" style="margin-top:15px"></button>
+      <button class="btn btn-success" id="btn-submit-register" data-i="sB2" style="margin-top:15px">Register</button>
     </div>
   </div>
 
   <!-- Discharge Patient Modal -->
   <div id="modal-discharge" class="modal-overlay hidden">
-    <div class="modal-content" style="height:auto">
+    <div class="modal-content glass-panel" style="height:auto">
       <span class="close-modal">&times;</span>
-      <h2 style="color:var(--danger);margin-top:0" data-i="dT"></h2>
+      <h2 style="color:var(--danger);margin-top:0;font-family:'Outfit',sans-serif" data-i="dT">Discharge</h2>
       <strong id="discharge-patient-name" style="color:var(--primary);font-size:18px;display:block;margin:15px 0" dir="rtl"></strong>
       <select id="discharge-outcome-select" style="border:2px solid var(--border-color);height:50px">
-        <option value="" disabled selected data-i="oS"></option>
-        <option value="Improved" data-i="oI"></option>
-        <option value="Ward Admission" data-i="oW"></option>
-        <option value="ICU Admission" data-i="oIC"></option>
-        <option value="CCU Admission" data-i="oCC"></option>
-        <option value="PICU Admission" data-i="oPC"></option>
-        <option value="DAMA" data-i="oDM"></option>
-        <option value="Death" data-i="oDT"></option>
+        <option value="" disabled selected data-i="oS">Select...</option>
+        <option value="Improved" data-i="oI">Improved</option>
+        <option value="Ward Admission" data-i="oW">Ward</option>
+        <option value="ICU Admission" data-i="oIC">ICU</option>
+        <option value="CCU Admission" data-i="oCC">CCU</option>
+        <option value="PICU Admission" data-i="oPC">PICU</option>
+        <option value="DAMA" data-i="oDM">DAMA</option>
+        <option value="Death" data-i="oDT">Death</option>
       </select>
       <input type="hidden" id="discharge-patient-id">
-      <button class="btn btn-danger" id="btn-submit-discharge" data-i="dB" style="margin-top:10px"></button>
+      <button class="btn btn-danger" id="btn-submit-discharge" data-i="dB" style="margin-top:10px">Discharge</button>
     </div>
   </div>
 

@@ -40,12 +40,31 @@ let expandedPatientCardIds = new Set();
 const $ = (id) => document.getElementById(id);
 const getVal = (id) => $(id) ? $(id).value.trim() : '';
 
+// Theme Controller
+let currentTheme = localStorage.getItem('imc_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+function initTheme() {
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  const themeBtn = $('btn-theme-toggle');
+  if (themeBtn) {
+    themeBtn.innerText = currentTheme === 'light' ? '🌙' : '☀️';
+  }
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('imc_theme', currentTheme);
+  initTheme();
+}
+
 /**
  * Initialize Application Lifecycle
  */
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   setupEventListeners();
   populateRoomSelects();
+  updateTranslations();
   
   // Start Auth Listener
   initAuthListener(async (user) => {
@@ -142,7 +161,10 @@ function setupEventListeners() {
   $('btn-app-logout').onclick = () => logout();
   $('btn-gate-logout').onclick = () => logout();
   
-  // Navigation & Language
+  // Navigation & Theme & Language
+  const themeBtn = $('btn-theme-toggle');
+  if (themeBtn) themeBtn.onclick = toggleTheme;
+
   $('btn-lang-toggle').onclick = () => {
     toggleLangState();
     updateTranslations();
@@ -461,32 +483,38 @@ function renderActivePatientList() {
     
     return `
       <div class="patient-card">
-        <div class="card-header" data-id="${p.id}">
-          <div class="header-top">
-            <div class="patient-name" dir="rtl">${safeName}</div>
-            <div class="duration-badge">⏱ ${formatDurationString(p.registrationTime)}</div>
+        <div class="card-header" data-id="${p.id}" style="display:grid;grid-template-columns: minmax(130px, 1.5fr) 1fr minmax(140px, 1.3fr);gap:10px;align-items:center;">
+          <div style="display:flex;flex-direction:column;text-align:start;">
+            <div class="patient-name" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}" style="margin-bottom:2px;">${safeName}</div>
+            <div class="hospital-id" style="font-size:13px;">#${p.patientId || '--'}</div>
           </div>
-          <div class="header-bottom">
-            <div class="hospital-id">${p.patientId || '--'}</div>
-            <div class="location-tag">📍 ${p.location || '--'}</div>
-            <div class="pending-action">${translatePendingAction(p.pendingAction)}</div>
+          
+          <div style="text-align:center;font-size:13px;font-weight:700;color:var(--primary);">
+            ${calculateAgeAndGender(p.nationalId || '')}
+          </div>
+          
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+              <select id="loc_${p.id}" class="btn-mini location-tag quick-loc-select" data-id="${p.id}" style="padding:2px 8px;font-size:12px;height:auto;min-height:28px;border-radius:6px;cursor:pointer;border:1px solid var(--primary);background:var(--primary-dark);color:#fff;">
+                ${ROOMS.map(r => `<option value="${r}" ${p.location === r ? 'selected' : ''}>📍 ${r}</option>`).join('')}
+              </select>
+              <div class="duration-badge">⏱ ${formatDurationString(p.registrationTime)}</div>
+            </div>
+            <div class="pending-action" style="font-size:12px;">${translatePendingAction(p.pendingAction)}</div>
           </div>
         </div>
         
         <div id="details_${p.id}" class="card-details ${isExpanded ? '' : 'hidden'}">
-          <div class="details-grid-top">
-            <input type="text" id="name_${p.id}" value="${safeName}" dir="rtl" class="input-name" data-id="${p.id}" data-field="name">
-            <div id="age_${p.id}" class="age-display">${calculateAgeAndGender(p.nationalId || '')}</div>
-            <div class="reg-time-static">⏱ ${formatDurationString(p.registrationTime)}</div>
-            
+          <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;background:rgba(30,41,59,0.3);padding:10px 14px;border-radius:12px;margin-bottom:14px;border:1px solid var(--border-color);">
+            <div style="font-size:13px;font-weight:600;color:var(--text-muted);">📅 ${tr('aT') || 'Admission'}: <span style="color:var(--text-main);font-weight:700;">${regDateFormatted}</span></div>
+            <div class="reg-time-static" style="margin:0;">⏱ ${formatDurationString(p.registrationTime)}</div>
+          </div>
+
+          <div class="details-grid-top" style="grid-template-columns: 2fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+            <input type="text" id="name_${p.id}" value="${safeName}" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}" class="input-name" data-id="${p.id}" data-field="name" placeholder="${tr('nm') || 'Name'}">
             <input type="text" id="hosp_${p.id}" value="${p.patientId || ''}" class="input-field" placeholder="${tr('hS')}" data-id="${p.id}" data-field="patientId">
-            <div class="reg-date-static">📅 ${regDateFormatted}</div>
             <input type="text" inputmode="numeric" pattern="[0-9]*" id="nid_${p.id}" value="${p.nationalId || ''}" class="input-field" placeholder="${tr('nS')}" data-id="${p.id}" data-field="nationalId">
           </div>
-          
-          <select id="loc_${p.id}" class="select-room btn-primary" data-id="${p.id}" data-field="location">
-            ${ROOMS.map(r => `<option value="${r}" ${p.location === r ? 'selected' : ''}>${tr('rS')}: ${r}</option>`).join('')}
-          </select>
           
           <div class="details-grid-mid">
             <div>
@@ -502,11 +530,14 @@ function renderActivePatientList() {
           <div class="details-grid-bottom">
             <div>
               <label class="field-label">${tr('aC')}</label>
-              <select id="action_${p.id}" class="select-action" data-id="${p.id}" data-field="pendingAction">
-                ${PENDING_ACTIONS.map(a => `<option value="${a}" ${p.pendingAction === a ? 'selected' : ''}>${translatePendingAction(a)}</option>`).join('')}
-                <option value="Custom..." ${isCustomAction ? 'selected' : ''}>${tr('pS')}</option>
-              </select>
-              <input type="text" id="custom_action_${p.id}" class="input-custom-action ${isCustomAction ? '' : 'hidden'}" placeholder="${tr('pS')}" value="${isCustomAction ? p.pendingAction : ''}" data-id="${p.id}" data-field="customAction">
+              <div style="display:flex;gap:6px;align-items:center;">
+                <select id="action_${p.id}" class="select-action ${isCustomAction ? 'hidden' : ''}" data-id="${p.id}" data-field="pendingAction" style="flex:1;width:100%;">
+                  ${PENDING_ACTIONS.map(a => `<option value="${a}" ${p.pendingAction === a ? 'selected' : ''}>${translatePendingAction(a)}</option>`).join('')}
+                  <option value="Custom..." ${isCustomAction ? 'selected' : ''}>✏️ ${tr('pS')}...</option>
+                </select>
+                <input type="text" id="custom_action_${p.id}" class="input-custom-action ${isCustomAction ? '' : 'hidden'}" style="flex:1;margin:0;width:100%;" placeholder="${tr('pS')}" value="${isCustomAction ? p.pendingAction : ''}" data-id="${p.id}" data-field="customAction">
+                <button type="button" class="btn btn-mini btn-outline ${isCustomAction ? '' : 'hidden'}" id="btn_reset_action_${p.id}" data-id="${p.id}" title="Back to presets" style="padding:10px 12px;margin:0;">📋</button>
+              </div>
             </div>
             
             <div class="workup-boxes">
@@ -579,17 +610,55 @@ function attachPatientListHandlers() {
     });
   });
   
+  // Quick location dropdown in small card
+  document.querySelectorAll('.quick-loc-select').forEach(sel => {
+    sel.addEventListener('click', (e) => e.stopPropagation());
+    sel.addEventListener('change', async (e) => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (!id) return;
+      try {
+        await updatePatientRecord(id, { location: e.target.value });
+        triggerFlashAnimation(e.target);
+      } catch (err) {
+        console.error("Failed to update location:", err);
+      }
+    });
+  });
+
   // Action dropdown toggle custom input & referral box
   document.querySelectorAll('[id^="action_"]').forEach(select => {
     select.addEventListener('change', (e) => {
       const id = e.target.dataset.id;
       const customInput = $(`custom_action_${id}`);
+      const resetBtn = $(`btn_reset_action_${id}`);
       const referralBox = $(`referral_box_${id}`);
-      if (customInput) {
-        customInput.classList.toggle('hidden', e.target.value !== 'Custom...');
+      if (customInput && resetBtn) {
+        const isCustom = e.target.value === 'Custom...';
+        select.classList.toggle('hidden', isCustom);
+        customInput.classList.toggle('hidden', !isCustom);
+        resetBtn.classList.toggle('hidden', !isCustom);
+        if (isCustom) customInput.focus();
       }
       if (referralBox) {
         referralBox.classList.toggle('hidden', !WAITLIST_ACTIONS.includes(e.target.value));
+      }
+    });
+  });
+
+  // Reset action back to presets
+  document.querySelectorAll('[id^="btn_reset_action_"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      const select = $(`action_${id}`);
+      const customInput = $(`custom_action_${id}`);
+      if (select && customInput) {
+        select.value = PENDING_ACTIONS[0];
+        select.classList.remove('hidden');
+        customInput.classList.add('hidden');
+        btn.classList.add('hidden');
+        select.dispatchEvent(new Event('change'));
       }
     });
   });
@@ -600,8 +669,10 @@ function attachPatientListHandlers() {
       const id = e.target.dataset.id;
       if (!id) return;
       
+      const actionSelect = $(`action_${id}`);
+      const isCustomHidden = actionSelect ? actionSelect.classList.contains('hidden') : false;
       const actionSelectVal = getVal(`action_${id}`);
-      const finalAction = actionSelectVal === 'Custom...' ? (getVal(`custom_action_${id}`) || 'Other') : actionSelectVal;
+      const finalAction = (isCustomHidden || actionSelectVal === 'Custom...') ? (getVal(`custom_action_${id}`) || 'Other') : actionSelectVal;
       
       const updateData = {
         name: getVal(`name_${id}`),
@@ -660,22 +731,33 @@ function renderShiftAnalytics() {
   
   const dischargedPatients = patientsList.filter(p => p.isDischarged);
   
-  patientsList.filter(p => new Date(p.registrationTime).getTime() >= shiftStart.getTime()).forEach(p => {
-    totalVisits++;
-    const outcome = p.dischargeOutcome;
-    if (outcome) {
-      if (outcome.includes('Admission')) {
-        totalAdmissions++;
-        if (outcome.includes('Ward')) admWard++;
-        else if (outcome.includes('PICU')) admPicu++;
-        else if (outcome.includes('ICU')) admIcu++;
-        else if (outcome.includes('CCU')) admCcu++;
-      } else if (outcome === 'Death') {
-        mortality++;
-      } else if (outcome === 'DAMA') {
-        dama++;
-      } else {
-        improved++;
+  // Total visits: Anyone registered during shift OR currently active OR discharged during shift
+  patientsList.forEach(p => {
+    const regTime = new Date(p.registrationTime || 0).getTime();
+    const disTime = p.dischargeTime ? new Date(p.dischargeTime).getTime() : regTime;
+    const isShiftActivity = regTime >= shiftStart.getTime() || disTime >= shiftStart.getTime() || !p.isDischarged;
+    
+    if (isShiftActivity) {
+      totalVisits++;
+    }
+    
+    // Shift Outcomes: Count if discharged during this shift
+    if (p.isDischarged && disTime >= shiftStart.getTime()) {
+      const outcome = p.dischargeOutcome;
+      if (outcome) {
+        if (outcome.includes('Admission')) {
+          totalAdmissions++;
+          if (outcome.includes('Ward')) admWard++;
+          else if (outcome.includes('PICU')) admPicu++;
+          else if (outcome.includes('ICU')) admIcu++;
+          else if (outcome.includes('CCU')) admCcu++;
+        } else if (outcome === 'Death') {
+          mortality++;
+        } else if (outcome === 'DAMA') {
+          dama++;
+        } else {
+          improved++;
+        }
       }
     }
   });
@@ -692,27 +774,36 @@ function renderShiftAnalytics() {
   
   const container = $('discharged-list-container');
   if (container) {
-    const sortedDischarged = dischargedPatients.sort((a, b) => 
-      new Date(b.dischargeTime || b.registrationTime || 0) - new Date(a.dischargeTime || a.registrationTime || 0)
-    );
-    
-    container.innerHTML = sortedDischarged.map(p => `
-      <div class="patient-card card-discharged">
-        <div class="discharged-header">
-          <div class="patient-name" dir="rtl">${p.name || '--'}</div>
-          <div class="duration-badge badge-danger">⏱ ${formatDurationString(p.registrationTime, p.dischargeTime)}</div>
+    if (dischargedPatients.length === 0) {
+      container.innerHTML = `<div class="empty-list">${tr('nD')}</div>`;
+    } else {
+      const sortedDischarged = dischargedPatients.sort((a, b) => 
+        new Date(b.dischargeTime || b.registrationTime || 0) - new Date(a.dischargeTime || a.registrationTime || 0)
+      );
+      
+      container.innerHTML = sortedDischarged.map(p => `
+        <div class="patient-card">
+          <div class="header-top">
+            <div class="patient-name" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}">${p.name || '--'}</div>
+            <div class="duration-badge">⏱ ${formatDurationString(p.registrationTime, p.dischargeTime)}</div>
+          </div>
+          <div class="header-bottom">
+            <div class="hospital-id">#${p.patientId || '--'}</div>
+            <div style="font-weight:700;color:var(--primary);font-size:13px;background:rgba(30,41,59,0.3);padding:4px 10px;border-radius:8px;border:1px solid var(--border-color);">
+              ${translateDischargeOutcome(p.dischargeOutcome || '--')}
+            </div>
+          </div>
         </div>
-        <div class="discharged-body">
-          <div class="hospital-id">${p.patientId || '--'}</div>
-          <div class="outcome-text">${translateDischargeOutcome(p.dischargeOutcome || '--')}</div>
-        </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 }
 
 async function confirmAndDeletePatients(deleteAll) {
-  if (!confirm("DELETE?")) return;
+  const msg = currentLang === 'en' 
+    ? (deleteAll ? "Are you sure you want to delete ALL patient records?" : "Are you sure you want to delete all discharged patient records?")
+    : (deleteAll ? "هل أنت متأكد من حذف جميع سجلات المرضى؟" : "هل أنت متأكد من حذف جميع سجلات المرضى المغادرين؟");
+  if (!confirm(msg)) return;
   const targets = deleteAll ? patientsList : patientsList.filter(p => p.isDischarged);
   for (const p of targets) {
     try {
@@ -721,11 +812,9 @@ async function confirmAndDeletePatients(deleteAll) {
       console.error(err);
     }
   }
-  if (deleteAll) {
-    activeFilter = { type: 'all', value: '' };
-    updateDashboardCounters();
-    renderActivePatientList();
-  }
+  updateDashboardCounters();
+  renderActivePatientList();
+  renderShiftAnalytics();
 }
 
 /**

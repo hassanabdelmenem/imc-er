@@ -196,9 +196,9 @@ export function translatePendingAction(action) {
   if (!action) return '--';
   if (action === 'Under assessment') return tr('uA');
   if (action === 'Waiting referral') return tr('wR');
+  if (action.includes('PICU')) return tr('wp');
   if (action.includes('ICU')) return tr('wi');
   if (action.includes('CCU')) return tr('wc');
-  if (action.includes('PICU')) return tr('wp');
   if (action.includes('ward')) return tr('ww');
   return action;
 }
