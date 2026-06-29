@@ -1,0 +1,38 @@
+/**
+ * Application Configuration & Constants
+ */
+
+export const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBE0tjdrlOSr3gUz2iFWnWc_Epi66jV_6A",
+  authDomain: "imc-er-manager.firebaseapp.com",
+  projectId: "imc-er-manager"
+};
+
+export const OWNER_EMAIL = 'hassan.abdelmenem@gmail.com';
+export const MANAGER_EMAILS = ['manager@imc.com'];
+
+export const ROOMS = [
+  "Arrest",
+  "Cardio Observations",
+  "Isolation Room",
+  "Room 3",
+  "Room 4",
+  "Surgery Observation",
+  "Pediatric Observation",
+  "Stitching Room"
+];
+
+export const PENDING_ACTIONS = [
+  "Under assessment",
+  "Waiting ICU",
+  "Waiting CCU",
+  "Waiting PICU",
+  "Waiting ward",
+  "Waiting referral"
+];
+
+export const WAITLIST_ACTIONS = [
+  "Waiting ICU",
+  "Waiting CCU",
+  "Waiting PICU"
+];
