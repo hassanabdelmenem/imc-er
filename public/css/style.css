@@ -1,6 +1,8 @@
 /**
- * IMC ER - Google Stitch UI Design System (Mobile/Tablet Optimized & Theme Adaptable)
- * Features: Light/Dark Theme Switcher, Responsive Touch Ergonomics, Glassmorphism & Micro-Animations
+ * =============================================================================
+ * PROPRIETARY AND CONFIDENTIAL — IMC ER MANAGEMENT SYSTEM
+ * Copyright (c) 2026 IMC ER Management System. All Rights Reserved.
+ * =============================================================================
  */
 
 :root {
@@ -478,66 +480,98 @@ input:focus, select:focus {
 
 .card-header {
   cursor: pointer;
-}
-
-.header-top, .header-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  width: 100%;
 }
 
-.header-top {
-  margin-bottom: 10px;
-  align-items: flex-start;
+.card-summary-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  text-align: start;
 }
 
 .patient-name {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-main);
-  flex: 1;
-  text-align: start;
   line-height: 1.3;
   word-break: break-word;
 }
 
+.hospital-id {
+  font-family: 'Outfit', monospace;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.card-summary-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.card-summary-tags {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .duration-badge {
-  background: var(--danger-light);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
   padding: 4px 10px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 12px;
   white-space: nowrap;
-}
-
-.hospital-id {
-  font-family: monospace;
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 14px;
-  flex: 1;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15);
 }
 
 .location-tag {
   font-size: 12px;
   color: #ffffff;
   font-weight: 700;
-  background: var(--primary-dark);
-  border: 1px solid var(--primary);
-  padding: 4px 10px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border: 1px solid rgba(20, 184, 166, 0.5);
+  padding: 3px 10px;
   border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.2);
+}
+
+.pending-action-badge {
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  text-align: end;
   white-space: nowrap;
 }
 
-.pending-action {
-  font-weight: 700;
-  color: var(--primary);
+.age-badge {
   font-size: 13px;
-  text-align: end;
-  flex: 1;
+  font-weight: 700;
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
 }
 
 /* Expanded Card Details */
@@ -623,7 +657,7 @@ input:focus, select:focus {
 
 .details-grid-mid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -895,13 +929,33 @@ html[dir="rtl"] .close-modal {
   .btn, .tab-btn {
     min-height: 48px;
   }
-  .details-grid-top {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
-  .details-grid-mid, .details-grid-bottom {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  .card-summary-left {
+    width: 100%;
+    align-items: flex-start;
+  }
+  .card-summary-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    padding-top: 12px;
+  }
+  .card-summary-tags {
+    justify-content: flex-start;
+    flex-wrap: nowrap !important;
+    gap: 6px;
+  }
+  .details-grid-top, .details-grid-mid, .details-grid-bottom {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
   }
   .modal-overlay {
     padding: 0;

@@ -1,5 +1,8 @@
 /**
- * Internationalization (i18n) & Localization Dictionaries
+ * =============================================================================
+ * PROPRIETARY AND CONFIDENTIAL — IMC ER MANAGEMENT SYSTEM
+ * Copyright (c) 2026 IMC ER Management System. All Rights Reserved.
+ * =============================================================================
  */
 
 export let currentLang = 'en';
@@ -24,7 +27,7 @@ export const TRANSLATIONS = {
     sB: "Sign Up",
     gB: "Google Login",
     bT: "ER Management",
-    aB: "➕ Register Patient",
+    aB: "🚑 Register Patient",
     oB: "Logout",
     sT: "Length of Stay",
     sW: "Waitlists",
@@ -107,7 +110,7 @@ export const TRANSLATIONS = {
     sB: "حساب جديد",
     gB: "دخول بجوجل",
     bT: "إدارة الطوارئ",
-    aB: "➕ مريض جديد",
+    aB: "🚑 مريض جديد",
     oB: "خروج",
     sT: "مدة البقاء",
     sW: "الانتظار",

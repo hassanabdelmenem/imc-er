@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+  =============================================================================
+  PROPRIETARY AND CONFIDENTIAL — IMC ER MANAGEMENT SYSTEM
+  Copyright (c) 2026 IMC ER Management System. All Rights Reserved.
+  
+  NOTICE: All information contained herein is, and remains the property of IMC ER Management System.
+  Unauthorized copying, cloning, reverse-engineering, or hosting is strictly prohibited by law.
+  =============================================================================
+-->
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20260630_16">
 </head>
 <body>
 
@@ -68,7 +77,7 @@
 
     <!-- Live Board View -->
     <div id="view-live-board">
-      <button class="btn btn-primary btn-hero" id="btn-open-register" data-i="aB">➕ Register Patient</button>
+      <button class="btn btn-primary btn-hero" id="btn-open-register" data-i="aB">🚑 Register Patient</button>
       
       <div class="section-title" data-i="sT">Length of Stay</div>
       <div class="metrics-grid">
@@ -132,9 +141,14 @@
     <div id="view-owner" class="hidden">
       <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="oM">Account Management</h2>
       <p data-i="oD" style="color:var(--text-muted);font-size:14px">Assign roles or block access entirely. Auto-saves.</p>
-      <div id="users-list-container" style="margin-top:20px"></div>
     </div>
   </div>
+
+  <!-- Proprietary Legal Ownership Watermark -->
+  <footer style="text-align:center;padding:24px 16px;font-size:11px;color:var(--text-muted);user-select:none;letter-spacing:0.3px;opacity:0.8;position:relative;z-index:10;">
+    🔒 <strong>PROPRIETARY PROPERTY</strong> — © 2026 IMC ER Management System. All Rights Reserved.<br>
+    <span style="font-size:10px;">Unauthorized copying, distribution, or execution outside authorized domains is strictly prohibited by law.</span>
+  </footer>
 
   <!-- Register Patient Modal -->
   <div id="modal-register" class="modal-overlay hidden">
@@ -178,6 +192,6 @@
   </div>
 
   <!-- Main Application Script -->
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=20260630_16"></script>
 </body>
 </html>

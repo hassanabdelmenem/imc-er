@@ -18,8 +18,7 @@ export const ROOMS = [
   "Room 3",
   "Room 4",
   "Surgery Observation",
-  "Pediatric Observation",
-  "Stitching Room"
+  "Pediatric Observation"
 ];
 
 export const PENDING_ACTIONS = [
