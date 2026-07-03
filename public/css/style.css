@@ -890,13 +890,85 @@ html[dir="rtl"] .close-modal {
   border: 1px dashed var(--border-color);
 }
 
-/* Tablet Responsive Adjustments (600px - 1024px) */
+/* Stitch Base Mobile Defaults */
+.stitch-command-banner {
+  margin-bottom: 0;
+}
+
+.stitch-console-badge {
+  display: none;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--success);
+  display: inline-block;
+  box-shadow: 0 0 10px var(--success);
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.5; }
+}
+
+/* Stitch Tablet Responsive Console (601px - 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .wrapper {
-    padding: 16px;
+    max-width: 100%;
+    padding: 24px 32px;
   }
-  .metrics-grid {
+  .stitch-command-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+  }
+  .stitch-console-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 15px;
+  }
+  .stitch-command-banner #btn-open-register {
+    width: auto !important;
+    min-width: 220px;
+    margin-bottom: 0;
+  }
+  .stitch-kpi-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .stitch-los-pane .metrics-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .stitch-wait-pane .metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stitch-workspace-sidebar .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+  #patient-list-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+  #patient-list-container .patient-card {
+    margin-bottom: 0;
+    height: max-content;
+    align-self: start;
   }
 }
 
@@ -966,6 +1038,140 @@ html[dir="rtl"] .close-modal {
     border-radius: 28px 28px 0 0;
     max-height: 92vh;
     animation: slideUpBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* Stitch Laptop & Widescreen Desktop Console (1025px+) */
+@media (min-width: 1025px) {
+  .wrapper {
+    max-width: 1560px;
+    padding: 28px 48px;
+  }
+  
+  .nav-bar {
+    padding: 18px 28px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .stitch-command-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 28px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-highlight);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  .stitch-console-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-main);
+    letter-spacing: 0.02em;
+  }
+  .stitch-command-banner #btn-open-register {
+    width: auto !important;
+    min-width: 260px;
+    margin-bottom: 0;
+    padding: 14px 32px;
+    font-size: 16px;
+    border-radius: 14px;
+    box-shadow: 0 6px 24px var(--primary-glow);
+  }
+  
+  .stitch-kpi-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .stitch-kpi-pane {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 18px 24px 24px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  .stitch-kpi-pane .section-title {
+    margin-top: 2px;
+    margin-bottom: 16px;
+  }
+  .stitch-los-pane .metrics-grid {
+    grid-template-columns: repeat(6, 1fr);
+    margin-bottom: 0;
+  }
+  .stitch-wait-pane .metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0;
+  }
+  
+  .stitch-workspace-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-top: 28px;
+  }
+  .stitch-workspace-sidebar {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 20px 22px;
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  .stitch-workspace-sidebar .section-title {
+    margin-top: 0;
+  }
+  .stitch-workspace-sidebar .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  
+  .stitch-workspace-main {
+    min-width: 0;
+  }
+  #patient-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(430px, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  #patient-list-container .patient-card {
+    margin-bottom: 0;
+    height: max-content;
+    align-self: start;
+  }
+  
+  #view-manager, #view-owner {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 36px;
+  }
+  #discharged-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 16px;
+  }
+  #discharged-list-container .patient-card {
+    margin-bottom: 0;
   }
 }
 

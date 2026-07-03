@@ -77,35 +77,54 @@
 
     <!-- Live Board View -->
     <div id="view-live-board">
-      <button class="btn btn-primary btn-hero" id="btn-open-register" data-i="aB">🚑 Register Patient</button>
-      
-      <div class="section-title" data-i="sT">Length of Stay</div>
-      <div class="metrics-grid">
-        <div class="metric-card card-time-4" id="filter-time-4"><h3 data-i="t4">> 4 Hrs</h3><div class="count" id="count-time-4">0</div></div>
-        <div class="metric-card card-time-6" id="filter-time-6"><h3 data-i="t6">> 6 Hrs</h3><div class="count" id="count-time-6">0</div></div>
-        <div class="metric-card card-time-12" id="filter-time-12"><h3 data-i="t12">> 12 Hrs</h3><div class="count" id="count-time-12">0</div></div>
-        <div class="metric-card card-time-24" id="filter-time-24"><h3 data-i="t24">> 24 Hrs</h3><div class="count" id="count-time-24">0</div></div>
-        <div class="metric-card card-time-48" id="filter-time-48"><h3 data-i="t48">> 48 Hrs</h3><div class="count" id="count-time-48">0</div></div>
-        <div class="metric-card card-time-72" id="filter-time-72"><h3 data-i="t72">> 72 Hrs</h3><div class="count" id="count-time-72">0</div></div>
-      </div>
-
-      <div class="section-title" data-i="sW">Waitlists</div>
-      <div class="metrics-grid">
-        <div class="metric-card card-wait" id="filter-wait-icu"><h3 data-i="wi">Wait ICU</h3><div class="count" id="count-wait-icu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-ccu"><h3 data-i="wc">Wait CCU</h3><div class="count" id="count-wait-ccu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-picu"><h3 data-i="wp">Wait PICU</h3><div class="count" id="count-wait-picu">0</div></div>
-        <div class="metric-card card-wait" id="filter-wait-ward"><h3 data-i="ww">Wait Ward</h3><div class="count" id="count-wait-ward">0</div></div>
-      </div>
-
-      <div class="section-title" data-i="sR">ER Rooms</div>
-      <div class="metrics-grid" id="rooms-grid"></div>
-
-      <div style="margin-top:25px">
-        <div class="list-header glass-panel">
-          <span id="list-header-title">All Patients</span>
-          <span class="count-pill" id="list-header-count">0</span>
+      <!-- Top Action Bar -->
+      <div class="stitch-command-banner">
+        <div class="stitch-console-badge">
+          <span class="pulse-dot"></span>
+          <span data-i="cStatus">Emergency Command Console</span>
         </div>
-        <div id="patient-list-container"></div>
+        <button class="btn btn-primary btn-hero" id="btn-open-register" data-i="aB">🚑 Register Patient</button>
+      </div>
+      
+      <!-- Stitch Dashboard Top KPI Section -->
+      <div class="stitch-kpi-layout">
+        <div class="stitch-kpi-pane stitch-los-pane">
+          <div class="section-title" data-i="sT">Length of Stay</div>
+          <div class="metrics-grid">
+            <div class="metric-card card-time-4" id="filter-time-4"><h3 data-i="t4">> 4 Hrs</h3><div class="count" id="count-time-4">0</div></div>
+            <div class="metric-card card-time-6" id="filter-time-6"><h3 data-i="t6">> 6 Hrs</h3><div class="count" id="count-time-6">0</div></div>
+            <div class="metric-card card-time-12" id="filter-time-12"><h3 data-i="t12">> 12 Hrs</h3><div class="count" id="count-time-12">0</div></div>
+            <div class="metric-card card-time-24" id="filter-time-24"><h3 data-i="t24">> 24 Hrs</h3><div class="count" id="count-time-24">0</div></div>
+            <div class="metric-card card-time-48" id="filter-time-48"><h3 data-i="t48">> 48 Hrs</h3><div class="count" id="count-time-48">0</div></div>
+            <div class="metric-card card-time-72" id="filter-time-72"><h3 data-i="t72">> 72 Hrs</h3><div class="count" id="count-time-72">0</div></div>
+          </div>
+        </div>
+
+        <div class="stitch-kpi-pane stitch-wait-pane">
+          <div class="section-title" data-i="sW">Waitlists</div>
+          <div class="metrics-grid">
+            <div class="metric-card card-wait" id="filter-wait-icu"><h3 data-i="wi">Wait ICU</h3><div class="count" id="count-wait-icu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-ccu"><h3 data-i="wc">Wait CCU</h3><div class="count" id="count-wait-ccu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-picu"><h3 data-i="wp">Wait PICU</h3><div class="count" id="count-wait-picu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-ward"><h3 data-i="ww">Wait Ward</h3><div class="count" id="count-wait-ward">0</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stitch Workspace Split Section -->
+      <div class="stitch-workspace-layout">
+        <div class="stitch-workspace-sidebar">
+          <div class="section-title" data-i="sR">ER Rooms</div>
+          <div class="metrics-grid" id="rooms-grid"></div>
+        </div>
+
+        <div class="stitch-workspace-main">
+          <div class="list-header glass-panel">
+            <span id="list-header-title">All Patients</span>
+            <span class="count-pill" id="list-header-count">0</span>
+          </div>
+          <div id="patient-list-container"></div>
+        </div>
       </div>
     </div>
 
@@ -138,9 +157,10 @@
     </div>
 
     <!-- Owner View -->
-    <div id="view-owner" class="hidden">
+    <div id="view-owner" class="hidden" style="padding: 10px 0;">
       <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="oM">Account Management</h2>
-      <p data-i="oD" style="color:var(--text-muted);font-size:14px">Assign roles or block access entirely. Auto-saves.</p>
+      <p data-i="oD" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Assign roles or block access entirely. Auto-saves.</p>
+      <div id="users-list-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;"></div>
     </div>
   </div>
 
@@ -192,6 +212,6 @@
   </div>
 
   <!-- Main Application Script -->
-  <script type="module" src="js/app.js?v=20260630_16"></script>
+  <script type="module" src="js/app.js?v=20260630_20"></script>
 </body>
 </html>

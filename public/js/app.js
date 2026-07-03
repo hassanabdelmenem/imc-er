@@ -46,14 +46,14 @@
   }
 })();
 
-import { OWNER_EMAIL, MANAGER_EMAILS, ROOMS, PENDING_ACTIONS, WAITLIST_ACTIONS } from "./config.js";
+import { OWNER_EMAIL, OWNER_EMAILS, MANAGER_EMAILS, ROOMS, PENDING_ACTIONS, WAITLIST_ACTIONS } from "./config.js?v=20260630_19";
 import { 
   currentLang, 
   toggleLanguage as toggleLangState, 
   tr, 
   translatePendingAction, 
   translateDischargeOutcome 
-} from "./i18n.js";
+} from "./i18n.js?v=20260630_19";
 import { 
   initAuthListener, 
   loginWithEmail, 
@@ -69,7 +69,7 @@ import {
   updatePatientRecord, 
   dischargePatientRecord, 
   deletePatientRecord 
-} from "./firebase-service.js";
+} from "./firebase-service.js?v=20260630_19";
 
 // State variables
 let patientsList = [];
@@ -83,6 +83,10 @@ let expandedPatientCardIds = new Set();
 // Utility DOM selector helper
 const $ = (id) => document.getElementById(id);
 const getVal = (id) => $(id) ? $(id).value.trim() : '';
+
+const cleanEmail = (e) => e ? String(e).toLowerCase().replace(/\./g, '').trim() : '';
+const checkIfOwner = (email) => OWNER_EMAILS.some(o => cleanEmail(o) === cleanEmail(email)) || email === OWNER_EMAIL || cleanEmail(email) === 'hassanabdelmenem@gmailcom';
+const checkIfManager = (email, role) => role === 'manager' || role === 'owner' || checkIfOwner(email) || MANAGER_EMAILS.some(m => cleanEmail(m) === cleanEmail(email));
 
 // Theme Controller
 let currentTheme = localStorage.getItem('imc_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -114,11 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuthListener(async (user) => {
     if (user) {
       $('loading-overlay').classList.remove('hidden');
-      isOwner = (user.email === OWNER_EMAIL);
+      isOwner = checkIfOwner(user.email);
       
       let role = 'pending';
       if (isOwner) {
         role = 'owner';
+        try {
+          await createUserRecord(user.uid, user.email, 'owner');
+        } catch (err) {
+          console.warn("Notice: Could not write owner record to Firestore:", err);
+        }
       } else {
         const existingRole = await getUserRole(user.uid);
         if (existingRole) {
@@ -141,7 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
       $('auth-section').classList.add('hidden');
       $('app-section').classList.remove('hidden');
       
-      isManager = (role === 'manager' || isOwner || MANAGER_EMAILS.includes(user.email));
+      isManager = checkIfManager(user.email, role);
+      isOwner = role === 'owner' || checkIfOwner(user.email);
       
       $('tab-manager').classList.toggle('hidden', !isManager);
       $('tab-owner').classList.toggle('hidden', !isOwner);
@@ -149,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const prefix = isOwner ? (currentLang === 'en' ? 'Own: ' : 'مالك: ') :
                      isManager ? (currentLang === 'en' ? 'Mgr: ' : 'مدير: ') :
                      (currentLang === 'en' ? 'Usr: ' : 'مستخدم: ');
-      $('user-info').innerText = prefix + user.email;
+      if ($('user-info')) $('user-info').innerText = prefix + user.email;
       
       // Subscribe to real-time patient updates
       subscribeToPatients((patients) => {
@@ -167,8 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
           usersList = users;
           const pendingCount = users.filter(u => u.role === 'pending').length;
           const badge = $('badge-pending-users');
-          badge.innerText = pendingCount ? `(${pendingCount})` : '';
-          badge.style.display = pendingCount ? 'inline' : 'none';
+          if (badge) {
+            badge.innerText = pendingCount ? `(${pendingCount})` : '';
+            badge.style.display = pendingCount ? 'inline' : 'none';
+          }
           renderAccountManagement();
         });
       }
@@ -638,7 +650,7 @@ function renderActivePatientList() {
               </div>
               
               <div id="sepsis_box_${p.id}" class="alert-box alert-danger ${isSepsisSuspected ? '' : 'hidden'}">
-                <label class="alert-label">${tr('sW')}</label>
+                <label class="alert-label">${tr('sepW')}</label>
                 <select id="sepsis_${p.id}" class="select-alert select-danger" data-id="${p.id}" data-field="sepsisWorkup">
                   <option value="" ${!p.sepsisWorkup ? 'selected' : ''}>--</option>
                   <option value="Yes" ${p.sepsisWorkup === 'Yes' ? 'selected' : ''}>${tr('y')}</option>
@@ -717,29 +729,30 @@ async function savePatientCardFields(cardId) {
 function attachPatientListHandlers() {
   // Accordion toggle with automatic save & single-card open mode
   document.querySelectorAll('.card-header').forEach(header => {
-    header.onclick = async () => {
+    header.onclick = async (e) => {
+      if (e.target.closest('select, input, button')) return;
       const id = header.dataset.id;
       const detailsEl = $(`details_${id}`);
       if (!detailsEl) return;
       
       const isCurrentlyHidden = detailsEl.classList.contains('hidden');
       if (isCurrentlyHidden) {
-        // Auto save and collapse all other currently open cards
-        expandedPatientCardIds.forEach(prevId => {
+        const prevIds = Array.from(expandedPatientCardIds);
+        expandedPatientCardIds.clear();
+        expandedPatientCardIds.add(id);
+        detailsEl.classList.remove('hidden');
+        
+        prevIds.forEach(prevId => {
           if (prevId !== id) {
-            savePatientCardFields(prevId);
             const prevDetails = $(`details_${prevId}`);
             if (prevDetails) prevDetails.classList.add('hidden');
-            expandedPatientCardIds.delete(prevId);
+            savePatientCardFields(prevId);
           }
         });
-        detailsEl.classList.remove('hidden');
-        expandedPatientCardIds.add(id);
       } else {
-        // Collapse and auto save this card
-        savePatientCardFields(id);
-        detailsEl.classList.add('hidden');
         expandedPatientCardIds.delete(id);
+        detailsEl.classList.add('hidden');
+        savePatientCardFields(id);
       }
     };
   });
@@ -1070,16 +1083,32 @@ function renderAccountManagement() {
   const container = $('users-list-container');
   if (!container) return;
   
-  const filteredUsers = usersList.filter(u => u.email !== OWNER_EMAIL);
-  container.innerHTML = filteredUsers.map(u => {
+  if (usersList.length === 0) {
+    container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted); font-weight: 500;">Loading user accounts from Firestore... If this remains empty, check your Firestore permissions.</div>';
+    return;
+  }
+  
+  container.innerHTML = usersList.map(u => {
+    const isOwnerUser = checkIfOwner(u.email) || u.role === 'owner';
+    if (isOwnerUser) {
+      return `
+        <div class="user-card" style="border: 1px solid var(--primary); background: rgba(13, 148, 136, 0.05);">
+          <div class="user-card-header">
+            <span style="font-weight: 700;">👑 ${u.email}</span>
+            <span style="color: var(--primary); font-weight: 800;">OWNER</span>
+          </div>
+          <div style="margin-top: 10px; font-size: 13px; color: var(--text-muted);">System Administrator (Protected Privileges)</div>
+        </div>
+      `;
+    }
     const roleColor = u.role === 'pending' ? 'var(--warning)' : u.role === 'blocked' ? 'var(--danger)' : 'var(--primary)';
     return `
       <div class="user-card">
         <div class="user-card-header">
           <span>${u.email}</span>
-          <span style="color: ${roleColor}; font-weight: 800;">${u.role.toUpperCase()}</span>
+          <span style="color: ${roleColor}; font-weight: 800;">${u.role ? u.role.toUpperCase() : 'USER'}</span>
         </div>
-        <select class="select-role" data-id="${u.id}">
+        <select class="select-role" data-id="${u.id}" style="margin-top: 10px; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); width: 100%;">
           <option value="user" ${u.role === 'user' ? 'selected' : ''}>${tr('uU')}</option>
           <option value="manager" ${u.role === 'manager' ? 'selected' : ''}>${tr('uM')}</option>
           <option value="pending" ${u.role === 'pending' ? 'selected' : ''}>${tr('uP')}</option>
@@ -1091,7 +1120,18 @@ function renderAccountManagement() {
   
   container.querySelectorAll('.select-role').forEach(select => {
     select.onchange = async (e) => {
-      await updateUserRole(e.target.dataset.id, e.target.value);
+      const uid = e.target.dataset.id;
+      const newRole = e.target.value;
+      select.disabled = true;
+      try {
+        await updateUserRole(uid, newRole);
+      } catch (err) {
+        console.error("Failed to update user role:", err);
+        alert("Error updating user privileges: " + err.message);
+        renderAccountManagement();
+      } finally {
+        select.disabled = false;
+      }
     };
   });
 }

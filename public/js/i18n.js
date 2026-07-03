@@ -30,7 +30,7 @@ export const TRANSLATIONS = {
     aB: "🚑 Register Patient",
     oB: "Logout",
     sT: "Length of Stay",
-    sW: "Waitlists",
+    sW: "Waiting Admissions",
     sR: "ER Rooms",
     t4: "> 4 Hrs",
     t6: "> 6 Hrs",
@@ -97,8 +97,9 @@ export const TRANSLATIONS = {
     dPH: "Discharged Patients",
     dg: "Diagnosis",
     sX: "Supportive Tx",
-    sW: "Sepsis Workup?",
-    aC: "Action"
+    sepW: "Sepsis Workup?",
+    aC: "Action",
+    cStatus: "Emergency Command Console"
   },
   ar: {
     ld: "جارٍ التحميل...",
@@ -113,7 +114,7 @@ export const TRANSLATIONS = {
     aB: "🚑 مريض جديد",
     oB: "خروج",
     sT: "مدة البقاء",
-    sW: "الانتظار",
+    sW: "قائمة انتظار التنويم",
     sR: "الغرف",
     t4: "> 4 س",
     t6: "> 6 س",
@@ -180,8 +181,9 @@ export const TRANSLATIONS = {
     dPH: "المرضى الخوارج",
     dg: "التشخيص",
     sX: "علاج داعم",
-    sW: "تحاليل Sepsis؟",
-    aC: "الإجراء"
+    sepW: "تحاليل Sepsis؟",
+    aC: "الإجراء",
+    cStatus: "لوحة التحكم والطوارئ المباشرة"
   }
 };
 

@@ -9,7 +9,8 @@ export const FIREBASE_CONFIG = {
 };
 
 export const OWNER_EMAIL = 'hassan.abdelmenem@gmail.com';
-export const MANAGER_EMAILS = ['manager@imc.com'];
+export const OWNER_EMAILS = ['hassan.abdelmenem@gmail.com', 'hassanabdelmenem@gmail.com'];
+export const MANAGER_EMAILS = ['manager@imc.com', 'hassan.abdelmenem@gmail.com', 'hassanabdelmenem@gmail.com'];
 
 export const ROOMS = [
   "Arrest",
@@ -33,5 +34,6 @@ export const PENDING_ACTIONS = [
 export const WAITLIST_ACTIONS = [
   "Waiting ICU",
   "Waiting CCU",
-  "Waiting PICU"
+  "Waiting PICU",
+  "Waiting ward"
 ];

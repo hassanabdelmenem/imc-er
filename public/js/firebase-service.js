@@ -19,7 +19,7 @@ import {
   setDoc, 
   getDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { FIREBASE_CONFIG } from "./config.js";
+import { FIREBASE_CONFIG } from "./config.js?v=20260630_19";
 
 // Initialize Firebase SDK
 const app = initializeApp(FIREBASE_CONFIG);
@@ -64,7 +64,7 @@ export async function getUserRole(uid) {
 
 export async function createUserRecord(uid, email, role = 'pending') {
   const userRef = doc(db, "users", uid);
-  await setDoc(userRef, { email, role });
+  await setDoc(userRef, { email, role }, { merge: true });
 }
 
 export async function updateUserRole(uid, role) {
@@ -79,6 +79,9 @@ export function subscribeToUsers(callback) {
       users.push({ id: docSnap.id, ...docSnap.data() });
     });
     callback(users);
+  }, (error) => {
+    console.error("Firestore subscribeToUsers Error:", error);
+    alert("Notice: Could not load real-time users list from Firestore (" + error.message + "). Please verify Firestore Security Rules.");
   });
 }
 
