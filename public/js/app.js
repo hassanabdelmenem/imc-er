@@ -1,9 +1,9 @@
 /**
  * =============================================================================
  * PROPRIETARY AND CONFIDENTIAL — IMC ER MANAGEMENT SYSTEM
- * Copyright (c) 2026 IMC ER Management System. All Rights Reserved.
+ * Copyright (c) 2026 SEVENSN. All Rights Reserved.
  * 
- * LEGAL NOTICE: This software is the exclusive legal property of the IMC ER Management System owner.
+ * LEGAL NOTICE: This software is the exclusive legal property of SEVENSN.
  * Unauthorized access, copying, cloning, reverse-engineering, scraping, or hosting outside of
  * authorized domains is strictly prohibited and subject to civil and criminal penalties.
  * =============================================================================
@@ -24,7 +24,7 @@
     'color: #ef4444; font-size: 26px; font-weight: 800; -webkit-text-stroke: 1px black;'
   );
   console.log(
-    '%cThis application and its underlying source code are proprietary legal property of IMC ER Management System.\nUnauthorized cloning, scraping, inspection, or tampering is monitored and prohibited by copyright law.',
+    '%cThis application and its underlying source code are proprietary legal property of SEVENSN.\nUnauthorized cloning, scraping, inspection, or tampering is monitored and prohibited by copyright law.',
     'color: #0d9488; font-size: 13px; font-weight: 600;'
   );
 
@@ -38,7 +38,7 @@
           Execution on domain <strong>${currentHost}</strong> has been halted due to lack of authorization.
         </p>
         <div style="padding:12px 24px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:8px;font-size:12px;color:#fca5a5;">
-          © 2026 IMC ER Management System — All Rights Reserved
+          © 2026 SEVENSN — All Rights Reserved
         </div>
       </div>
     `;

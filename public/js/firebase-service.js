@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2026 SEVENSN. All Rights Reserved.
+ */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { 
   getAuth, 

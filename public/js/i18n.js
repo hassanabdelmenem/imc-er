@@ -1,7 +1,7 @@
 /**
  * =============================================================================
  * PROPRIETARY AND CONFIDENTIAL — IMC ER MANAGEMENT SYSTEM
- * Copyright (c) 2026 IMC ER Management System. All Rights Reserved.
+ * Copyright (c) 2026 SEVENSN. All Rights Reserved.
  * =============================================================================
  */
 

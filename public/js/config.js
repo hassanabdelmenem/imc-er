@@ -1,5 +1,6 @@
 /**
  * Application Configuration & Constants
+ * Copyright (c) 2026 SEVENSN. All Rights Reserved.
  */
 
 export const FIREBASE_CONFIG = {
