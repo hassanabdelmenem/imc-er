@@ -36,8 +36,14 @@
     <h2 style="color:var(--primary);margin:0 0 5px;font-family:'Outfit',sans-serif" data-i="t">IMC ER</h2>
     <p style="color:var(--text-muted);margin:0 0 20px" data-i="s">Console</p>
     <div id="auth-error"></div>
-    <input type="email" id="auth-email" data-p="ep" placeholder="Email">
-    <input type="password" id="auth-password" data-p="pp" placeholder="Password">
+    <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+      <label for="auth-email" style="display:block; margin-bottom: 8px; font-weight: 600;">Email Address</label>
+      <input type="email" id="auth-email" data-p="ep" placeholder="Example@gmail.com" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+    </div>
+    <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+      <label for="auth-password" style="display:block; margin-bottom: 8px; font-weight: 600;">Password</label>
+      <input type="password" id="auth-password" data-p="pp" placeholder="••••••••" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+    </div>
     <button class="btn btn-primary" id="btn-login" data-i="lB">Log In</button>
     <button class="btn btn-success" id="btn-signup" data-i="sB">Sign Up</button>
     <hr style="border:0;border-top:1px solid var(--border-light);margin:20px 0">
@@ -175,17 +181,27 @@
     <div class="modal-content glass-panel">
       <span class="close-modal">&times;</span>
       <h2 style="color:var(--primary);margin-top:0;font-family:'Outfit',sans-serif" data-i="aT">Register Patient</h2>
-      <label class="field-label" data-i="lN">Name (Arabic)</label>
-      <input type="text" id="reg-name" dir="rtl">
-      <label class="field-label" data-i="lH">Hospital ID (1 Letter+9 Nums)</label>
-      <input type="text" id="reg-hospital-id" style="text-transform:uppercase">
-      <label class="field-label" data-i="lI">Nat ID (Optional)</label>
-      <input type="text" inputmode="numeric" pattern="[0-9]*" id="reg-national-id">
+      <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+        <label class="field-label" data-i="lN" style="display:block; margin-bottom: 8px; font-weight: 600;">Name (Arabic)</label>
+        <input type="text" id="reg-name" dir="rtl" placeholder="e.g. محمد أحمد" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+      </div>
+      <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+        <label class="field-label" data-i="lH" style="display:block; margin-bottom: 8px; font-weight: 600;">Hospital ID (1 Letter+9 Nums)</label>
+        <input type="text" id="reg-hospital-id" placeholder="e.g. A123456789" style="text-transform:uppercase; width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+      </div>
+      <div class="form-group" style="margin-bottom: 12px; text-align: left;">
+        <label class="field-label" data-i="lI" style="display:block; margin-bottom: 8px; font-weight: 600;">Nat ID (Optional)</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="reg-national-id" placeholder="e.g. 29001011234567" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+      </div>
       <div id="reg-age-display" class="age-display" style="margin:-8px 0 12px;min-height:18px"></div>
-      <label class="field-label" data-i="lL">Room</label>
-      <select id="reg-room"></select>
-      <label class="field-label" data-i="lT">Time</label>
-      <input type="datetime-local" id="reg-time">
+      <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+        <label class="field-label" data-i="lL" style="display:block; margin-bottom: 8px; font-weight: 600;">Room</label>
+        <select id="reg-room" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;"></select>
+      </div>
+      <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+        <label class="field-label" data-i="lT" style="display:block; margin-bottom: 8px; font-weight: 600;">Time</label>
+        <input type="datetime-local" id="reg-time" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box;">
+      </div>
       <button class="btn btn-success" id="btn-submit-register" data-i="sB2" style="margin-top:15px">Register</button>
     </div>
   </div>
@@ -196,16 +212,19 @@
       <span class="close-modal">&times;</span>
       <h2 style="color:var(--danger);margin-top:0;font-family:'Outfit',sans-serif" data-i="dT">Discharge</h2>
       <strong id="discharge-patient-name" style="color:var(--primary);font-size:18px;display:block;margin:15px 0" dir="rtl"></strong>
-      <select id="discharge-outcome-select" style="border:2px solid var(--border-color);height:50px">
-        <option value="" disabled selected data-i="oS">Select...</option>
-        <option value="Improved" data-i="oI">Improved</option>
-        <option value="Ward Admission" data-i="oW">Ward</option>
-        <option value="ICU Admission" data-i="oIC">ICU</option>
-        <option value="CCU Admission" data-i="oCC">CCU</option>
-        <option value="PICU Admission" data-i="oPC">PICU</option>
-        <option value="DAMA" data-i="oDM">DAMA</option>
-        <option value="Death" data-i="oDT">Death</option>
-      </select>
+      <div class="form-group" style="margin-bottom: 24px; text-align: left;">
+        <label for="discharge-outcome-select" style="display:block; margin-bottom: 8px; font-weight: 600;">Discharge Outcome</label>
+        <select id="discharge-outcome-select" style="width:100%; border:1px solid var(--border-color, #ccc); border-radius:8px; padding:10px 14px; box-sizing:border-box; height:50px">
+          <option value="" disabled selected data-i="oS">Select...</option>
+          <option value="Improved" data-i="oI">Improved</option>
+          <option value="Ward Admission" data-i="oW">Ward</option>
+          <option value="ICU Admission" data-i="oIC">ICU</option>
+          <option value="CCU Admission" data-i="oCC">CCU</option>
+          <option value="PICU Admission" data-i="oPC">PICU</option>
+          <option value="DAMA" data-i="oDM">DAMA</option>
+          <option value="Death" data-i="oDT">Death</option>
+        </select>
+      </div>
       <input type="hidden" id="discharge-patient-id">
       <button class="btn btn-danger" id="btn-submit-discharge" data-i="dB" style="margin-top:10px">Discharge</button>
     </div>

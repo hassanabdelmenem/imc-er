@@ -380,14 +380,22 @@ function updateTranslations() {
 }
 
 function calculateAgeAndGender(nid) {
-  if (!/^\d{14}$/.test(nid)) return '--';
-  const century = nid[0] === '2' ? 1900 : (nid[0] === '3' ? 2000 : 0);
+  if (!nid) return '--';
+  const str = String(nid).trim();
+  if (!/^\d{14}$/.test(str)) return '--';
+  const century = str[0] === '2' ? 1900 : (str[0] === '3' ? 2000 : 0);
   if (!century) return '--';
-  const year = century + parseInt(nid.substr(1, 2), 10);
-  const birthDate = new Date(year, parseInt(nid.substr(3, 2), 10) - 1, parseInt(nid.substr(5, 2), 10));
+  const year = century + parseInt(str.substr(1, 2), 10);
+  const month = parseInt(str.substr(3, 2), 10);
+  const day = parseInt(str.substr(5, 2), 10);
+  if (month < 1 || month > 12) return '--';
+  const daysInMonth = new Date(year, month, 0).getDate();
+  if (day < 1 || day > daysInMonth) return '--';
+  const birthDate = new Date(year, month - 1, day);
   const age = ~~((new Date() - birthDate) / 315576e5);
-  const isMale = parseInt(nid[12], 10) % 2 !== 0;
-  return `${isMale ? tr('ml') : tr('fm')} | ${age} ${tr('yr')}`;
+  if (age < 0 || age > 130) return '--';
+  const isMale = parseInt(str[12], 10) % 2 !== 0;
+  return `${isMale ? (typeof tr === 'function' ? tr('ml') || 'Male' : 'Male') : (typeof tr === 'function' ? tr('fm') || 'Female' : 'Female')} | ${age} ${typeof tr === 'function' ? tr('yr') || 'yrs' : 'yrs'}`;
 }
 
 function formatElapsedHours(timeStr) {
@@ -598,11 +606,11 @@ function renderActivePatientList() {
             <div class="details-grid-top" style="margin-top:14px;margin-bottom:0;">
               <div>
                 <label class="field-label" style="margin-top:0;">${tr('lN') || 'Name'}</label>
-                <input type="text" id="name_${p.id}" value="${safeName}" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}" class="input-field" style="margin:0;" data-id="${p.id}" data-field="name" placeholder="${tr('nm') || 'Name'}">
+                <input type="text" id="name_${p.id}" value="${safeName}" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}" class="input-field" style="margin:0;" data-id="${p.id}" data-field="name" placeholder="${tr('nm') || 'e.g. John Doe'}">
               </div>
               <div>
                 <label class="field-label" style="margin-top:0;">${tr('lH') || 'Hospital ID'}</label>
-                <input type="text" id="hosp_${p.id}" value="${p.patientId || ''}" class="input-field" style="margin:0;" placeholder="${tr('hS')}" data-id="${p.id}" data-field="patientId">
+                <input type="text" id="hosp_${p.id}" value="${p.patientId || ''}" class="input-field" style="margin:0;" placeholder="${tr('hS') || 'e.g. A123456789'}" data-id="${p.id}" data-field="patientId">
               </div>
               <div>
                 <label class="field-label" style="margin-top:0;">${tr('lT') || 'Time'}</label>
@@ -611,18 +619,18 @@ function renderActivePatientList() {
             </div>
             <div style="margin-top:12px;">
               <label class="field-label" style="margin-top:0;">${tr('lI') || 'National ID'}</label>
-              <input type="text" inputmode="numeric" pattern="[0-9]*" id="nid_${p.id}" value="${p.nationalId || ''}" class="input-field" style="margin:0;width:100%;" placeholder="${tr('nS')}" data-id="${p.id}" data-field="nationalId">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="nid_${p.id}" value="${p.nationalId || ''}" class="input-field" style="margin:0;width:100%;" placeholder="${tr('nS') || 'e.g. 29001011234567'}" data-id="${p.id}" data-field="nationalId">
             </div>
           </details>
           
           <div class="details-grid-mid">
             <div>
               <label class="field-label">${tr('dg')}</label>
-              <input type="text" id="diag_${p.id}" value="${String(p.diagnosis || '').replace(/['"]/g, "&quot;")}" class="input-field" data-id="${p.id}" data-field="diagnosis">
+              <input type="text" id="diag_${p.id}" value="${String(p.diagnosis || '').replace(/['"]/g, "&quot;")}" class="input-field" data-id="${p.id}" data-field="diagnosis" placeholder="${currentLang === 'en' ? 'e.g. STEMI, Appendicitis...' : 'مثال: جلطة قلبية، التهاب زائدة...'}">
             </div>
             <div>
               <label class="field-label">${tr('sX')}</label>
-              <input type="text" id="supp_${p.id}" value="${String(p.supportiveTx || '').replace(/['"]/g, "&quot;")}" class="input-field" data-id="${p.id}" data-field="supportiveTx">
+              <input type="text" id="supp_${p.id}" value="${String(p.supportiveTx || '').replace(/['"]/g, "&quot;")}" class="input-field" data-id="${p.id}" data-field="supportiveTx" placeholder="${currentLang === 'en' ? 'e.g. Aspirin, Oxygen 2L...' : 'مثال: أسبرين، أكسجين...'}">
             </div>
           </div>
           
@@ -1135,3 +1143,37 @@ function renderAccountManagement() {
     };
   });
 }
+
+// Universal Input Masking for Phone Numbers and National IDs
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  if (!el || el.tagName !== 'INPUT') return;
+  
+  // Phone Number Masking (XXX-XXXX-XXXX)
+  if (el.type === 'tel' || el.id.includes('phone') || el.id.includes('tel') || el.name?.includes('phone')) {
+    let val = el.value.replace(/\D/g, '');
+    if (val.length > 11) val = val.slice(0, 11);
+    let formatted = val;
+    if (val.length > 7) {
+      formatted = `${val.slice(0,3)}-${val.slice(3,7)}-${val.slice(7)}`;
+    } else if (val.length > 3) {
+      formatted = `${val.slice(0,3)}-${val.slice(3)}`;
+    }
+    el.value = formatted;
+  }
+  
+  // National ID Masking (XXX-XXXX-XXX-XXXX)
+  if (el.id.includes('national') || el.id.includes('nid') || el.name?.includes('national') || el.dataset.field === 'nationalId') {
+    let val = el.value.replace(/\D/g, '');
+    if (val.length > 14) val = val.slice(0, 14);
+    let formatted = val;
+    if (val.length > 10) {
+      formatted = `${val.slice(0,3)}-${val.slice(3,7)}-${val.slice(7,10)}-${val.slice(10)}`;
+    } else if (val.length > 7) {
+      formatted = `${val.slice(0,3)}-${val.slice(3,7)}-${val.slice(7)}`;
+    } else if (val.length > 3) {
+      formatted = `${val.slice(0,3)}-${val.slice(3)}`;
+    }
+    el.value = formatted;
+  }
+});
