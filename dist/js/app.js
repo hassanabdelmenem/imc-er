@@ -545,7 +545,13 @@ function setupEventListeners() {
   if (btnSentMute) btnSentMute.onclick = () => {
     if (window.NanostoreClinicalStore?.isAudioMuted) {
       window.NanostoreClinicalStore.isAudioMuted.set(true);
-      btnSentMute.innerText = '🔇 Muted';
+      const icon = btnSentMute.querySelector('.sentinel-btn-icon');
+      const label = btnSentMute.querySelector('.sentinel-btn-label');
+      if (icon) icon.textContent = '🔇';
+      if (label) label.innerText = tr('sMuted');
+      const mutedLabel = tr('sMuted');
+      btnSentMute.setAttribute('aria-label', mutedLabel);
+      btnSentMute.setAttribute('title', mutedLabel);
       btnSentMute.style.background = 'var(--tint-light-strong)';
     }
   };
@@ -752,7 +758,14 @@ function updateTranslations() {
   document.querySelectorAll('[data-p]').forEach(el => {
     el.placeholder = tr(el.dataset.p);
   });
-  
+  // Icon-only buttons (e.g. the sentinel jump/mute controls) carry their
+  // label as an aria-label/title instead of visible text on small screens.
+  document.querySelectorAll('[data-i-aria]').forEach(el => {
+    const label = tr(el.dataset.iAria);
+    el.setAttribute('aria-label', label);
+    el.setAttribute('title', label);
+  });
+
   // Re-render lists to update language
   updateDashboardCounters();
   renderActivePatientList();

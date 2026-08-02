@@ -105,7 +105,10 @@ export const TRANSLATIONS = {
     sX: "Supportive Tx",
     sepW: "🚨 Sepsis Protocol",
     aC: "Action",
-    cStatus: "Emergency Command Console"
+    cStatus: "Emergency Command Console",
+    sJump: "Jump to Patient",
+    sMute: "Mute Session",
+    sMuted: "Muted"
   },
   ar: {
     ld: "جارٍ التحميل...",
@@ -195,7 +198,10 @@ export const TRANSLATIONS = {
     sX: "علاج داعم",
     sepW: "🚨 بروتوكول الإنتان (Sepsis)",
     aC: "الإجراء",
-    cStatus: "لوحة التحكم والطوارئ المباشرة"
+    cStatus: "لوحة التحكم والطوارئ المباشرة",
+    sJump: "الذهاب للمريض",
+    sMute: "كتم التنبيه",
+    sMuted: "مكتوم"
   }
 };
 

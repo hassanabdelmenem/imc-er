@@ -77,8 +77,12 @@
         </div>
       </div>
       <div class="sentinel-actions">
-        <button id="btn-sentinel-jump" class="btn sentinel-btn sentinel-btn-jump">🔍 Jump to Patient</button>
-        <button id="btn-sentinel-mute" class="btn sentinel-btn sentinel-btn-mute">🔊 Mute Session</button>
+        <button id="btn-sentinel-jump" class="btn sentinel-btn sentinel-btn-jump" data-i-aria="sJump" title="Jump to Patient" aria-label="Jump to Patient">
+          <span class="sentinel-btn-icon" aria-hidden="true">🔍</span><span class="sentinel-btn-label" data-i="sJump">Jump to Patient</span>
+        </button>
+        <button id="btn-sentinel-mute" class="btn sentinel-btn sentinel-btn-mute" data-i-aria="sMute" title="Mute Session" aria-label="Mute Session">
+          <span class="sentinel-btn-icon" aria-hidden="true">🔊</span><span class="sentinel-btn-label" data-i="sMute">Mute Session</span>
+        </button>
       </div>
     </div>
     <div class="nav-bar glass-panel">
