@@ -1,0 +1,21 @@
+{
+  "parameters": {
+    "enable_edge_ai_synthesis": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "description": "Administrative kill-switch for client-side Edge AI Discharge Summary synthesis (Gemini Nano / window.ai). Set to 'false' to disable clinical AI generation.",
+      "valueType": "BOOLEAN"
+    },
+    "enable_batch_purge": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "description": "Administrative kill-switch for batch patient data purging (Purge Discharged / Purge All). Set to 'false' to hide purge controls across manager consoles.",
+      "valueType": "BOOLEAN"
+    }
+  },
+  "version": {
+    "description": "Initial 2026 Remote Config template for IMC Unified Command Center (enable_edge_ai_synthesis & enable_batch_purge kill-switches)"
+  }
+}

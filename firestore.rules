@@ -1,0 +1,179 @@
+rules_version = '2';
+
+// =============================================================================
+// IMC ER — Firestore Security Rules
+//
+// Role model (must stay in sync with public/js/config.js):
+//   owner                     — system administrator; the only role that may
+//                               assign roles or delete a non-discharged record
+//   medical_director          }
+//   emergency_manager         }  leadership tier: full clinical board access
+//   emergency_deputy_manager  }
+//   pending                   — signed up, awaiting owner approval: NO PHI access
+//   blocked                   — access revoked: NO PHI access
+//
+// Default posture is DENY. A signed-in user with no /users document, or whose
+// role is `pending` or `blocked`, can read nothing from /patients.
+//
+// This replaces a ruleset whose isApprovedMedicalStaff() resolved to
+// `getUserData().role != 'blocked'`; because getUserData() returned {} for a
+// user with no record, `undefined != 'blocked'` was true and ANY authenticated
+// account could read and write every patient's PHI.
+// =============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------------
+    // Identity helpers
+    // ---------------------------------------------------------------------
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function ownerEmails() {
+      return ['hassan.abdelmenem@gmail.com', 'hassanabdelmenem@gmail.com', 'owner@imc.com'];
+    }
+
+    function leadershipRoles() {
+      return ['medical_director', 'emergency_manager', 'emergency_deputy_manager'];
+    }
+
+    // Every role a /users document is permitted to hold.
+    function assignableRoles() {
+      return ['owner', 'medical_director', 'emergency_manager', 'emergency_deputy_manager', 'pending', 'blocked'];
+    }
+
+    function hasUserDoc() {
+      return isAuthenticated()
+             && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    // Stored role, defaulting to 'pending' when no record exists. Never returns
+    // a value that grants access by omission.
+    function storedRole() {
+      return hasUserDoc()
+             ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'pending')
+             : 'pending';
+    }
+
+    function isOwner() {
+      return isAuthenticated() && (
+        request.auth.token.get('role', '') == 'owner' ||
+        request.auth.token.get('email', '') in ownerEmails() ||
+        storedRole() == 'owner'
+      );
+    }
+
+    function isLeadership() {
+      return isAuthenticated() && storedRole() in leadershipRoles();
+    }
+
+    // The only predicate that may gate patient PHI.
+    function isClinicalStaff() {
+      return isOwner() || isLeadership();
+    }
+
+    // ---------------------------------------------------------------------
+    // Payload validation
+    // ---------------------------------------------------------------------
+    function isValidPatientData(data) {
+      return (!data.keys().hasAny(['name']) || (data.name is string && data.name.size() <= 100)) &&
+             (!data.keys().hasAny(['nationalId']) || (data.nationalId is string && data.nationalId.size() <= 14)) &&
+             (!data.keys().hasAny(['diagnosis']) || (data.diagnosis is string && data.diagnosis.size() <= 1000)) &&
+             (!data.keys().hasAny(['supportiveTx']) || (data.supportiveTx is string && data.supportiveTx.size() <= 1000)) &&
+             (!data.keys().hasAny(['patientId']) || (data.patientId is string && data.patientId.size() <= 50)) &&
+             (!data.keys().hasAny(['status']) || (data.status is string && data.status.size() <= 100)) &&
+             (!data.keys().hasAny(['pendingAction']) || (data.pendingAction is string && data.pendingAction.size() <= 100)) &&
+             (!data.keys().hasAny(['primaryDepartment']) || (data.primaryDepartment is string && data.primaryDepartment.size() <= 100)) &&
+             (!data.keys().hasAny(['dischargeSummary']) || (data.dischargeSummary is string && data.dischargeSummary.size() <= 20000));
+    }
+
+    function isDischargedRecord() {
+      return resource.data.get('isDischarged', false) == true ||
+             resource.data.get('status', '') == 'Discharged';
+    }
+
+    // ---------------------------------------------------------------------
+    // /users — role assignment is owner-only
+    // ---------------------------------------------------------------------
+    match /users/{userId} {
+      // The staff roster is administrative data. A user may always read their
+      // own record so the client can resolve its role at sign-in.
+      allow read: if isOwner() || (isAuthenticated() && request.auth.uid == userId);
+
+      // Self-registration lands on 'pending' and nothing else. The owner may
+      // create a record with any valid role (this bootstraps the owner doc).
+      allow create: if isAuthenticated()
+                    && request.resource.data.get('role', '') in assignableRoles()
+                    && (
+                      (request.auth.uid == userId && request.resource.data.role == 'pending')
+                      || isOwner()
+                    );
+
+      allow update: if isAuthenticated()
+                    && request.resource.data.get('role', '') in assignableRoles()
+                    && (
+                      isOwner()
+                      // A user may touch their own record only where it cannot
+                      // raise their privilege: either the role is unchanged, or
+                      // they are stepping down to 'pending' (the client does
+                      // this to retire roles removed in the 2026 restructure).
+                      || (
+                        request.auth.uid == userId && (
+                          request.resource.data.role == resource.data.get('role', 'pending')
+                          || request.resource.data.role == 'pending'
+                        )
+                      )
+                    );
+
+      allow delete: if isOwner();
+    }
+
+    // ---------------------------------------------------------------------
+    // /settings — readable by staff, writable by owner
+    // ---------------------------------------------------------------------
+    match /settings/{docId} {
+      allow read: if isClinicalStaff();
+      allow write: if isOwner();
+    }
+
+    // ---------------------------------------------------------------------
+    // /patients — PHI. Approved clinical staff only.
+    // ---------------------------------------------------------------------
+    match /patients/{patientId} {
+      allow read: if isClinicalStaff();
+      allow create: if isClinicalStaff() && isValidPatientData(request.resource.data);
+      allow update: if isClinicalStaff() && isValidPatientData(request.resource.data);
+
+      // Leadership may purge discharged records; erasing an active patient is
+      // owner-only.
+      allow delete: if isOwner() || (isLeadership() && isDischargedRecord());
+
+      match /{subcollection=**} {
+        allow read: if isClinicalStaff();
+        allow write: if isClinicalStaff();
+      }
+    }
+
+    // ---------------------------------------------------------------------
+    // Observability sinks — staff may append, only the owner may read back.
+    // ---------------------------------------------------------------------
+    match /dead_letter_queue/{docId} {
+      allow create: if isClinicalStaff();
+      allow read, update, delete: if isOwner();
+    }
+
+    match /telemetry_alerts/{docId} {
+      allow create: if isClinicalStaff();
+      allow read, update, delete: if isOwner();
+    }
+
+    // ---------------------------------------------------------------------
+    // Everything else: owner only. No implicit access anywhere.
+    // ---------------------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if isOwner();
+    }
+  }
+}

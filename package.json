@@ -1,0 +1,22 @@
+{
+  "name": "imc-er",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 3000 --directory public",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:load": "vitest run tests/load",
+    "test:e2e": "playwright test",
+    "build": "node ../scripts/build-prod.js imc-er"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^24.0.0",
+    "vitest": "^4.1.10"
+  }
+}
