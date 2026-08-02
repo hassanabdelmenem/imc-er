@@ -108,7 +108,14 @@ export const TRANSLATIONS = {
     cStatus: "Emergency Command Console",
     sJump: "Jump to Patient",
     sMute: "Mute Session",
-    sMuted: "Muted"
+    sMuted: "Muted",
+    deptModalTitle: "Select Primary Department",
+    deptSearchPh: "🔍 Search departments...",
+    noDeptMatch: "No departments match your search.",
+    useCustomDept: "Use custom",
+    otherCustomDept: "Other / Custom Department...",
+    enterCustomDeptPh: "Enter department name...",
+    setBtn: "Set"
   },
   ar: {
     ld: "جارٍ التحميل...",
@@ -201,7 +208,14 @@ export const TRANSLATIONS = {
     cStatus: "لوحة التحكم والطوارئ المباشرة",
     sJump: "الذهاب للمريض",
     sMute: "كتم التنبيه",
-    sMuted: "مكتوم"
+    sMuted: "مكتوم",
+    deptModalTitle: "اختر القسم الأساسي",
+    deptSearchPh: "🔍 ابحث عن قسم...",
+    noDeptMatch: "لا توجد أقسام مطابقة لبحثك.",
+    useCustomDept: "استخدام قسم مخصص",
+    otherCustomDept: "قسم آخر / مخصص...",
+    enterCustomDeptPh: "اكتب اسم القسم...",
+    setBtn: "تحديد"
   }
 };
 

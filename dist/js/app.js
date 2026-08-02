@@ -191,16 +191,33 @@ function getTriageCategory(patient) {
     return 'Green';
 }
 
-// Primary Clinical Departments
+// Primary Clinical Departments (Responsible Specialty / Service in ER)
 const PRIMARY_DEPARTMENTS = [
+  { en: 'Emergency Medicine (ER)', ar: 'طب الطوارئ' },
   { en: 'Internal Medicine', ar: 'باطنة' },
+  { en: 'Cardiology / CCU', ar: 'قلب / رعاية قلبية' },
+  { en: 'Neurology / Stroke', ar: 'مخ وأعصاب / جلطات' },
+  { en: 'Orthopedics & Trauma', ar: 'عظام وإصابات' },
   { en: 'General Surgery', ar: 'جراحة عامة' },
-  { en: 'Cardiology', ar: 'قلب' },
-  { en: 'Neurology', ar: 'مخ وأعصاب' },
+  { en: 'Pulmonology / Chest', ar: 'صدر' },
   { en: 'Pediatrics', ar: 'أطفال' },
-  { en: 'Orthopedics', ar: 'عظام' },
+  { en: 'Obstetrics & Gynecology', ar: 'نساء وتوليد' },
+  { en: 'Oncology', ar: 'أورام' },
+  { en: 'Nephrology', ar: 'كلى' },
+  { en: 'Gastroenterology', ar: 'جهاز هضمي وكبد' },
+  { en: 'Rheumatology', ar: 'روماتيزم' },
+  { en: 'Hematology', ar: 'أمراض دم' },
+  { en: 'Dermatology', ar: 'جلدية' },
+  { en: 'Urology', ar: 'مسالك بولية' },
   { en: 'Neurosurgery', ar: 'جراحة مخ وأعصاب' },
-  { en: 'Obstetrics & Gynecology', ar: 'نساء وتوليد' }
+  { en: 'Cardiothoracic Surgery', ar: 'جراحة قلب وصدر' },
+  { en: 'Vascular Surgery', ar: 'جراحة أوعية دموية' },
+  { en: 'Plastic Surgery', ar: 'جراحة تجميل' },
+  { en: 'ENT / Otolaryngology', ar: 'أنف وأذن وحنجرة' },
+  { en: 'Ophthalmology', ar: 'عيون' },
+  { en: 'Maxillofacial Surgery', ar: 'جراحة فكين ووجه' },
+  { en: 'Intensive Care (ICU)', ar: 'رعاية مركزة' },
+  { en: 'Anesthesiology', ar: 'تخدير' }
 ];
 const standardDepts = PRIMARY_DEPARTMENTS.map(d => d.en).concat(PRIMARY_DEPARTMENTS.map(d => d.ar));
 
@@ -677,6 +694,88 @@ function populateRoomSelects() {
   }
 }
 
+/**
+ * Render the filtered department list inside the picker modal. Typing in the
+ * search box narrows the list live; when nothing matches, an inline "use
+ * custom" row lets the typed text itself become the department — no need to
+ * scroll to a separate custom-entry field.
+ */
+function renderDeptPickerList(filterText = '') {
+  const grid = $('dept-selection-grid');
+  const regDeptInput = $('reg-dept');
+  const btnText = $('btn-select-dept-text');
+  if (!grid) return;
+
+  const commitDept = (val) => {
+    if (!val) return;
+    if (regDeptInput) regDeptInput.value = val;
+    if (btnText) btnText.innerText = `🏥 ${tr('lDept')}: ${val}`;
+    $('modal-select-dept').classList.add('hidden');
+  };
+
+  const query = filterText.toLowerCase().trim();
+  const matches = PRIMARY_DEPARTMENTS.filter(d => {
+    if (!query) return true;
+    return d.en.toLowerCase().includes(query) || d.ar.includes(filterText.trim());
+  });
+
+  let html = matches.map(d => {
+    const deptName = currentLang === 'en' ? d.en : d.ar;
+    const isSelected = regDeptInput && regDeptInput.value === d.en;
+    return `
+      <button type="button" class="btn btn-outline dept-option-btn" data-dept="${esc(d.en)}" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:10px;font-weight:600;text-align:left;width:100%;background:var(--card-bg);border:1px solid var(--border-color);color:var(--primary);margin-bottom:6px;">
+        <span>🏥 ${esc(deptName)}</span>
+        <span class="check-mark ${isSelected ? '' : 'hidden'}" style="color:var(--success);font-weight:bold;">✔</span>
+      </button>
+    `;
+  }).join('');
+
+  if (matches.length === 0) {
+    html += `<div style="padding:14px;text-align:center;color:var(--text-muted);font-size:13px;">${esc(tr('noDeptMatch'))}</div>`;
+  }
+
+  if (query) {
+    const typed = filterText.trim();
+    html += `
+      <button type="button" class="btn btn-outline dept-option-btn" id="dept-use-custom-btn" data-dept="${esc(typed)}" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;font-weight:700;text-align:left;width:100%;background:var(--card-bg);border:1px dashed var(--primary);color:var(--primary);margin-bottom:6px;">
+        ➕ ${esc(tr('useCustomDept'))}: "${esc(typed)}"
+      </button>
+    `;
+  } else {
+    html += `
+      <button type="button" class="btn btn-outline" id="dept-other-custom-toggle" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;font-weight:700;text-align:left;width:100%;background:var(--card-bg);border:1px dashed var(--primary);color:var(--primary);">
+        ✏️ ${esc(tr('otherCustomDept'))}
+      </button>
+      <div id="dept-other-custom-row" class="hidden" style="display:flex;gap:8px;margin-top:8px;">
+        <input type="text" id="dept-other-custom-input" class="input-field" style="margin:0;flex:1;height:44px;" placeholder="${esc(tr('enterCustomDeptPh'))}">
+        <button type="button" id="dept-other-custom-confirm" class="btn btn-primary-filled" style="height:44px;padding:0 16px;">${esc(tr('setBtn'))}</button>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = html;
+
+  grid.querySelectorAll('.dept-option-btn[data-dept]').forEach(btn => {
+    btn.onclick = () => commitDept(btn.dataset.dept);
+  });
+
+  const otherToggle = $('dept-other-custom-toggle');
+  const otherRow = $('dept-other-custom-row');
+  const otherInput = $('dept-other-custom-input');
+  const otherConfirm = $('dept-other-custom-confirm');
+  if (otherToggle && otherRow && otherInput && otherConfirm) {
+    otherToggle.onclick = () => {
+      otherRow.classList.remove('hidden');
+      otherInput.focus();
+    };
+    const confirmCustom = () => commitDept(otherInput.value.trim());
+    otherConfirm.onclick = confirmCustom;
+    otherInput.onkeydown = (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); confirmCustom(); }
+    };
+  }
+}
+
 function populateDeptSelects() {
   const defaultDept = 'Internal Medicine';
   const regDeptInput = $('reg-dept');
@@ -685,67 +784,23 @@ function populateDeptSelects() {
   }
   const btnText = $('btn-select-dept-text');
   if (btnText && regDeptInput) {
-    btnText.innerText = `🏥 Department: ${regDeptInput.value || defaultDept}`;
+    btnText.innerText = `🏥 ${tr('lDept')}: ${regDeptInput.value || defaultDept}`;
   }
-  
-  const grid = $('dept-selection-grid');
-  if (grid && PRIMARY_DEPARTMENTS) {
-    const buttonsHtml = PRIMARY_DEPARTMENTS.map(d => {
-      const deptName = currentLang === 'en' ? d.en : d.ar;
-      const deptVal = d.en;
-      const isSelected = regDeptInput && regDeptInput.value === deptVal;
-      return `
-      <button type="button" class="btn btn-outline dept-option-btn" data-dept="${deptVal}" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:10px;font-weight:600;text-align:left;width:100%;background:var(--card-bg);border:1px solid var(--border-color);color:var(--primary);margin-bottom:6px;">
-        <span>🏥 ${deptName}</span>
-        <span class="check-mark ${isSelected ? '' : 'hidden'}" style="color:var(--success);font-weight:bold;">✔</span>
-      </button>
-    `}).join('');
-    
-    const customHtml = `
-      <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-color);">
-        <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">
-          ${currentLang === 'en' ? '➕ Add Custom Department:' : '➕ إضافة قسم آخر:'}
-        </label>
-        <div style="display:flex;gap:8px;">
-          <input type="text" id="custom-reg-dept-input" class="input-field" style="margin:0;flex:1;height:44px;" placeholder="${currentLang === 'en' ? 'Enter department name...' : 'اكتب اسم القسم...'}">
-          <button type="button" id="btn-confirm-custom-dept" class="btn btn-primary-filled" style="height:44px;padding:0 16px;background:var(--primary) !important;">${currentLang === 'en' ? 'Set' : 'تحديد'}</button>
-        </div>
-      </div>
-    `;
-    
-    grid.innerHTML = buttonsHtml + customHtml;
-    
-    grid.querySelectorAll('.dept-option-btn').forEach(btn => {
-      btn.onclick = () => {
-        const selected = btn.dataset.dept;
-        if (regDeptInput) regDeptInput.value = selected;
-        if (btnText) btnText.innerText = `🏥 Department: ${selected}`;
-        grid.querySelectorAll('.dept-option-btn .check-mark').forEach(cm => cm.classList.add('hidden'));
-        const cm = btn.querySelector('.check-mark');
-        if (cm) cm.classList.remove('hidden');
-        $('modal-select-dept').classList.add('hidden');
-      };
-    });
 
-    const btnConfirmCustom = $('btn-confirm-custom-dept');
-    const customInput = $('custom-reg-dept-input');
-    if (btnConfirmCustom && customInput) {
-      btnConfirmCustom.onclick = () => {
-        const val = customInput.value.trim();
-        if (!val) return;
-        if (regDeptInput) regDeptInput.value = val;
-        if (btnText) btnText.innerText = `🏥 Department: ${val}`;
-        grid.querySelectorAll('.dept-option-btn .check-mark').forEach(cm => cm.classList.add('hidden'));
-        $('modal-select-dept').classList.add('hidden');
-      };
-      customInput.onkeydown = (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          btnConfirmCustom.click();
-        }
-      };
-    }
+  const searchInput = $('dept-picker-search');
+  if (searchInput) {
+    searchInput.value = '';
+    searchInput.oninput = () => renderDeptPickerList(searchInput.value);
+    searchInput.onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const firstBtn = $('dept-selection-grid')?.querySelector('.dept-option-btn[data-dept]');
+        if (firstBtn) firstBtn.click();
+      }
+    };
   }
+
+  renderDeptPickerList('');
 }
 
 function updateTranslations() {

@@ -326,8 +326,9 @@
   <div id="modal-select-dept" class="modal-overlay hidden" style="z-index:9999;">
     <div class="modal-content glass-panel" style="max-width:420px;height:auto;">
       <span class="close-modal" id="close-modal-select-dept">&times;</span>
-      <h3 style="color:var(--primary);margin-top:0">Select Primary Department</h3>
-      <div id="dept-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:16px;"></div>
+      <h3 style="color:var(--primary);margin-top:0" data-i="deptModalTitle">Select Primary Department</h3>
+      <input type="text" id="dept-picker-search" class="input-field" style="margin-top:12px;" data-p="deptSearchPh" placeholder="🔍 Search departments...">
+      <div id="dept-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px;max-height:340px;overflow-y:auto;"></div>
     </div>
   </div>
 
