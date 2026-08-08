@@ -1,8 +1,11 @@
 /**
  * =============================================================================
- * PROPRIETARY AND CONFIDENTIAL — SEVENSN SHARED UI COMPONENT LIBRARY
- * Copyright (c) 2026 SEVENSN. All Rights Reserved.
- * Universal UI Components for ER Tracker Pro, Hospital EMR, and IMC ER Console.
+ * PROPRIETARY AND CONFIDENTIAL — Copyright (c) 2026 SEVENSN. All Rights Reserved.
+ * UI Component Library — IMC ER Console.
+ *
+ * This file originated in a component library shared across several
+ * applications. It is now owned by this repository alone: change it freely for
+ * this project's needs, and do not expect edits here to reach anywhere else.
  * =============================================================================
  */
 

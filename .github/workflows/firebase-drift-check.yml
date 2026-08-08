@@ -1,0 +1,127 @@
+# Verifies that Firebase Hosting is actually serving what `main` says it
+# should. Declaring the repo the source of truth is a policy; this job is what
+# makes the policy observable.
+#
+# It fails when the live site and dist/@main disagree, which happens when
+# someone runs `firebase deploy` from a laptop, edits a file in the Console, or
+# when a deploy silently failed.
+#
+# Only public content is checked. Firestore rules and Remote Config are not
+# readable over HTTP, so drift in those is not detectable here; that is why
+# their deploys are automated instead (firebase-config-deploy.yml).
+
+name: Firebase drift check
+
+on:
+  schedule:
+    # 06:15 UTC daily. Off the hour to avoid GitHub's scheduling pileup.
+    - cron: '15 6 * * *'
+  # Runs after a live deploy, so a failed or partial release surfaces
+  # immediately rather than at the next scheduled check.
+  workflow_run:
+    workflows: ['Deploy to Firebase Hosting on merge']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-drift-check
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      # For schedule/workflow_run this checks out the default branch (main),
+      # which is exactly what the live site is supposed to match.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Compare live hosting against dist/
+        env:
+          SITE: https://imc-er-manager.web.app
+        run: |
+          set -uo pipefail
+
+          # Hosting propagation after a deploy is fast but not instant, so a
+          # single mismatch right after a release is not yet evidence of drift.
+          max_attempts=5
+          attempt=1
+
+          while : ; do
+            drift=""
+            unreachable=""
+
+            while IFS= read -r file; do
+              rel="${file#dist/}"
+              body="$RUNNER_TEMP/fetched.bin"
+
+              code=$(curl -sS --compressed --max-time 30 \
+                       -o "$body" -w '%{http_code}' "$SITE/$rel" || echo 000)
+
+              # 404.html is both a real file and the configured not-found page;
+              # Hosting may answer either status for it.
+              case "$rel:$code" in
+                404.html:200|404.html:404|*:200) ;;
+                *)
+                  unreachable="${unreachable}  - ${rel} (HTTP ${code})"$'\n'
+                  continue
+                  ;;
+              esac
+
+              live=$(sha256sum "$body" | cut -d' ' -f1)
+              repo=$(sha256sum "$file" | cut -d' ' -f1)
+
+              if [ "$live" != "$repo" ]; then
+                drift="${drift}  - ${rel}"$'\n'
+                drift="${drift}      repo @${GITHUB_SHA:0:8}: ${repo}"$'\n'
+                drift="${drift}      live:              ${live}"$'\n'
+              fi
+            done < <(find dist -type f -not -name '.*' | sort)
+
+            if [ -z "$drift" ] && [ -z "$unreachable" ]; then
+              echo "All published files match dist/ at ${GITHUB_SHA:0:8}."
+              {
+                echo "### Firebase drift check: clean"
+                echo
+                echo "\`$SITE\` matches \`dist/\` at \`${GITHUB_SHA:0:8}\`."
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              break
+            fi
+
+            echo "Mismatch on attempt ${attempt}/${max_attempts}; retrying in 30s" \
+                 "in case a deploy is still propagating."
+            attempt=$((attempt + 1))
+            sleep 30
+          done
+
+          {
+            echo "### Firebase drift check: FAILED"
+            echo
+            echo "\`$SITE\` does not match \`dist/\` at \`${GITHUB_SHA:0:8}\`."
+            echo
+            if [ -n "$drift" ]; then
+              echo "**Content differs:**"
+              echo '```'
+              printf '%s' "$drift"
+              echo '```'
+            fi
+            if [ -n "$unreachable" ]; then
+              echo "**Could not fetch:**"
+              echo '```'
+              printf '%s' "$unreachable"
+              echo '```'
+            fi
+            echo
+            echo "The live site is the copy that is wrong, not the repo."
+            echo "Re-run **Deploy to Firebase Hosting on merge** to republish"
+            echo "\`main\`, then work out what deployed out of band. See SYNC.md."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "::error::Firebase Hosting has drifted from main. See the job summary."
+          exit 1

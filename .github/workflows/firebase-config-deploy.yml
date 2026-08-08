@@ -1,0 +1,108 @@
+# Releases the parts of the Firebase project that are configuration rather
+# than static files: Firestore security rules and Remote Config.
+#
+# Neither had a release path. The hosting workflow only publishes dist/, so
+# firestore.rules and remote-config.json were files that lived in the repo and
+# described nothing enforceable — the rules actually protecting PHI, and the
+# kill-switches actually in effect, were whatever was last pushed by hand or
+# edited in the Console. This closes both gaps so the repo is authoritative.
+#
+# The two run as separate jobs on purpose. They need different IAM roles, and a
+# missing Remote Config role must not hide the status of a rules deploy.
+#
+# Service account roles required on FIREBASE_SERVICE_ACCOUNT_IMC_ER_MANAGER,
+# beyond the hosting roles the Firebase CLI grants by default:
+#   Firebase Rules Admin          roles/firebaserules.admin
+#   Firebase Remote Config Admin  roles/firebaseremoteconfig.admin
+# A 403 on a first run means the corresponding role is missing — see SYNC.md.
+
+name: Deploy Firebase config
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - firestore.rules
+      - remote-config.json
+      - firebase.json
+      - .firebaserc
+      - deploy-remote-config.js
+      - .github/workflows/firebase-config-deploy.yml
+  # Manual trigger, so live config can be forced back into agreement with main
+  # without pushing an empty commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-config-live
+  cancel-in-progress: false
+
+jobs:
+  firestore_rules:
+    name: Firestore rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: '20'
+
+      - run: npm install --global firebase-tools@13
+
+      - name: Write service account credentials
+        env:
+          # Passed through the environment rather than interpolated into the
+          # script body, so the key never lands in a command line.
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IMC_ER_MANAGER }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::Secret FIREBASE_SERVICE_ACCOUNT_IMC_ER_MANAGER is not set."
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-sa.json"
+          chmod 600 "$RUNNER_TEMP/firebase-sa.json"
+
+      - name: Deploy firestore.rules
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-sa.json
+        run: firebase deploy --only firestore:rules --project imc-er-manager --non-interactive
+
+      - name: Remove service account credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/firebase-sa.json"
+
+  remote_config:
+    name: Remote Config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: '20'
+
+      - run: npm install --global firebase-tools@13
+
+      - name: Write service account credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IMC_ER_MANAGER }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::Secret FIREBASE_SERVICE_ACCOUNT_IMC_ER_MANAGER is not set."
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-sa.json"
+          chmod 600 "$RUNNER_TEMP/firebase-sa.json"
+
+      - name: Publish Remote Config template
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-sa.json
+        run: npm run deploy:remoteconfig
+
+      - name: Remove service account credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/firebase-sa.json"

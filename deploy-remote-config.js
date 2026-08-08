@@ -1,50 +1,94 @@
 #!/usr/bin/env node
 /**
  * PROPRIETARY AND CONFIDENTIAL — Copyright (c) 2026 SEVENSN. All Rights Reserved.
- * IMC Unified Emergency Command Center — Phase 9 Remote Config & Kill-Switch Deployment Script
- * 
- * This script injects `enable_edge_ai_synthesis` and `enable_batch_purge` parameters into:
- * 1. Firebase Remote Config API (using `remote-config.json`)
- * 2. Shared Cloud Firestore (`settings/remote_config`) for instant real-time client-side reactivity across all 3 platforms.
+ * IMC Unified Emergency Command Center — Remote Config kill-switch deployment.
+ *
+ * Publishes `remote-config.json` to Firebase Remote Config on imc-er-manager.
+ * The template carries two clinical kill-switches, both read by public/js/app.js:
+ *
+ *   enable_edge_ai_synthesis — client-side Edge AI discharge-summary generation
+ *   enable_batch_purge       — the Purge Discharged / Purge All controls
+ *
+ * Both default to `true` in the app, so a switch that never reaches Firebase
+ * fails OPEN: the feature stays on and the kill-switch cannot turn it off.
+ *
+ * The previous version of this script never deployed anything. It checked that
+ * the Firebase CLI could be invoked, printed "Remote Config kill-switches
+ * successfully injected and active", and exited 0 — without ever calling
+ * `firebase deploy`. Anyone who ran it came away believing the switches were
+ * live. They were not, and toggling remote-config.json had no effect on
+ * production. This version performs the deploy and fails loudly if it cannot.
+ *
+ * Requires: Firebase credentials in the environment, either GOOGLE_APPLICATION_
+ * CREDENTIALS pointing at a service-account key, or an interactive
+ * `firebase login`. The service account needs Firebase Remote Config Admin
+ * (roles/firebaseremoteconfig.admin).
+ *
+ * Usage: node deploy-remote-config.js [--dry-run]
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = path.join(__dirname, 'remote-config.json');
+const PROJECT = 'imc-er-manager';
+const FIREBASE_TOOLS = 'firebase-tools@13';
 
-console.log("=== [IMC Command Center] Deploying Remote Config Kill-Switches ===");
+const dryRun = process.argv.includes('--dry-run');
 
 if (!fs.existsSync(CONFIG_PATH)) {
-    console.error("❌ Error: remote-config.json template not found at", CONFIG_PATH);
-    process.exit(1);
+  console.error(`Template not found: ${CONFIG_PATH}`);
+  process.exit(1);
 }
 
-const configData = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-const enableAI = configData.parameters.enable_edge_ai_synthesis?.defaultValue?.value === "true" || configData.parameters.enable_edge_ai_synthesis?.defaultValue?.value === true;
-const enablePurge = configData.parameters.enable_batch_purge?.defaultValue?.value === "true" || configData.parameters.enable_batch_purge?.defaultValue?.value === true;
-
-console.log(`📌 Target Parameters loaded from remote-config.json:`);
-console.log(`   - enable_edge_ai_synthesis: ${enableAI}`);
-console.log(`   - enable_batch_purge:       ${enablePurge}`);
-
+let template;
 try {
-    // Attempt Firebase CLI deployment if configured and authenticated
-    console.log("🚀 Attempting deployment via Firebase CLI...");
-    try {
-        execSync('npx -y firebase-tools@latest --version', { stdio: 'ignore' });
-        console.log("✅ Firebase CLI verified. Ready for `firebase deploy --only remoteconfig` or target project injection.");
-    } catch (e) {
-        console.warn("⚠️ Firebase CLI direct deploy skipped (running in offline/local mock mode or credentials required).");
-    }
-
-    console.log("🛡️ Syncing parameters to local environment and shared configuration bridge...");
-    console.log("✅ Remote Config kill-switches successfully injected and active across ER Tracker Pro, Hospital EMR, and IMC ER Console.");
-} catch (error) {
-    console.error("❌ Deployment failed:", error.message);
-    process.exit(1);
+  template = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+} catch (err) {
+  console.error(`remote-config.json is not valid JSON: ${err.message}`);
+  process.exit(1);
 }
+
+const params = template.parameters || {};
+if (Object.keys(params).length === 0) {
+  console.error('remote-config.json declares no parameters — refusing to publish an empty template.');
+  process.exit(1);
+}
+
+console.log(`Remote Config template for ${PROJECT}:`);
+for (const [name, def] of Object.entries(params)) {
+  console.log(`  ${name} = ${def?.defaultValue?.value}`);
+}
+
+/** Prefer a firebase binary on PATH; fall back to a pinned npx download. */
+const onPath = spawnSync('firebase', ['--version'], { stdio: 'ignore' }).status === 0;
+const [cmd, prefix] = onPath ? ['firebase', []] : ['npx', ['-y', FIREBASE_TOOLS]];
+
+const args = [...prefix, 'deploy', '--only', 'remoteconfig', '--project', PROJECT, '--non-interactive'];
+
+if (dryRun) {
+  console.log(`\n--dry-run: would run \`${cmd} ${args.join(' ')}\``);
+  process.exit(0);
+}
+
+console.log(`\nDeploying: ${cmd} ${args.join(' ')}`);
+const result = spawnSync(cmd, args, { stdio: 'inherit' });
+
+if (result.error) {
+  console.error(`\nCould not run the Firebase CLI: ${result.error.message}`);
+  process.exit(1);
+}
+
+if (result.status !== 0) {
+  console.error(
+    `\nRemote Config deploy failed (exit ${result.status}).` +
+      '\nIf this is a 403, the credentials lack Firebase Remote Config Admin' +
+      '\n(roles/firebaseremoteconfig.admin). The kill-switches are NOT live.'
+  );
+  process.exit(result.status ?? 1);
+}
+
+console.log(`\nRemote Config published to ${PROJECT}.`);

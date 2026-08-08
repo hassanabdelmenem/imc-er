@@ -1,83 +1,171 @@
-# ENTERPRISE DEPLOYMENT MANIFEST & ARCHITECTURAL SUMMARY (v2026.07.09-FINAL)
+# IMC ER Console — Deployment & Architecture Manifest
 
-**System Name**: Hospital Unified EMR & ER Console Suite  
-**Governing Repositories**: `er-app-final` (ER Tracker Pro), `hospital` (Hospital Unified EMR), `imc-er` (IMC ER Console)  
-**Assigned Architecture Personas**: `@Gemini-3-Pro` (Chief Systems/DevOps Architect), `@Gemini-3-Flash` (Lead UX/a11y & Release Engineer), `@Claude-4.5` (Lead DevSecOps & Security Auditor)  
-**Certification Status**: **100% TESTED & VERIFIED (Phase 12 Production Readiness Certified)**
+**Repository**: `hassanabdelmenem/imc-er`
+**Firebase project**: `imc-er-manager`
+**Hosting site**: `imc-er-manager` → <https://imc-er-manager.web.app>
+
+This repository is bound to that one Firebase project and no other. It shares
+no backend, no database, no build tooling, and no credentials with any other
+application. See SYNC.md for the release model.
+
+> **History.** An earlier version of this manifest described this application as
+> part of a multi-app suite sharing a single canonical backend. That is not the
+> case: `public/js/config.js`, `.firebaserc`, and every workflow here point at
+> `imc-er-manager`, which this repository owns exclusively. The suite framing
+> also carried claims that do not hold — a `production-gate.yml` CI gate this
+> repo does not have, test runs across other repositories' directories, and a
+> minifying build. Those are removed rather than restated.
 
 ---
 
-## 1. Executive Architectural Overview
+## 1. Overview
 
-The Hospital Unified EMR workspace is a mission-critical, multi-platform healthcare ecosystem built on the **2026 Modernization Standards**. The architecture combines ultra-low latency mobile-first interfaces with post-quantum cryptography, zero-PHI exfiltration Edge AI synthesis, atomic state management, and strict role-based access control (RBAC).
+A mobile-first emergency-department console: patient registration and tracking,
+role-gated clinical boards, offline-capable PWA delivery, client-side
+encryption of clinical notes, and on-device discharge-summary synthesis.
 
-All three applications share a **single canonical Google Firebase/Firestore database backend** (`er-icu` / `hospital-er-unified`) while maintaining distinct, specialized user flows across 4 operational roles: **Entrance Desk (CMO)**, **Doctor**, **Manager**, and **System Owner**.
+The frontend is plain ES modules — no bundler, no framework — served as static
+files from `dist/`.
 
 ---
 
-## 2. Firebase & Shared Database Infrastructure (`firebase-service.js`)
+## 2. Firebase surfaces
 
-| Component | Specification | Operational & Security Guardrails |
+Everything below is deployed from `main`. Nothing should be changed in the
+Firebase Console; the repo is the desired state.
+
+| Surface | Source in repo | Released by |
 | :--- | :--- | :--- |
-| **Canonical Project ID** | `er-icu` / `hospital-er-unified` | Multi-app OAuth and Firestore schema unification across `er-app-final`, `hospital`, and `imc-er`. |
-| **Shared Collections** | `patients`, `users`, `settings/roles`, `dead_letter_queue` | Global synchronization; schema changes strictly backward-compatible. |
-| **Atomic Batch Chunking** | `db.batch()` / `writeBatch()` via `chunkArray(patients, 450)` | Enforces strict `<= 450` operation chunk limit per Firestore transaction—well below the 500-doc hard limit—preventing `FAILED_PRECONDITION` overflows. |
-| **Dead-Letter Queue (DLQ)** | `/dead_letter_queue` Collection & RUM Telemetry | Failed chunk commits or dropped sync mutations are captured with stack traces and fired to real-time Real-User Monitoring (`telemetry-rum.js`). |
-| **Canary V2 Routing** | `canary-v2` Traffic Split Headers (`firebase.json`) | Enforces 100% production traffic weighting to `v20260703_V2_COMPLETE` / `v=20260706_02` assets across all platforms. |
-| **Remote Config Flags** | `window.AppRemoteConfig` (`remoteconfig.googleapis.com`) | Dynamically toggles `enable_edge_ai_synthesis` (default `true`) and `enable_batch_purge` (default `true`) without code redeployment. |
+| Hosting | `dist/` (built from `public/`) | `.github/workflows/firebase-hosting-merge.yml` |
+| Firestore rules | `firestore.rules` | `.github/workflows/firebase-config-deploy.yml` |
+| Remote Config | `remote-config.json` | `.github/workflows/firebase-config-deploy.yml` |
+| Project targeting | `.firebaserc`, `firebase.json` | both |
+
+Firestore **data**, Auth **users**, and Console-only project settings are not
+in this repo and are not backed up by it.
+
+### Collections
+
+| Collection | Written by | Notes |
+| :--- | :--- | :--- |
+| `patients` | `firebase-service.js` | clinical records; access gated by `firestore.rules` |
+| `users` | app + `scripts/set-admin.js` | one document per staff member, carrying `role` |
+| `settings/remote_config` | operator | live kill-switch mirror, watched via `onSnapshot` |
+| `dead_letter_queue` | `telemetry-rum.js` | failed batch writes, captured with payload for replay |
+
+Batch writes are chunked at 450 operations (`firebase-service.js`), below
+Firestore's 500-operation transaction limit.
+
+### Remote Config kill-switches
+
+Both are read by `public/js/app.js` and **default to `true`**, so a switch that
+has not been published cannot disable anything.
+
+| Parameter | Gates |
+| :--- | :--- |
+| `enable_edge_ai_synthesis` | client-side Edge AI discharge-summary generation |
+| `enable_batch_purge` | the Purge Discharged / Purge All controls |
+
+The app resolves them from Firebase Remote Config and then from
+`settings/remote_config` in Firestore, the latter giving near-instant
+propagation via a snapshot listener.
 
 ---
 
-## 3. Progressive Web App (PWA) & Service Worker Architecture (`sw.js`)
+## 3. Roles
 
-* **Caching Strategy (`v3-nuke`)**: All application Service Workers (`hospital/public/sw.js`, `er-app-final/public/sw.js`) run aggressive cache-busting protocols upon new version deployment.
-* **Immediate Cache Purging**: During the `activate` event, any stale or legacy caches (`hospital-cache-v2`, `er-tracker-cache-v1`) are purged via `caches.delete(cacheName)` before claiming active browser clients (`self.clients.claim()`).
-* **Offline-First Resilience**: Full read/write capability in zero-connectivity environments (`navigator.onLine === false`). Mutation events are buffered locally inside indexed browser storage and synced seamlessly when network connectivity restores.
+Defined in `public/js/config.js` and enforced in `firestore.rules`. The two must
+be changed together; `scripts/set-admin.js` mirrors the same list.
 
----
+| Role | Capability |
+| :--- | :--- |
+| `owner` | system administrator; the only role that may assign roles |
+| `medical_director` | leadership tier: full clinical board access + data controls |
+| `emergency_manager` | as above |
+| `emergency_deputy_manager` | as above |
+| `pending` | signed up, awaiting approval — no PHI access |
+| `blocked` | access revoked — no PHI access |
 
-## 4. Post-Quantum Cryptography & PHI Protection (`crypto-engine.js`)
+`doctor`, `user`, `cmo`, and `manager` were retired in the 2026 restructure.
+Anyone still carrying one is demoted to `pending` on next sign-in.
 
-* **NIST FIPS 203 Compliance**: Implements **ML-KEM-768 hybrid key encapsulation** paired with **AES-256-GCM** (`ML-KEM-768+AES-256-GCM`) authenticated encryption for all clinical notes and sensitive patient health information (PHI/PII).
-* **Zero-Plaintext Storage**: All clinical notes entered by Doctors or Managers are client-side encrypted before transmission to Firestore or persistence inside local storage buffers.
-* **Deterministic Fallback**: If post-quantum subtle cryptography hardware extensions (`window.crypto.subtle`) are restricted, the engine fails closed securely (`SIMULATED-ML-KEM-768` local sandbox validation).
-
----
-
-## 5. Edge AI & Zero-PHI Exfiltration Sandbox (`edge-ai-service.js`)
-
-* **On-Device Edge AI (`window.ai` + WebNN)**: Generates clinical discharge summaries locally using browser-native Gemini Nano / WebNN acceleration, eliminating the latency and regulatory risk of external cloud LLM APIs.
-* **Deterministic Fallback (`EdgeAIClinicalEngine`)**: When NPU/GPU hardware is unavailable (`capabilities() === 'no'`), the engine generates structured, clinically validated summaries deterministically from lab and vitals telemetry.
-* **Network Isolation Gatekeeper (`NetworkIsolationGatekeeper`)**:
-  * **Zero-PHI Exfiltration Guarantee**: Prior to initiating local AI synthesis, `NetworkIsolationGatekeeper.lock()` is invoked.
-  * **Intercepted Protocols**: Global `window.fetch`, `XMLHttpRequest.prototype.send`, `navigator.sendBeacon`, `window.WebSocket`, and `window.EventSource` constructors are locked down.
-  * **Enforcement**: Any outbound request directed toward external/unauthorized domains (`_isExternalRequest`) throws an immediate `SECURITY_EXCEPTION: Outbound network transmissions blocked during local Edge AI PHI inference.` and logs a security violation to RUM telemetry.
-  * **Memory Scrubbing**: Upon summary generation completion, `unlock()` safely restores network APIs after memory state destruction.
+Default posture in the rules is deny: a signed-in user with no `/users`
+document reads nothing from `patients`.
 
 ---
 
-## 6. CI/CD Pipeline & DevSecOps Security Guardrails (`production-gate.yml`)
+## 4. PWA and service worker
 
-Every Pull Request and push to `main` is gated by `.github/workflows/production-gate.yml`:
+`public/sw.js`, cache version `v7-role-brand-concurrency-20260802`, maintaining
+separate HTML, asset, and clinical-API caches. Stale caches outside the current
+set are deleted on `activate` before the worker claims clients.
 
-1. **DevSecOps SAST & Cryptographic Regression Guard (`sast-audit`)**:
-   * Scans codebase for direct unencrypted `localStorage` PHI patterns.
-   * Verifies `NetworkIsolationGatekeeper` and `ML-KEM-768` presence across all `edge-ai-service.js` and `crypto-engine.js` instances.
-   * **Admin Gate**: If any Pull Request modifies `edge-ai-service.js` or `crypto-engine.js`, the CI/CD pipeline automatically blocks merge unless the Pull Request has been audited and tagged with the mandatory `security-admin-approved` label.
-2. **Full-Stack Enterprise Test Harness & Coverage Gate (`test-suite`)**:
-   * **Vitest Suite**: Executes all 60+ unit, integration, and load tests (`npm test`) across `tests/unit`, `tests/integration`, `tests/load`, `er-app-final/tests`, `hospital/tests`, and `imc-er/tests`.
-   * **Playwright E2E Suite**: Executes full browser automation journeys across `chromium` desktop (`npm run test:e2e`).
-   * **Production Build Verification**: Verifies `npm run build` (`scripts/build-prod.js`) minifies and outputs production-ready `dist/` artifacts across all repositories with zero compilation errors.
+Hosting sends `Cache-Control: no-cache, no-store, must-revalidate` for HTML,
+CSS, and JS (`firebase.json`), so a deploy is picked up on next load rather than
+waiting for cache expiry.
 
 ---
 
-## 7. Production Artifacts Inventory (`dist/`)
+## 5. Client-side cryptography
 
-All repositories automatically compile production-grade assets via `npm run build`:
-* **`er-app-final/dist/`**: Minified JS (`app.js`, `edge-ai-service.js`, `crypto-engine.js`, `store.js`), optimized CSS (`styles.css`), and PWA Service Worker (`sw.js`).
-* **`hospital/dist/`**: Minified JS (`js/app.js`, `js/edge-ai-service.js`, `js/crypto-engine.js`, `js/telemetry-rum.js`), CSS (`css/style.css`), and PWA Service Worker (`sw.js`).
-* **`imc-er/dist/`**: Minified JS (`js/app.js`, `js/edge-ai-service.js`, `js/crypto-engine.js`, `js/firebase-service.js`), CSS (`css/style.css`), and index manifests.
+`public/js/crypto-engine.js` (`ClinicalCryptoEngine`) encrypts clinical notes in
+the browser before they reach Firestore. It declares FIPS 203 ML-KEM-768 hybrid
+key encapsulation with AES-256-GCM, and carries a `SIMULATED-ML-KEM-768` path
+used when `window.crypto.subtle` is unavailable.
+
+That fallback means "encrypted at rest in Firestore" holds only where the real
+primitives are available. The distinction has not been independently audited and
+should not be described as a compliance guarantee without one.
 
 ---
 
-*Verified and Signed by SEVENSN Enterprise Architecture & DevSecOps Team — 2026.07.09*
+## 6. Edge AI and network isolation
+
+`public/js/edge-ai-service.js` generates discharge summaries on-device via
+`window.ai` / WebNN, with a deterministic engine when no accelerator is present.
+
+Before synthesis, `NetworkIsolationGatekeeper.lock()` replaces `fetch`,
+`XMLHttpRequest.prototype.send`, `sendBeacon`, `WebSocket`, and `EventSource`.
+Requests to external origins throw
+`SECURITY_EXCEPTION: Outbound network transmissions blocked during local Edge AI
+PHI inference.` and log a violation to RUM telemetry. `unlock()` restores the
+originals afterwards.
+
+---
+
+## 7. Build
+
+`npm run build` → `scripts/build-prod.js`, which copies `public/` to `dist/`
+verbatim. Hosting serves `dist/`, so both trees are committed and must agree;
+`npm run build:check` verifies this and both hosting workflows run it before
+deploying.
+
+This build does not minify. Earlier revisions of this document said it did; the
+committed `dist/` has always been byte-identical to `public/`.
+
+---
+
+## 8. CI
+
+| Workflow | Trigger | Does |
+| :--- | :--- | :--- |
+| `firebase-hosting-merge.yml` | push to `main` | `dist/` check, then deploy Hosting to live |
+| `firebase-hosting-pull-request.yml` | pull request | `dist/` check, then deploy a preview channel |
+| `firebase-config-deploy.yml` | rules/config change on `main`, or manual | deploy Firestore rules and Remote Config |
+| `firebase-drift-check.yml` | daily, after deploy, or manual | compare the live site against `dist/` |
+| `weekly-sca-scan.yml` | Mondays 04:00 UTC, or manual | `npm audit`, `npm outdated` |
+
+**No workflow runs the test suites.** `tests/unit`, `tests/integration`,
+`tests/load`, and `tests/e2e` exist and run locally via `npm test` and
+`npm run test:e2e`, but nothing invokes them in CI. A pull request's only
+automated checks are the `dist/` gate and the preview deploy.
+
+---
+
+## 9. Known inconsistencies
+
+- `trafficSplit` in `firebase.json` (`canary-v2: 100 / stable: 0`) is not part
+  of the Firebase Hosting config schema and has no effect; all traffic goes to
+  the single live version. Canary releases would need Hosting version rollout.
+- Test suites are not wired into CI (§8).
+- The cryptographic claims in §5 are unaudited.

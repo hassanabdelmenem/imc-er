@@ -4,8 +4,8 @@
  * Nanostores State Management Module (@Gemini-3-Flash - Sprint 2 Modernization)
  * ============================================================================
  * 
- * Provides framework-agnostic atomic store (`atom`, `map`, `computed`) for
- * ER Tracker Pro (`er-app-final`), ensuring zero unnecessary DOM re-renders.
+ * Provides framework-agnostic atomic store (`atom`, `map`, `computed`) for the
+ * IMC ER Console, ensuring zero unnecessary DOM re-renders.
  */
 
 // Lightweight standalone Nanostores implementation for browser / ESM environments
