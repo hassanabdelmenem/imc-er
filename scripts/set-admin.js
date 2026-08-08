@@ -24,11 +24,11 @@
  * ---------------------------------------------------------------------------
  * This script previously could not run at all: it used CommonJS `require` in a
  * package marked "type": "module", and firebase-admin was not a dependency. It
- * also defaulted to project `hospital-er-unified` and searched
- * ../../serviceAccountKey.json in the parent workspace that once held this repo
- * alongside its siblings. Had the module error been fixed without noticing the
- * rest, the first successful run would have written Auth claims and a
- * /users/{uid} document to a different Firebase project.
+ * also defaulted to a Firebase project this repository does not own, and
+ * searched ../../serviceAccountKey.json in the parent workspace that once held
+ * this repo alongside others. Had the module error been fixed without noticing
+ * the rest, the first successful run would have written Auth claims and a
+ * /users/{uid} document to the wrong project.
  *
  * It also granted 'manager', which config.js lists in LEGACY_ROLES — the app
  * demotes anyone holding it to `pending` on next sign-in, so the grant would

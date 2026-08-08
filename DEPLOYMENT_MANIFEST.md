@@ -8,15 +8,13 @@ This repository is bound to that one Firebase project and no other. It shares
 no backend, no database, no build tooling, and no credentials with any other
 application. See SYNC.md for the release model.
 
-> **History.** An earlier version of this manifest described a combined
-> "Hospital Unified EMR & ER Console Suite" spanning `er-app-final`, `hospital`,
-> and `imc-er`, and stated that all three shared a single canonical backend
-> (`er-icu` / `hospital-er-unified`). That is not the case for this repository:
-> `public/js/config.js`, `.firebaserc`, and every workflow here point at
-> `imc-er-manager`. The suite framing also carried claims that do not hold —
-> a `production-gate.yml` CI gate this repo does not have, test runs across
-> sibling repositories' directories, and a minifying build. Those are removed
-> rather than restated. Each project is now documented on its own terms.
+> **History.** An earlier version of this manifest described this application as
+> part of a multi-app suite sharing a single canonical backend. That is not the
+> case: `public/js/config.js`, `.firebaserc`, and every workflow here point at
+> `imc-er-manager`, which this repository owns exclusively. The suite framing
+> also carried claims that do not hold — a `production-gate.yml` CI gate this
+> repo does not have, test runs across other repositories' directories, and a
+> minifying build. Those are removed rather than restated.
 
 ---
 

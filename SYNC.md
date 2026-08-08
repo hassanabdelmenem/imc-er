@@ -27,9 +27,10 @@ The other two rows are here to make the boundary unambiguous, not because
 anything in this repo reaches them. This project shares no backend, database,
 collection, build tooling, or credentials with either of them.
 
-If you find anything in this repository pointing at `er-icu`,
-`hospital-er-unified`, a sibling app, or a path outside this directory, it is a
-leftover from when these three lived in one workspace. Remove it.
+If you find anything in this repository pointing at a Firebase project other
+than `imc-er-manager`, at another application, or at a path outside this
+directory, it is a leftover from when these projects shared a workspace.
+Remove it.
 
 ## Two trees: `public/` and `dist/`
 
