@@ -12,6 +12,25 @@ edited. A working copy on a laptop is a draft until it is merged.
                                                 (daily + after deploy)
 ```
 
+## Project binding
+
+This repository deploys to exactly one Firebase project, and that project is
+deployed to by exactly one repository:
+
+| Repository | Firebase project | Live site |
+| --- | --- | --- |
+| **`hassanabdelmenem/imc-er`** (this one) | **`imc-er-manager`** | <https://imc-er-manager.web.app> |
+| `hassanabdelmenem/er-app-final` | `er-icu` | <https://er-icu.web.app> |
+| `hassanabdelmenem/eha-transfer` | `eha-transfer-1785622025` | <https://eha-transfer.web.app> |
+
+The other two rows are here to make the boundary unambiguous, not because
+anything in this repo reaches them. This project shares no backend, database,
+collection, build tooling, or credentials with either of them.
+
+If you find anything in this repository pointing at `er-icu`,
+`hospital-er-unified`, a sibling app, or a path outside this directory, it is a
+leftover from when these three lived in one workspace. Remove it.
+
 ## Two trees: `public/` and `dist/`
 
 This repo commits both. `public/` is the source. `dist/` is the artifact, and
@@ -20,10 +39,9 @@ it is what Firebase serves — `firebase.json` sets `"public": "dist"`.
 `npm run build` regenerates `dist/` from `public/`. **Today that build is a
 verbatim copy**, so the two trees are byte-identical; `scripts/build-prod.js`
 deliberately reproduces the artifact that is actually deployed rather than a
-different one. (`DEPLOYMENT_MANIFEST.md` describes the build as minifying. It
-does not, and never has — every file in the committed `dist/` matches its
-`public/` counterpart exactly. Introducing real minification is a separate,
-deliberate change.)
+different one. It does not minify, and never has — every file in the committed
+`dist/` matches its `public/` counterpart exactly. Introducing real
+minification is a separate, deliberate change.
 
 Editing `public/` without rebuilding produces a change that deploys green and
 does nothing. CI now blocks that: both hosting workflows run
@@ -35,11 +53,11 @@ npm run build          # regenerate dist/
 git add public dist    # commit both
 ```
 
-Until recently `npm run build` pointed at `../scripts/build-prod.js`, in a
-parent workspace holding three sibling apps (`imc-er`, `hospital`,
-`er-app-final`). It failed with MODULE_NOT_FOUND in any clean clone, and
-`dist/` could only be regenerated on a machine that happened to have that
-parent directory. The script now lives in this repo.
+Until recently `npm run build` pointed at `../scripts/build-prod.js`, outside
+this repository, in the workspace that once held these apps side by side. It
+failed with MODULE_NOT_FOUND in any clean clone, and `dist/` could only be
+regenerated on a machine that happened to have that parent directory. The
+script now lives here.
 
 ## What the repository controls
 
@@ -147,11 +165,6 @@ Flagged rather than changed, because each is a decision rather than a fix:
   `frameworksBackend`). Deploys ignore it, so 100% of traffic goes to the
   single live version. If canary releases were intended, they need Hosting
   version rollout via the Console or API. If not, delete the key.
-
-- **`DEPLOYMENT_MANIFEST.md` is out of date.** It states the three apps share a
-  single backend (`er-icu` / `hospital-er-unified`), but `public/js/config.js`
-  points this app at `imc-er-manager`. It also describes a minifying build that
-  does not exist. Worth reconciling before anyone treats it as reference.
 
 - **Tests do not run in CI.** `vitest` and `playwright` suites are configured
   and `npm test` works locally, but no workflow invokes them — the only checks

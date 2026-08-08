@@ -3,16 +3,31 @@
 
 **Document Version:** 2026.4 (Phase 9 Production Release)  
 **Effective Date:** July 2026  
-**Applicability:** All Clinical & Administrative Personnel across Emergency, ICU, and Inpatient Departments (`er-app-final` / `hospital` / `imc-er`)
+**Applicability:** Clinical & Administrative Personnel using the IMC ER Console (`imc-er`)
 
 ---
 
 ## 1. Executive Summary & Purpose
 
-The **IMC Unified Emergency Command Center** connects three synchronized clinical platforms into a single, real-time healthcare ecosystem powered by Google Firebase and Cloud Firestore:
-1. **ER Tracker Pro** (`https://er-icu.web.app`) — Rapid triage, active patient board, and clinical management.
-2. **Hospital Unified EMR** (`https://hospital-er-unified.web.app`) — Comprehensive electronic medical records and cross-department workflows.
-3. **Tertiary Care EMR Console** (`https://imc-er-manager.web.app`) — Command console, hospital bed occupancy, and administrative shift analytics.
+This manual covers the **Tertiary Care EMR Console** at <https://imc-er-manager.web.app> — command console, hospital bed occupancy, and administrative shift analytics — built on Google Firebase and Cloud Firestore.
+
+> **Data boundary — read this before relying on cross-platform data.**
+>
+> This console runs on its own Firebase project (`imc-er-manager`) with its own
+> Cloud Firestore database. Other departmental applications run on **separate
+> projects with separate databases**, and no synchronisation exists between
+> them.
+>
+> A patient registered, updated, or discharged here **does not appear** in any
+> other application, and vice versa. Do not assume a record entered elsewhere
+> is visible on this console, or that an update made here propagates outward.
+> Where a patient is handled by more than one system, each must be updated
+> directly.
+>
+> Earlier versions of this document described three "synchronized clinical
+> platforms" forming "a single, real-time healthcare ecosystem" sharing one
+> canonical backend. That was never true of this console's database, and acting
+> on it risks treating a patient from an incomplete record.
 
 This manual outlines the standard operating procedures for **clinical staff (Doctors, Nurses, CMOs)** and **operations managers (Shift Supervisors, Hospital Owners)**. All users must adhere to these guidelines to ensure patient safety, data integrity, and regulatory compliance.
 
