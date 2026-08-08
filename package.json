@@ -10,7 +10,11 @@
     "test:integration": "vitest run tests/integration",
     "test:load": "vitest run tests/load",
     "test:e2e": "playwright test",
-    "build": "node ../scripts/build-prod.js imc-er"
+    "build": "node scripts/build-prod.js",
+    "build:check": "node scripts/build-prod.js --check",
+    "deploy:hosting": "firebase deploy --only hosting --project imc-er-manager",
+    "deploy:rules": "firebase deploy --only firestore:rules --project imc-er-manager",
+    "deploy:remoteconfig": "node deploy-remote-config.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",
