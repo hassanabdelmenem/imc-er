@@ -8,9 +8,10 @@ import {
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
   signOut, 
-  GoogleAuthProvider, 
+  GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect 
+  signInWithRedirect,
+  getRedirectResult
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { 
   getFirestore, 
@@ -57,14 +58,85 @@ export function signUpWithEmail(email, password) {
   return createUserWithEmailAndPassword(auth, email, password);
 }
 
+/**
+ * Marks that a full-page redirect sign-in is in flight.
+ *
+ * `signInWithRedirect` navigates away, so the only way the page that comes
+ * back can know a sign-in is being completed is a note left behind first.
+ * Without it, the first `onAuthStateChanged(null)` after the round trip — which
+ * always arrives before the credential is processed — looks identical to
+ * "signed out", and the login form is rendered underneath a user who is
+ * halfway through signing in.
+ */
+const REDIRECT_PENDING_KEY = 'imc-er:auth-redirect-pending';
+
+export function isRedirectSignInPending() {
+  try {
+    return sessionStorage.getItem(REDIRECT_PENDING_KEY) === '1';
+  } catch (error) {
+    return false;
+  }
+}
+
+function setRedirectPending(pending) {
+  try {
+    if (pending) sessionStorage.setItem(REDIRECT_PENDING_KEY, '1');
+    else sessionStorage.removeItem(REDIRECT_PENDING_KEY);
+  } catch (error) {
+    /* storage unavailable — the redirect path degrades, it does not break */
+  }
+}
+
 export function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider).catch(error => {
-    if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+    // Both of these mean the user is already mid-flow, not that the flow
+    // failed. `cancelled-popup-request` is raised when the sign-in button is
+    // clicked a second time while the first popup is still opening; escalating
+    // that to a full-page redirect abandons a popup that was about to succeed
+    // and dumps the user back on the login form.
+    if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+      return null;
+    }
+    if (error.code === 'auth/popup-blocked') {
+      setRedirectPending(true);
       return signInWithRedirect(auth, provider);
     }
+    setRedirectPending(false);
     throw error;
   });
+}
+
+/**
+ * Completes a `signInWithRedirect` round trip.
+ *
+ * Nothing called `getRedirectResult` before, so a redirect that came back
+ * without a credential left no user, no error and no trace: the app re-rendered
+ * the login form, the user signed in again, and landed in the same place. That
+ * is the loop. `failedSilently` names the case explicitly so the caller can say
+ * what happened instead of offering the same broken affordance again.
+ *
+ * @returns {Promise<{user: object|null, attempted: boolean, failedSilently: boolean, error: Error|null}>}
+ */
+export async function completeRedirectSignIn() {
+  const attempted = isRedirectSignInPending();
+  try {
+    const result = await getRedirectResult(auth);
+    setRedirectPending(false);
+    return {
+      user: (result && result.user) || null,
+      attempted,
+      // A redirect was started, the browser came back, and the SDK has no
+      // credential and no error to show for it — the pending sign-in was
+      // discarded, typically by third-party storage blocking.
+      failedSilently: attempted && !(result && result.user),
+      error: null
+    };
+  } catch (error) {
+    setRedirectPending(false);
+    secLog("Redirect sign-in failed:", error);
+    return { user: null, attempted, failedSilently: false, error };
+  }
 }
 
 export function logout() {
@@ -79,6 +151,16 @@ export async function setUserRole(userId, role) {
   return await setDoc(userRef, { role, lastUpdated: new Date().toISOString() }, { merge: true });
 }
 
+/**
+ * Stored role for a user, or `null` when no record exists yet.
+ *
+ * A failed read throws rather than returning null. The two outcomes are not
+ * interchangeable: `null` means "new sign-up, its access request still has to
+ * be filed", while a thrown error means "we know nothing about this account".
+ * Collapsing the second into the first is what let a user whose Firestore read
+ * was denied or offline be shown "pending owner approval" — a queue they had
+ * never been added to.
+ */
 export async function getUserRole(userId) {
   try {
     const userRef = doc(db, "users", userId);
@@ -86,26 +168,62 @@ export async function getUserRole(userId) {
     if (snap.exists() && snap.data().role) {
       return snap.data().role;
     }
+    return null;
   } catch (error) {
     secLog("Error fetching user role:", error);
+    throw error;
   }
-  return null;
 }
 
-export async function createUserRecord(userId, email, role = 'pending') {
+/**
+ * Make sure /users/{userId} exists and carries the fields the owner's approval
+ * queue renders, then report what actually happened.
+ *
+ * This is the write that turns a sign-in into a visible access request, so its
+ * outcome is returned instead of swallowed: if it fails, the caller must not
+ * tell the user their request is awaiting approval, because no owner can see
+ * a document that was never written.
+ *
+ * An existing record is repaired rather than skipped. A record whose first
+ * write was interrupted — or that predates this write path — can be missing
+ * `role` or `email`, and the owner's queue cannot act on a request with no
+ * role and no address attached to it.
+ *
+ * @returns {Promise<{ok: boolean, created: boolean, repaired: boolean, error: Error|null}>}
+ */
+export async function ensureUserRecord(userId, email, role = 'pending') {
+  const now = new Date().toISOString();
   try {
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
+
     if (!userSnap.exists()) {
       await setDoc(userRef, {
         email: email || '',
         role: role,
-        createdAt: new Date().toISOString(),
-        lastUpdated: new Date().toISOString()
+        createdAt: now,
+        lastUpdated: now
       }, { merge: true });
+      return { ok: true, created: true, repaired: false, error: null };
     }
+
+    const data = userSnap.data() || {};
+    const patch = {};
+    // Never overwrite a role the owner assigned — only fill one that is absent.
+    if (!data.role) patch.role = role;
+    if (!data.email && email) patch.email = email;
+    if (!data.createdAt) patch.createdAt = now;
+
+    if (Object.keys(patch).length === 0) {
+      return { ok: true, created: false, repaired: false, error: null };
+    }
+
+    patch.lastUpdated = now;
+    await setDoc(userRef, patch, { merge: true });
+    return { ok: true, created: false, repaired: true, error: null };
   } catch (error) {
-    secLog("Error creating user record:", error);
+    secLog("Error writing user record:", error);
+    return { ok: false, created: false, repaired: false, error };
   }
 }
 
