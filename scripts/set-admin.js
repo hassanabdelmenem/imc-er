@@ -16,6 +16,7 @@
  *   medical_director          }
  *   emergency_manager         }  leadership tier: full clinical board access
  *   emergency_deputy_manager  }
+ *   chief_nurse               — full clinical board access, no record deletion
  *
  * Credentials: GOOGLE_APPLICATION_CREDENTIALS, or ./serviceAccountKey.json /
  * ./firebase-adminsdk.json at the repo root, or Application Default
@@ -49,7 +50,8 @@ const ROOT = path.resolve(__dirname, '..');
 // Role model mirrored from public/js/config.js. Keep these in step.
 const ROLE_OWNER = 'owner';
 const LEADERSHIP_ROLES = ['medical_director', 'emergency_manager', 'emergency_deputy_manager'];
-const ASSIGNABLE_ROLES = [ROLE_OWNER, ...LEADERSHIP_ROLES];
+const CLINICAL_ROLES = [...LEADERSHIP_ROLES, 'chief_nurse'];
+const ASSIGNABLE_ROLES = [ROLE_OWNER, ...CLINICAL_ROLES];
 const LEGACY_ROLES = ['doctor', 'user', 'cmo', 'manager'];
 
 const usage = () => {

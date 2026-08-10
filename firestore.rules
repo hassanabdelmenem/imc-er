@@ -8,7 +8,9 @@ rules_version = '2';
 //                               assign roles or delete a non-discharged record
 //   medical_director          }
 //   emergency_manager         }  leadership tier: full clinical board access
-//   emergency_deputy_manager  }
+//   emergency_deputy_manager  }  + record deletion
+//   chief_nurse               — full clinical board access, but NOT leadership:
+//                               may not delete or purge patient records
 //   pending                   — signed up, awaiting owner approval: NO PHI access
 //   blocked                   — access revoked: NO PHI access
 //
@@ -35,13 +37,22 @@ service cloud.firestore {
       return ['hassan.abdelmenem@gmail.com', 'hassanabdelmenem@gmail.com', 'owner@imc.com'];
     }
 
+    // The tier that may delete patient records. Narrower than clinicalRoles().
     function leadershipRoles() {
       return ['medical_director', 'emergency_manager', 'emergency_deputy_manager'];
     }
 
+    // Every role that may reach patient PHI. Mirrors CLINICAL_ROLES in
+    // public/js/config.js. `chief_nurse` reads and writes the board like
+    // leadership, but is absent from leadershipRoles() above, so the delete
+    // rule on /patients does not admit it.
+    function clinicalRoles() {
+      return ['medical_director', 'emergency_manager', 'emergency_deputy_manager', 'chief_nurse'];
+    }
+
     // Every role a /users document is permitted to hold.
     function assignableRoles() {
-      return ['owner', 'medical_director', 'emergency_manager', 'emergency_deputy_manager', 'pending', 'blocked'];
+      return ['owner', 'medical_director', 'emergency_manager', 'emergency_deputy_manager', 'chief_nurse', 'pending', 'blocked'];
     }
 
     function hasUserDoc() {
@@ -71,7 +82,7 @@ service cloud.firestore {
 
     // The only predicate that may gate patient PHI.
     function isClinicalStaff() {
-      return isOwner() || isLeadership();
+      return isOwner() || (isAuthenticated() && storedRole() in clinicalRoles());
     }
 
     // ---------------------------------------------------------------------

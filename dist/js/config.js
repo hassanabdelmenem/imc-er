@@ -17,13 +17,29 @@ export const OWNER_EMAILS = ['hassan.abdelmenem@gmail.com', 'hassanabdelmenem@gm
  * (full clinical board access + data controls, no account management).
  *
  * `pending` and `blocked` are lifecycle states, not job titles — a new sign-up
- * lands on `pending` until the owner assigns one of the LEADERSHIP_ROLES.
+ * lands on `pending` until the owner assigns one of the CLINICAL_ROLES.
  */
 export const ROLE_OWNER = 'owner';
 export const LEADERSHIP_ROLES = ['medical_director', 'emergency_manager', 'emergency_deputy_manager'];
-export const ASSIGNABLE_ROLES = [ROLE_OWNER, ...LEADERSHIP_ROLES];
 
-/** Roles that grant manager-tier privileges (data controls, discharged purge). */
+/**
+ * `chief_nurse` works the board exactly like the leadership tier — reads and
+ * edits every patient record, registers and discharges — but is deliberately
+ * NOT part of it. Purging and deleting records is a retention action, and it
+ * stays with leadership; see MANAGER_TIER_ROLES below, which omits this role.
+ */
+export const ROLE_CHIEF_NURSE = 'chief_nurse';
+
+/** Every role that may reach patient PHI. Mirrored by clinicalRoles() in firestore.rules. */
+export const CLINICAL_ROLES = [...LEADERSHIP_ROLES, ROLE_CHIEF_NURSE];
+
+export const ASSIGNABLE_ROLES = [ROLE_OWNER, ...CLINICAL_ROLES];
+
+/**
+ * Roles that grant manager-tier privileges (data controls, discharged purge).
+ * Intentionally narrower than CLINICAL_ROLES: a chief nurse has the board, not
+ * the delete button.
+ */
 export const MANAGER_TIER_ROLES = [ROLE_OWNER, ...LEADERSHIP_ROLES];
 
 /**
