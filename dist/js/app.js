@@ -53,7 +53,7 @@ import "./store.js?v=20260802";
 import {
   OWNER_EMAILS,
   ROLE_OWNER,
-  LEADERSHIP_ROLES,
+  CLINICAL_ROLES,
   ASSIGNABLE_ROLES,
   MANAGER_TIER_ROLES,
   LEGACY_ROLES,
@@ -1847,7 +1847,8 @@ function renderAccountManagement() {
     { label: currentLang === 'en' ? 'PENDING APPROVAL' : 'قيد الموافقة', count: pending.length, token: 'var(--role-pending)' },
     { label: tr('uMD').toUpperCase(), count: countByRole('medical_director'), token: 'var(--role-director)' },
     { label: tr('uEM').toUpperCase(), count: countByRole('emergency_manager'), token: 'var(--role-manager)' },
-    { label: tr('uED').toUpperCase(), count: countByRole('emergency_deputy_manager'), token: 'var(--role-deputy)' }
+    { label: tr('uED').toUpperCase(), count: countByRole('emergency_deputy_manager'), token: 'var(--role-deputy)' },
+    { label: tr('uCN').toUpperCase(), count: countByRole('chief_nurse'), token: 'var(--role-nurse)' }
   ];
 
   const summaryBanner = `
@@ -1866,6 +1867,7 @@ function renderAccountManagement() {
     medical_director: 'var(--role-director)',
     emergency_manager: 'var(--role-manager)',
     emergency_deputy_manager: 'var(--role-deputy)',
+    chief_nurse: 'var(--role-nurse)',
     pending: 'var(--role-pending)',
     blocked: 'var(--role-blocked)'
   };
@@ -1897,7 +1899,9 @@ function renderAccountManagement() {
     const role = u.role || 'pending';
     const accent = roleAccent[role] || 'var(--role-pending)';
     const removeText = currentLang === 'en' ? '🗑️ Remove Account Completely' : '🗑️ إزالة الحساب نهائياً';
-    const roleOptions = LEADERSHIP_ROLES
+    // Every role the owner can grant — not just leadership, or a role the
+    // rules accept would be unassignable from the only UI that assigns roles.
+    const roleOptions = CLINICAL_ROLES
       .map(r => `<option value="${r}" ${role === r ? 'selected' : ''}>${esc(translateRole(r))}</option>`)
       .join('');
     const requestedAt = isRequest ? formatRequestedAt(u) : '';

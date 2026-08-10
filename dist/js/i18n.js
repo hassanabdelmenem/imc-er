@@ -103,6 +103,7 @@ export const TRANSLATIONS = {
     uMD: "Medical Director",
     uEM: "Emergency Manager",
     uED: "Emergency Deputy Manager",
+    uCN: "Chief Nurse",
     uO: "Owner (System Administrator)",
     uP: "Pending Approval",
     uB: "Blocked (No Access)",
@@ -212,6 +213,7 @@ export const TRANSLATIONS = {
     uMD: "المدير الطبي",
     uEM: "مدير الطوارئ",
     uED: "نائب مدير الطوارئ",
+    uCN: "رئيس التمريض",
     uO: "المالك (مسؤول النظام)",
     uP: "قيد الموافقة",
     uB: "محظور (ممنوع الدخول)",
@@ -249,6 +251,7 @@ const ROLE_LABEL_KEYS = {
   medical_director: 'uMD',
   emergency_manager: 'uEM',
   emergency_deputy_manager: 'uED',
+  chief_nurse: 'uCN',
   pending: 'uP',
   blocked: 'uB'
 };

@@ -94,6 +94,7 @@
     --role-director: #6a9bcc;
     --role-manager: #8ba9cc;
     --role-deputy: #b0aea5;
+    --role-nurse: #5f9e8f;
     --role-pending: #d9a441;
     --role-blocked: #e5675a;
 
@@ -230,6 +231,7 @@
         --role-director: #3e6690;
         --role-manager: #4f7aa8;
         --role-deputy: #6b6a63;
+    --role-nurse: #3d6f63;
         --role-pending: #7d5610;
         --role-blocked: #a83226;
 
@@ -331,6 +333,7 @@
     --role-director: #3e6690;
     --role-manager: #4f7aa8;
     --role-deputy: #6b6a63;
+    --role-nurse: #3d6f63;
     --role-pending: #7d5610;
     --role-blocked: #a83226;
 
@@ -431,6 +434,7 @@
     --role-director: #6a9bcc;
     --role-manager: #8ba9cc;
     --role-deputy: #b0aea5;
+    --role-nurse: #5f9e8f;
     --role-pending: #d9a441;
     --role-blocked: #e5675a;
 

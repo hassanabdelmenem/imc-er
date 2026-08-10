@@ -83,6 +83,7 @@ be changed together; `scripts/set-admin.js` mirrors the same list.
 | `medical_director` | leadership tier: full clinical board access + data controls |
 | `emergency_manager` | as above |
 | `emergency_deputy_manager` | as above |
+| `chief_nurse` | full clinical board access; **not** manager tier — cannot purge or delete records |
 | `pending` | signed up, awaiting approval — no PHI access |
 | `blocked` | access revoked — no PHI access |
 
