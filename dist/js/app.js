@@ -70,14 +70,15 @@ import {
   translateDischargeOutcome
 } from "./i18n.js?v=20260802";
 import {
-  initAuthListener, 
-  loginWithEmail, 
-  signUpWithEmail, 
-  loginWithGoogle, 
-  logout, 
-  getUserRole, 
-  createUserRecord, 
-  updateUserRole, 
+  auth,
+  initAuthListener,
+  loginWithEmail,
+  signUpWithEmail,
+  loginWithGoogle,
+  logout,
+  getUserRole,
+  ensureUserRecord,
+  updateUserRole,
   deleteUserRecord, 
   subscribeToUsers, 
   subscribeToPatients, 
@@ -285,46 +286,53 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isOwner || claimRole === ROLE_OWNER) {
         role = ROLE_OWNER;
         isOwner = true;
-        try {
-          await createUserRecord(user.uid, user.email, ROLE_OWNER);
-        } catch (err) {
-          console.warn("Notice: Could not write owner record to Firestore:", err);
+        const ownerRecord = await ensureUserRecord(user.uid, user.email, ROLE_OWNER);
+        if (!ownerRecord.ok) {
+          console.warn("Notice: Could not write owner record to Firestore:", ownerRecord.error);
         }
       } else {
+        let existingRole = null;
         try {
-          const existingRole = await getUserRole(user.uid);
-          if (existingRole === 'blocked') {
-            // A block must survive re-authentication. The previous build deleted
-            // and recreated the record as 'pending' here, which silently undid
-            // every block the owner applied.
-            role = 'blocked';
-          } else if (existingRole && LEGACY_ROLES.includes(existingRole)) {
-            // Roles retired in the 2026 restructure: demote to pending so the
-            // owner re-assigns deliberately instead of inheriting stale access.
-            role = 'pending';
-            updateUserRole(user.uid, 'pending').catch(() => {});
-          } else if (existingRole && ASSIGNABLE_ROLES.includes(existingRole)) {
-            role = existingRole;
-          } else if (existingRole) {
-            role = 'pending';
-          } else {
-            await createUserRecord(user.uid, user.email, 'pending');
-            role = 'pending';
-          }
+          existingRole = await getUserRole(user.uid);
         } catch (err) {
-          secLog("Error checking role in Firestore:", err);
+          // The lookup itself failed, so we do not know whether this account
+          // has ever been registered. Say that, rather than parking the user
+          // at a "pending approval" screen for a request nobody can see.
+          showAccessGate('unreachable');
+          return;
+        }
+
+        if (existingRole === 'blocked') {
+          // A block must survive re-authentication. The previous build deleted
+          // and recreated the record as 'pending' here, which silently undid
+          // every block the owner applied.
+          role = 'blocked';
+        } else if (existingRole && LEGACY_ROLES.includes(existingRole)) {
+          // Roles retired in the 2026 restructure: demote to pending so the
+          // owner re-assigns deliberately instead of inheriting stale access.
           role = 'pending';
+          updateUserRole(user.uid, 'pending').catch(() => {});
+        } else if (existingRole && ASSIGNABLE_ROLES.includes(existingRole)) {
+          role = existingRole;
+        } else {
+          // No record, or a record holding a role that grants nothing: this
+          // account is an access request. Filing it is what puts the user in
+          // front of the owner, so a failure here is reported, not shrugged
+          // off — an unwritten request is indistinguishable, to the owner,
+          // from a user who never signed up at all.
+          role = 'pending';
+          const filed = await ensureUserRecord(user.uid, user.email, 'pending');
+          if (!filed.ok) {
+            showAccessGate('unfiled');
+            return;
+          }
         }
       }
 
       // Patient data is PHI — only approved staff reach the board. `pending`
       // accounts wait at the gate until the owner assigns them a role.
       if (role === 'blocked' || role === 'pending') {
-        $('loading-overlay').classList.add('hidden');
-        $('auth-section').classList.add('hidden');
-        $('app-section').classList.add('hidden');
-        $('access-gate').classList.remove('hidden');
-        $('gate-message').innerText = role === 'blocked' ? tr('blk') : tr('pnd');
+        showAccessGate(role);
         return;
       }
 
@@ -391,7 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (usersUnsubscribe) usersUnsubscribe();
         usersUnsubscribe = subscribeToUsers((users) => {
           usersList = users;
-          const pendingCount = users.filter(u => u.role === 'pending').length;
+          // Badge and queue are derived from the same partition, so the count
+          // on the tab can never disagree with what the Owner tab lists.
+          const pendingCount = partitionAccounts(users).pending.length;
           const badge = $('badge-pending-users');
           if (badge) {
             badge.innerText = pendingCount ? `(${pendingCount})` : '';
@@ -432,6 +442,7 @@ function setupEventListeners() {
   };
   $('btn-app-logout').onclick = () => logout();
   $('btn-gate-logout').onclick = () => logout();
+  if ($('btn-gate-retry')) $('btn-gate-retry').onclick = retryAccessRequest;
   
   // Navigation & Theme & Language
   const themeBtn = $('btn-theme-toggle');
@@ -638,6 +649,61 @@ function showAuthError(msg) {
   const el = $('auth-error');
   el.innerText = msg;
   el.style.display = 'block';
+}
+
+/**
+ * Render the access gate.
+ *
+ * `state` decides what the user is told, and the distinction matters: the
+ * `pending` message is a promise that an owner can see this account and act on
+ * it. It must never be shown for `unfiled` (the request could not be written)
+ * or `unreachable` (we could not even read the account), because in both cases
+ * the owner's approval queue does not contain this user. Those two states get
+ * a retry button instead; the user is the only one who can resolve them.
+ *
+ * @param {'pending'|'blocked'|'unfiled'|'unreachable'} state
+ * @param {string} [overrideMessage] Text to show instead of the state default.
+ */
+function showAccessGate(state, overrideMessage) {
+  $('loading-overlay').classList.add('hidden');
+  $('auth-section').classList.add('hidden');
+  $('app-section').classList.add('hidden');
+  $('access-gate').classList.remove('hidden');
+
+  const messages = {
+    pending: tr('pnd'),
+    blocked: tr('blk'),
+    unfiled: tr('gErr'),
+    unreachable: tr('gNet')
+  };
+  $('gate-message').innerText = overrideMessage || messages[state] || tr('pnd');
+
+  const retry = $('btn-gate-retry');
+  if (retry) {
+    retry.classList.toggle('hidden', state !== 'unfiled' && state !== 'unreachable');
+    retry.disabled = false;
+  }
+}
+
+/**
+ * Re-attempt the write that files an access request, from the gate itself.
+ * Without this the only recovery from a failed first attempt is a full sign-out
+ * and sign-in, which the user has no reason to suspect would help.
+ */
+async function retryAccessRequest() {
+  const btn = $('btn-gate-retry');
+  const user = auth.currentUser;
+  if (!user) {
+    logout();
+    return;
+  }
+  if (btn) btn.disabled = true;
+  const filed = await ensureUserRecord(user.uid, user.email, 'pending');
+  if (filed.ok) {
+    showAccessGate('pending', tr('gSent'));
+  } else {
+    showAccessGate('unfiled');
+  }
 }
 
 function switchTab(tabName) {
@@ -1693,20 +1759,61 @@ async function confirmAndDeletePatients(deleteAll) {
 }
 
 /**
+ * Split the roster into the three groups the Owner tab treats differently.
+ *
+ * `pending` is the approval queue — the accounts that are waiting on the owner
+ * and can do nothing until the owner acts. Previously every account was
+ * rendered into one unsorted grid in Firestore document-id order, so a new
+ * sign-up landed at an arbitrary position among the staff cards with nothing
+ * to distinguish it, and there was no view that listed access requests at all.
+ */
+export function partitionAccounts(users) {
+  const owners = [];
+  const pending = [];
+  const staff = [];
+
+  users.forEach(u => {
+    if (checkIfOwner(u.email) || u.role === ROLE_OWNER) owners.push(u);
+    else if (!u.role || u.role === 'pending') pending.push(u);
+    else staff.push(u);
+  });
+
+  // Newest request first: the person asking about it is almost always the
+  // person who just signed up.
+  const requestedAt = (u) => Date.parse(u.createdAt || '') || 0;
+  pending.sort((a, b) => (requestedAt(b) - requestedAt(a)) || String(a.email || '').localeCompare(String(b.email || '')));
+  staff.sort((a, b) => String(a.role || '').localeCompare(String(b.role || '')) || String(a.email || '').localeCompare(String(b.email || '')));
+
+  return { owners, pending, staff };
+}
+
+/** Localised "Requested <date>" line for a queued access request. */
+function formatRequestedAt(user) {
+  const ts = Date.parse(user.createdAt || '');
+  if (!ts) return '';
+  const when = new Date(ts).toLocaleString(currentLang === 'en' ? 'en-GB' : 'ar-EG', {
+    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+  return `${tr('pqR')}: ${when}`;
+}
+
+/**
  * Render Account Management (Owner View)
  */
 function renderAccountManagement() {
   const container = $('users-list-container');
   if (!container) return;
-  
+
   if (usersList.length === 0) {
     container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted); font-weight: 500;">Loading user accounts from Firestore... If this remains empty, check your Firestore permissions.</div>';
     return;
   }
-  
+
+  const { owners, pending, staff } = partitionAccounts(usersList);
+
   const countByRole = (r) => usersList.filter(u => u.role === r).length;
   const summaryTiles = [
-    { label: currentLang === 'en' ? 'PENDING APPROVAL' : 'قيد الموافقة', count: countByRole('pending'), token: 'var(--role-pending)' },
+    { label: currentLang === 'en' ? 'PENDING APPROVAL' : 'قيد الموافقة', count: pending.length, token: 'var(--role-pending)' },
     { label: tr('uMD').toUpperCase(), count: countByRole('medical_director'), token: 'var(--role-director)' },
     { label: tr('uEM').toUpperCase(), count: countByRole('emergency_manager'), token: 'var(--role-manager)' },
     { label: tr('uED').toUpperCase(), count: countByRole('emergency_deputy_manager'), token: 'var(--role-deputy)' }
@@ -1732,39 +1839,49 @@ function renderAccountManagement() {
     blocked: 'var(--role-blocked)'
   };
 
-  container.innerHTML = summaryBanner + usersList.map(u => {
-    const isOwnerUser = checkIfOwner(u.email) || u.role === ROLE_OWNER;
-    if (isOwnerUser) {
-      return `
-        <div class="user-card user-card-owner">
-          <div class="user-card-header">
-            <span class="user-card-name">👑 ${esc(u.name || u.email || 'System Owner')}</span>
-            <span class="user-card-role" style="color: var(--role-owner);">${esc(tr('uO'))}</span>
-          </div>
-          <div class="user-card-email">${esc(u.email || '')}</div>
-          <div class="user-card-note">
-            ${currentLang === 'en'
-              ? 'Full system administration. Only the owner can assign roles — this account cannot be edited here.'
-              : 'إدارة كاملة للنظام. المالك وحده يستطيع تعيين الأدوار — لا يمكن تعديل هذا الحساب من هنا.'}
-          </div>
-        </div>
-      `;
-    }
+  // Most accounts carry no `name`, so the header already shows the address —
+  // repeating it underneath is noise.
+  const emailLine = (u) => {
+    if (u.name) return `<div class="user-card-email">${esc(u.email || '')}</div>`;
+    if (u.email) return '';
+    return `<div class="user-card-email">${currentLang === 'en' ? 'No email on record' : 'لا يوجد بريد مسجل'}</div>`;
+  };
+
+  const ownerCard = (u) => `
+    <div class="user-card user-card-owner">
+      <div class="user-card-header">
+        <span class="user-card-name">👑 ${esc(u.name || u.email || 'System Owner')}</span>
+        <span class="user-card-role" style="color: var(--role-owner);">${esc(tr('uO'))}</span>
+      </div>
+      ${emailLine(u)}
+      <div class="user-card-note">
+        ${currentLang === 'en'
+          ? 'Full system administration. Only the owner can assign roles — this account cannot be edited here.'
+          : 'إدارة كاملة للنظام. المالك وحده يستطيع تعيين الأدوار — لا يمكن تعديل هذا الحساب من هنا.'}
+      </div>
+    </div>
+  `;
+
+  const staffCard = (u, isRequest) => {
     const role = u.role || 'pending';
     const accent = roleAccent[role] || 'var(--role-pending)';
     const removeText = currentLang === 'en' ? '🗑️ Remove Account Completely' : '🗑️ إزالة الحساب نهائياً';
     const roleOptions = LEADERSHIP_ROLES
       .map(r => `<option value="${r}" ${role === r ? 'selected' : ''}>${esc(translateRole(r))}</option>`)
       .join('');
+    const requestedAt = isRequest ? formatRequestedAt(u) : '';
     return `
-      <div class="user-card">
+      <div class="user-card${isRequest ? ' user-card-pending' : ''}">
         <div class="user-card-header">
-          <span class="user-card-name">${esc(u.name || u.email || 'Staff Member')}</span>
+          <span class="user-card-name">${isRequest ? '🕗 ' : ''}${esc(u.name || u.email || 'Staff Member')}</span>
           <span class="user-card-role" style="color: ${accent};">${esc(translateRole(role))}</span>
         </div>
-        <div class="user-card-email">${esc(u.email || '')}</div>
+        ${emailLine(u)}
+        ${requestedAt ? `<div class="user-card-meta">${esc(requestedAt)}</div>` : ''}
         <div class="user-card-controls">
-          <label class="field-label user-card-control-label">${currentLang === 'en' ? 'Role Assignment' : 'تعيين الدور والصلاحيات'}</label>
+          <label class="field-label user-card-control-label">${isRequest
+            ? (currentLang === 'en' ? 'Approve As' : 'الموافقة بصفة')
+            : (currentLang === 'en' ? 'Role Assignment' : 'تعيين الدور والصلاحيات')}</label>
           <select class="select-role input-field" data-id="${esc(u.id || '')}">
             <option value="pending" ${role === 'pending' ? 'selected' : ''}>${esc(tr('uP'))}</option>
             ${roleOptions}
@@ -1776,8 +1893,26 @@ function renderAccountManagement() {
         </div>
       </div>
     `;
-  }).join('');
-  
+  };
+
+  // The approval queue comes first and is always rendered, empty or not. An
+  // explicit "no requests" line is the difference between an owner knowing a
+  // sign-up never arrived and an owner hunting for a card that does not exist.
+  const queueSection = `
+    <div class="account-section-heading">${esc(tr('pqT'))} (${pending.length})</div>
+    ${pending.length
+      ? pending.map(u => staffCard(u, true)).join('')
+      : `<div class="account-section-empty">${esc(tr('pqE'))}</div>`}
+  `;
+
+  const rosterSection = `
+    <div class="account-section-heading">${esc(tr('rosT'))} (${owners.length + staff.length})</div>
+    ${owners.map(ownerCard).join('')}
+    ${staff.map(u => staffCard(u, false)).join('')}
+  `;
+
+  container.innerHTML = summaryBanner + queueSection + rosterSection;
+
   container.querySelectorAll('.select-role').forEach(select => {
     select.onchange = async (e) => {
       const uid = select.dataset.id || e.currentTarget.dataset.id;

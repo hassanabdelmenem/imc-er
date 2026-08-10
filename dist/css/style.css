@@ -1699,6 +1699,44 @@ table tr:hover td {
   font-weight: 800;
   margin-top: 2px;
 }
+.account-section-heading {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 2px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.account-section-heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+.account-section-empty {
+  grid-column: 1 / -1;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+/* An access request must not look like every other roster card. */
+.user-card-pending {
+  border: 1px solid var(--role-pending);
+  border-inline-start: 4px solid var(--role-pending);
+}
+.user-card-meta {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
 .user-card-owner {
   border: 1px solid var(--role-owner);
   background: var(--primary-light);

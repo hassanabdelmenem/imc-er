@@ -79,6 +79,16 @@ export async function setUserRole(userId, role) {
   return await setDoc(userRef, { role, lastUpdated: new Date().toISOString() }, { merge: true });
 }
 
+/**
+ * Stored role for a user, or `null` when no record exists yet.
+ *
+ * A failed read throws rather than returning null. The two outcomes are not
+ * interchangeable: `null` means "new sign-up, its access request still has to
+ * be filed", while a thrown error means "we know nothing about this account".
+ * Collapsing the second into the first is what let a user whose Firestore read
+ * was denied or offline be shown "pending owner approval" — a queue they had
+ * never been added to.
+ */
 export async function getUserRole(userId) {
   try {
     const userRef = doc(db, "users", userId);
@@ -86,26 +96,62 @@ export async function getUserRole(userId) {
     if (snap.exists() && snap.data().role) {
       return snap.data().role;
     }
+    return null;
   } catch (error) {
     secLog("Error fetching user role:", error);
+    throw error;
   }
-  return null;
 }
 
-export async function createUserRecord(userId, email, role = 'pending') {
+/**
+ * Make sure /users/{userId} exists and carries the fields the owner's approval
+ * queue renders, then report what actually happened.
+ *
+ * This is the write that turns a sign-in into a visible access request, so its
+ * outcome is returned instead of swallowed: if it fails, the caller must not
+ * tell the user their request is awaiting approval, because no owner can see
+ * a document that was never written.
+ *
+ * An existing record is repaired rather than skipped. A record whose first
+ * write was interrupted — or that predates this write path — can be missing
+ * `role` or `email`, and the owner's queue cannot act on a request with no
+ * role and no address attached to it.
+ *
+ * @returns {Promise<{ok: boolean, created: boolean, repaired: boolean, error: Error|null}>}
+ */
+export async function ensureUserRecord(userId, email, role = 'pending') {
+  const now = new Date().toISOString();
   try {
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
+
     if (!userSnap.exists()) {
       await setDoc(userRef, {
         email: email || '',
         role: role,
-        createdAt: new Date().toISOString(),
-        lastUpdated: new Date().toISOString()
+        createdAt: now,
+        lastUpdated: now
       }, { merge: true });
+      return { ok: true, created: true, repaired: false, error: null };
     }
+
+    const data = userSnap.data() || {};
+    const patch = {};
+    // Never overwrite a role the owner assigned — only fill one that is absent.
+    if (!data.role) patch.role = role;
+    if (!data.email && email) patch.email = email;
+    if (!data.createdAt) patch.createdAt = now;
+
+    if (Object.keys(patch).length === 0) {
+      return { ok: true, created: false, repaired: false, error: null };
+    }
+
+    patch.lastUpdated = now;
+    await setDoc(userRef, patch, { merge: true });
+    return { ok: true, created: false, repaired: true, error: null };
   } catch (error) {
-    secLog("Error creating user record:", error);
+    secLog("Error writing user record:", error);
+    return { ok: false, created: false, repaired: false, error };
   }
 }
 
