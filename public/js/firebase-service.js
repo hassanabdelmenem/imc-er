@@ -8,9 +8,10 @@ import {
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
   signOut, 
-  GoogleAuthProvider, 
+  GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect 
+  signInWithRedirect,
+  getRedirectResult
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { 
   getFirestore, 
@@ -57,14 +58,85 @@ export function signUpWithEmail(email, password) {
   return createUserWithEmailAndPassword(auth, email, password);
 }
 
+/**
+ * Marks that a full-page redirect sign-in is in flight.
+ *
+ * `signInWithRedirect` navigates away, so the only way the page that comes
+ * back can know a sign-in is being completed is a note left behind first.
+ * Without it, the first `onAuthStateChanged(null)` after the round trip — which
+ * always arrives before the credential is processed — looks identical to
+ * "signed out", and the login form is rendered underneath a user who is
+ * halfway through signing in.
+ */
+const REDIRECT_PENDING_KEY = 'imc-er:auth-redirect-pending';
+
+export function isRedirectSignInPending() {
+  try {
+    return sessionStorage.getItem(REDIRECT_PENDING_KEY) === '1';
+  } catch (error) {
+    return false;
+  }
+}
+
+function setRedirectPending(pending) {
+  try {
+    if (pending) sessionStorage.setItem(REDIRECT_PENDING_KEY, '1');
+    else sessionStorage.removeItem(REDIRECT_PENDING_KEY);
+  } catch (error) {
+    /* storage unavailable — the redirect path degrades, it does not break */
+  }
+}
+
 export function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider).catch(error => {
-    if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+    // Both of these mean the user is already mid-flow, not that the flow
+    // failed. `cancelled-popup-request` is raised when the sign-in button is
+    // clicked a second time while the first popup is still opening; escalating
+    // that to a full-page redirect abandons a popup that was about to succeed
+    // and dumps the user back on the login form.
+    if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+      return null;
+    }
+    if (error.code === 'auth/popup-blocked') {
+      setRedirectPending(true);
       return signInWithRedirect(auth, provider);
     }
+    setRedirectPending(false);
     throw error;
   });
+}
+
+/**
+ * Completes a `signInWithRedirect` round trip.
+ *
+ * Nothing called `getRedirectResult` before, so a redirect that came back
+ * without a credential left no user, no error and no trace: the app re-rendered
+ * the login form, the user signed in again, and landed in the same place. That
+ * is the loop. `failedSilently` names the case explicitly so the caller can say
+ * what happened instead of offering the same broken affordance again.
+ *
+ * @returns {Promise<{user: object|null, attempted: boolean, failedSilently: boolean, error: Error|null}>}
+ */
+export async function completeRedirectSignIn() {
+  const attempted = isRedirectSignInPending();
+  try {
+    const result = await getRedirectResult(auth);
+    setRedirectPending(false);
+    return {
+      user: (result && result.user) || null,
+      attempted,
+      // A redirect was started, the browser came back, and the SDK has no
+      // credential and no error to show for it — the pending sign-in was
+      // discarded, typically by third-party storage blocking.
+      failedSilently: attempted && !(result && result.user),
+      error: null
+    };
+  } catch (error) {
+    setRedirectPending(false);
+    secLog("Redirect sign-in failed:", error);
+    return { user: null, attempted, failedSilently: false, error };
+  }
 }
 
 export function logout() {

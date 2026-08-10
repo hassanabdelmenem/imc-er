@@ -78,6 +78,8 @@ import {
   logout,
   getUserRole,
   ensureUserRecord,
+  completeRedirectSignIn,
+  isRedirectSignInPending,
   updateUserRole,
   deleteUserRecord, 
   subscribeToUsers, 
@@ -257,7 +259,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let authFired = false;
   setTimeout(() => {
-    if (!authFired) {
+    // Never hand the login form to someone who is mid-redirect: they came back
+    // from Google seconds ago and the credential is still being processed.
+    if (!authFired && !isRedirectSignInPending()) {
       console.warn("Notice: Auth listener timed out. Hiding loading overlay.");
       const overlay = $('loading-overlay');
       if (overlay) overlay.classList.add('hidden');
@@ -265,6 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if ($('app-section')) $('app-section').classList.add('hidden');
     }
   }, 4000);
+
+  // Finish any redirect sign-in before anything concludes the user is signed
+  // out. This round trip was never completed or inspected, so a redirect that
+  // came back empty just re-rendered the login form — and the user signed in
+  // again, and again.
+  completeRedirectSignIn().then((res) => {
+    if (res.error) {
+      showAuthError(res.error.message);
+    } else if (res.failedSilently) {
+      // Offering the Google button again here would repeat the identical
+      // failure, which is exactly the loop. Say what happened and point at the
+      // path that still works.
+      showAuthError(tr('gLoop'));
+    }
+    if (!res.user && !auth.currentUser) showSignedOut();
+  });
 
   // Start Auth Listener
   initAuthListener(async (user) => {
@@ -410,19 +430,30 @@ document.addEventListener('DOMContentLoaded', () => {
           renderAccountManagement();
         });
       }
+    } else if (isRedirectSignInPending()) {
+      // onAuthStateChanged always reports null once before a redirect
+      // credential has been processed. Rendering the login form on that first
+      // null is what asked returning users to type their password a second
+      // time, mid-flight. Hold the overlay; completeRedirectSignIn() decides.
+      $('loading-overlay').classList.remove('hidden');
     } else {
-      $('loading-overlay').classList.add('hidden');
-      $('auth-section').classList.remove('hidden');
-      $('app-section').classList.add('hidden');
-      $('access-gate').classList.add('hidden');
-      switchTab('live-board');
-      if (usersUnsubscribe) {
-        usersUnsubscribe();
-        usersUnsubscribe = null;
-      }
+      showSignedOut();
     }
   });
 });
+
+/** Render the signed-out state. */
+function showSignedOut() {
+  $('loading-overlay').classList.add('hidden');
+  $('auth-section').classList.remove('hidden');
+  $('app-section').classList.add('hidden');
+  $('access-gate').classList.add('hidden');
+  switchTab('live-board');
+  if (usersUnsubscribe) {
+    usersUnsubscribe();
+    usersUnsubscribe = null;
+  }
+}
 
 /**
  * Setup Event Listeners
