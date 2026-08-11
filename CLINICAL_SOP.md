@@ -1,8 +1,8 @@
 # IMC UNIFIED EMERGENCY COMMAND CENTER
 ## Standard Operating Procedures (SOP) & Clinical User Manual
 
-**Document Version:** 2026.4 (Phase 9 Production Release)  
-**Effective Date:** July 2026  
+**Document Version:** 2026.5  
+**Effective Date:** August 2026  
 **Applicability:** Clinical & Administrative Personnel using the IMC ER Console (`imc-er`)
 
 ---
@@ -29,7 +29,7 @@ This manual covers the **Tertiary Care EMR Console** at <https://imc-er-manager.
 > canonical backend. That was never true of this console's database, and acting
 > on it risks treating a patient from an incomplete record.
 
-This manual outlines the standard operating procedures for **clinical staff (Doctors, Nurses, CMOs)** and **operations managers (Shift Supervisors, Hospital Owners)**. All users must adhere to these guidelines to ensure patient safety, data integrity, and regulatory compliance.
+This manual outlines the standard operating procedures for every role the console grants: the **clinical tier** (Chief Nurse) and the **leadership tier** (Medical Director, Emergency Manager, Emergency Deputy Manager), together with the **Owner**, who administers accounts. Section 5 is the authoritative capability reference. All users must adhere to these guidelines to ensure patient safety, data integrity, and regulatory compliance.
 
 ---
 
@@ -50,7 +50,7 @@ Our 2026 architecture is built with an **Offline-First, Zero-Data-Loss Guarantee
 3. **Troubleshooting & Dead-Letter Protection:** If an atomic sync transaction encounters a network glitch during transmission, our backend **Dead-Letter Queue (`dead_letter_queue`)** captures the exact payload and alerts the IT On-Call Supervisor. No clinical note is ever discarded or overwritten.
 
 > [!IMPORTANT]
-> **Doctor Protocol During Offline Mode:** Do not close your browser tab while the **⚠️ Offline Mode** banner is displayed if you have unsaved notes. Wait until connection is restored and the banner turns green (`🟢 Synchronized`) before closing your session or logging out.
+> **Clinical Protocol During Offline Mode:** Do not close your browser tab while the **⚠️ Offline Mode** banner is displayed if you have unsaved notes. Wait until connection is restored and the banner turns green (`🟢 Synchronized`) before closing your session or logging out.
 
 ---
 
@@ -82,36 +82,82 @@ To accelerate clinical documentation, our system integrates local **Edge AI Synt
 
 ## 4. Patient Data Purging Protocol & Administrative Rules
 
-To maintain optimal board performance and comply with data governance regulations, patient records are managed through tiered archiving and controlled purging.
+To keep the active board legible, records are removed from it in two distinct
+ways. **Discharge** takes a patient off the board and keeps the record.
+**Purging** deletes the record outright. Only the second is irreversible, and
+only it is restricted by the rules below.
 
 ### 4.1 Role-Based Purge Authorization
-- **Strict Role Limits:** Only authenticated users with the **Owner (`owner`)** or **Manager (`manager`)** role can execute batch purges or archive patient records.
-- **Doctor Restrictions:** Attending physicians (`doctor` / `cmo`) can mark patients as **Discharged** and complete summaries, but cannot permanently purge records from the active board or database.
+
+Purging is the only irreversible action in the console. Authorization is split
+across two tiers, and the split is enforced in `firestore.rules`, not merely
+hidden in the interface:
+
+- **Discharged records** may be purged by the **Owner** (`owner`) and by the
+  **leadership tier**: Medical Director (`medical_director`), Emergency Manager
+  (`emergency_manager`), Emergency Deputy Manager (`emergency_deputy_manager`).
+- **Active, non-discharged records** may be deleted by the **Owner** alone.
+- **Chief Nurse** (`chief_nurse`) holds full clinical access to the board —
+  registering, updating and discharging patients — but cannot purge or delete
+  any record. The Data Control section is not displayed to this role.
+
+Marking a patient **Discharged** is a clinical action available to every role
+above. It takes the patient off the active board without destroying anything.
+Purging is what destroys it.
 
 ### 4.2 Standard Shift Cleanup & Batch Purging Rules
-1. **Daily Shift End Cleanup:** At the conclusion of each 12-hour shift (8:00 AM / 8:00 PM), the Shift Supervisor/Manager must access the **Manager Dashboard**.
+1. **Daily Shift End Cleanup:** At the conclusion of each 12-hour shift (8:00 AM / 8:00 PM), a member of the leadership tier opens the **Data Control** section on the Live Board.
 2. **Purging Discharged Patients (`Purge Discharged`):**
    - Click **Purge Discharged Patients** to remove all completed, discharged records from the active ER tracking board.
    - Before executing, verify that all discharged patients have a completed and signed-off **Discharge Summary** attached.
-3. **Emergency Reset / Purge All (`Purge All Records`):**
-   - *Use strictly in emergency staging resets or disaster recovery scenarios.*
-   - Clicking **Purge All** requires double-confirmation via system modal and permanently archives active records to historical cold storage (`archive_patients`).
-4. **Audit Trail Compliance:** Every purge operation is automatically logged with the user's email, timestamp, and record count in the immutable `settings/audit_logs` collection.
+3. **Emergency Reset / Purge All (`Purge All`):**
+   - Owner only. Use strictly for emergency staging resets or disaster recovery.
+   - Clicking **Purge All** requires double confirmation via the system modal.
+   > [!WARNING]
+   > **A purge deletes permanently. There is no archive.** The operation issues
+   > Firestore batch deletes against the `patients` collection. It does not copy
+   > records anywhere first, and nothing in this project can read them back.
+   >
+   > Revisions of this document before 2026.5 stated that Purge All "permanently
+   > archives active records to historical cold storage (`archive_patients`)".
+   > No such collection exists and no archival step runs. Treat every purge as
+   > unrecoverable.
+
+4. **Audit trail — not implemented.**
+   > [!WARNING]
+   > Revisions before 2026.5 stated that every purge is logged with the user's
+   > email, timestamp and record count to an immutable `settings/audit_logs`
+   > collection. That collection does not exist and no purge logging runs.
+   >
+   > Until it is built, a purge leaves no record inside the application. If a
+   > governance review requires an audit trail, capture it outside the system at
+   > the time of the purge.
 
 ---
 
 ## 5. Role-Based Access Quick Reference
 
-| Operational Capability | Attending Doctor (`doctor` / `cmo`) | Shift Manager (`manager`) | Hospital Owner (`owner`) |
+Two tiers reach patient data, plus the Owner. "Leadership tier" below means
+Medical Director, Emergency Manager and Emergency Deputy Manager, which carry an
+identical permission set.
+
+| Operational Capability | Chief Nurse (`chief_nurse`) | Leadership tier | Owner (`owner`) |
 | :--- | :---: | :---: | :---: |
-| View Active Patient Board & Vitals | ✅ Yes | ✅ Yes | ✅ Yes |
-| Add / Admit New Patients | ✅ Yes | ✅ Yes | ✅ Yes |
-| Update Clinical Notes & Prescriptions | ✅ Yes | ❌ No *(Read-Only)* | ✅ Yes |
-| Generate & Review Edge AI Summaries | ✅ Yes | ❌ No *(Read-Only)* | ✅ Yes |
-| View Shift Occupancy & Analytics | ✅ Yes | ✅ Yes | ✅ Yes |
-| Execute Batch Purge (`Purge Discharged`) | ❌ No | ✅ Yes | ✅ Yes |
-| Manage User Roles & Permissions | ❌ No | ❌ No | ✅ Yes |
-| Toggle System Kill-Switches (Remote Config) | ❌ No | ❌ No | ✅ Yes |
+| View active patient board & vitals | ✅ Yes | ✅ Yes | ✅ Yes |
+| Register / admit new patients | ✅ Yes | ✅ Yes | ✅ Yes |
+| Update clinical notes, diagnoses, triage | ✅ Yes | ✅ Yes | ✅ Yes |
+| Generate & review Edge AI summaries | ✅ Yes | ✅ Yes | ✅ Yes |
+| Discharge a patient | ✅ Yes | ✅ Yes | ✅ Yes |
+| View shift occupancy & analytics | ✅ Yes | ✅ Yes | ✅ Yes |
+| Purge **discharged** records | ❌ No | ✅ Yes | ✅ Yes |
+| Delete **active** records / Purge All | ❌ No | ❌ No | ✅ Yes |
+| Approve sign-ups & assign roles | ❌ No | ❌ No | ✅ Yes |
+| Toggle system kill-switches (Remote Config) | ❌ No | ❌ No | ✅ Yes |
+
+Two further states are not job titles and grant nothing: `pending` (signed up,
+awaiting the Owner's approval) and `blocked` (access revoked). Neither can read
+any patient record. A new sign-up stays on `pending` until the Owner assigns one
+of the roles above from the **Pending Access Requests** queue in the Owner tab.
 
 ---
 
