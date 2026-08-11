@@ -120,6 +120,22 @@ export function loginWithGoogle() {
  */
 export async function completeRedirectSignIn() {
   const attempted = isRedirectSignInPending();
+
+  // getRedirectResult() is not a cheap read. It resolves through
+  // RedirectAction -> resolver._initialize() -> _openIframe(), which loads the
+  // gapi script and opens a hidden iframe against the auth domain. Calling it
+  // unconditionally at startup put that whole bootstrap on every cold load,
+  // for every user, on the overwhelming majority of loads where no redirect
+  // ever happened.
+  //
+  // The marker is safe to gate on: Firebase persists its own `pendingRedirect`
+  // through BrowserSessionPersistence, i.e. the same sessionStorage. Where that
+  // is unavailable to us it is unavailable to the SDK too, and a redirect
+  // sign-in could not have completed either way.
+  if (!attempted) {
+    return { user: null, attempted: false, failedSilently: false, error: null };
+  }
+
   try {
     const result = await getRedirectResult(auth);
     setRedirectPending(false);

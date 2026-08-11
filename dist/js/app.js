@@ -294,6 +294,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // came back empty just re-rendered the login form — and the user signed in
   // again, and again.
   completeRedirectSignIn().then((res) => {
+    // Nothing was in flight, so nothing was held back and the auth listener
+    // owns the UI. Taking over here would race it, and now that this resolves
+    // immediately on an ordinary load it would flash the login form at a user
+    // whose session is still being restored.
+    if (!res.attempted) return;
+
     if (res.error) {
       showAuthError(res.error.message);
     } else if (res.failedSilently) {

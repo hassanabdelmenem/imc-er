@@ -133,10 +133,27 @@ describe('Google sign-in: completing the redirect round trip', () => {
   });
 
   it('is a no-op on an ordinary page load with no redirect in flight', async () => {
-    authMocks.getRedirectResult.mockResolvedValueOnce(null);
-
     const res = await completeRedirectSignIn();
 
     expect(res).toMatchObject({ user: null, attempted: false, failedSilently: false, error: null });
+  });
+
+  it('does not touch getRedirectResult when no redirect is pending', async () => {
+    // getRedirectResult() resolves through the popup-redirect resolver, which
+    // loads the gapi script and opens a hidden iframe against the auth domain.
+    // Calling it on every cold start is what made loading slow; the only loads
+    // that need it are the ones returning from an actual redirect.
+    await completeRedirectSignIn();
+
+    expect(authMocks.getRedirectResult).not.toHaveBeenCalled();
+  });
+
+  it('does call getRedirectResult when a redirect is pending', async () => {
+    sessionStorage.setItem('imc-er:auth-redirect-pending', '1');
+    authMocks.getRedirectResult.mockResolvedValueOnce({ user: { uid: 'u1' } });
+
+    await completeRedirectSignIn();
+
+    expect(authMocks.getRedirectResult).toHaveBeenCalledTimes(1);
   });
 });
