@@ -95,6 +95,27 @@ document reads nothing from `patients`.
 
 ---
 
+## 3a. Auth handler origin
+
+`FIREBASE_CONFIG.authDomain` is resolved at load time, not hardcoded. On a
+Firebase Hosting host (`*.web.app`, `*.firebaseapp.com` — production, the legacy
+domain, and every preview channel) it is set to the page's own hostname;
+anywhere else, including localhost, it falls back to
+`imc-er-manager.firebaseapp.com`.
+
+Hosting serves the reserved `/__/auth/*` namespace on every site of the project,
+so this keeps the sign-in handshake same-origin. A redirect sign-in parks its
+pending credential in storage belonging to `authDomain`; when that was a
+different origin from the page, the credential was third-party storage on the
+way back and browsers discarded it, so the redirect returned empty and the user
+was asked to sign in again.
+
+Consequence for new hosts: anything serving this app from a domain that is not a
+Firebase Hosting site of this project keeps the canonical `authDomain` and
+remains subject to that third-party-storage behaviour.
+
+---
+
 ## 4. PWA and service worker
 
 `public/sw.js`, cache version `v7-role-brand-concurrency-20260802`, maintaining

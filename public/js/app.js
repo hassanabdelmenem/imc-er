@@ -154,8 +154,27 @@ const getVal = (id) => $(id) ? $(id).value.trim() : '';
 const esc = (str) => { if (str === null || str === undefined) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); };
 const secLog = (msg, err) => { if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') { console.error(msg, err); } else { console.error(msg, err ? (err.code || err.message || "Security Sanitized Error") : ''); } };
 
-const cleanEmail = (e) => e ? String(e).toLowerCase().replace(/\./g, '').trim() : '';
-const checkIfOwner = (email) => OWNER_EMAILS.some(o => cleanEmail(o) === cleanEmail(email));
+/**
+ * Owner check, matching firestore.rules exactly.
+ *
+ * This used to strip every dot from both addresses before comparing, which
+ * collapsed far more than the intended Gmail spellings: `owner@imc.com`,
+ * `own.er@imc.com` and `owner@imcc.om` all normalised to the same string — and
+ * that last one is a different registrable domain. Anyone able to receive mail
+ * there was treated as the owner by the client.
+ *
+ * The rules never agreed: isOwner() there tests `token.email in ownerEmails()`,
+ * an exact match, so an impostor got the Owner tab and account-management UI
+ * while every read and write was denied — a broken shell rather than a breach,
+ * and only by the rules' good judgement. The client now applies the same test.
+ * Both Gmail spellings the owner actually uses are already enumerated in
+ * OWNER_EMAILS, so normalisation bought nothing that the list does not.
+ */
+const normalizeEmail = (e) => e ? String(e).trim().toLowerCase() : '';
+const checkIfOwner = (email) => {
+  const target = normalizeEmail(email);
+  return target !== '' && OWNER_EMAILS.some(o => normalizeEmail(o) === target);
+};
 
 /**
  * Manager tier = owner + the three leadership roles. Unlike the previous
