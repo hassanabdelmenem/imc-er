@@ -3,9 +3,34 @@
  * Copyright (c) 2026 SEVENSN. All Rights Reserved.
  */
 
+/**
+ * The Firebase Auth handler this app signs in against.
+ *
+ * A sign-in redirect parks its pending credential in storage belonging to
+ * `authDomain`. When that is a different origin from the page — the app is
+ * served from `imc-er-manager.web.app`, the handler lived on
+ * `imc-er-manager.firebaseapp.com` — the credential is third-party storage on
+ * the way back, and browsers now routinely discard it. The redirect returns
+ * with nothing, and the user is asked to sign in again.
+ *
+ * Firebase Hosting serves the reserved `/__/auth/*` namespace on every site and
+ * preview channel of the project, so on a Hosting host we can point `authDomain`
+ * at the page's own origin and the handshake never leaves it. Anywhere else —
+ * localhost, a dev server — there is no local handler, so the canonical domain
+ * stays.
+ */
+const CANONICAL_AUTH_DOMAIN = "imc-er-manager.firebaseapp.com";
+
+export function resolveAuthDomain() {
+  if (typeof window === 'undefined' || !window.location) return CANONICAL_AUTH_DOMAIN;
+  const host = window.location.hostname;
+  const isHostingSite = host.endsWith('.web.app') || host.endsWith('.firebaseapp.com');
+  return isHostingSite ? host : CANONICAL_AUTH_DOMAIN;
+}
+
 export const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBE0tjdrlOSr3gUz2iFWnWc_Epi66jV_6A",
-  authDomain: "imc-er-manager.firebaseapp.com",
+  authDomain: resolveAuthDomain(),
   projectId: "imc-er-manager"
 };
 
