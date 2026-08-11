@@ -20,41 +20,46 @@ afterEach(() => vi.restoreAllMocks());
  * third-party storage on the way back and gets discarded — the redirect returns
  * empty and the user is asked to sign in again.
  */
-describe('authDomain follows the serving origin on Firebase Hosting', () => {
-  it('uses the page origin on the production site', () => {
-    expect(onHost('imc-er-manager.web.app', resolveAuthDomain)).toBe('imc-er-manager.web.app');
-  });
-
-  it('uses the page origin on the legacy firebaseapp.com host', () => {
+describe('authDomain is only ever a host with a registered OAuth redirect URI', () => {
+  it('uses the page origin on the canonical domain, the one host that is registered', () => {
     expect(onHost('imc-er-manager.firebaseapp.com', resolveAuthDomain))
       .toBe('imc-er-manager.firebaseapp.com');
   });
 
-  it('uses the page origin on a preview channel', () => {
-    // Preview channels are Hosting sites of the same project and serve the same
-    // reserved /__/auth/* namespace, which is what makes them a real rehearsal
-    // for production rather than a different code path.
-    const channel = 'imc-er-manager--pr4-claude-new-user-logi-9x02hrw8.web.app';
-    expect(onHost(channel, resolveAuthDomain)).toBe(channel);
-  });
-
-  it('falls back to the canonical domain on localhost, which serves no handler', () => {
-    expect(onHost('localhost', resolveAuthDomain)).toBe('imc-er-manager.firebaseapp.com');
-    expect(onHost('127.0.0.1', resolveAuthDomain)).toBe('imc-er-manager.firebaseapp.com');
-  });
-
-  it('falls back on any host that is not a Hosting site', () => {
-    expect(onHost('example.com', resolveAuthDomain)).toBe('imc-er-manager.firebaseapp.com');
-    // Suffix matching must not be fooled by a lookalike domain.
-    expect(onHost('imc-er-manager.web.app.evil.test', resolveAuthDomain))
+  it('falls back on the production web.app host, which is NOT registered', () => {
+    // Firebase derives the OAuth redirect_uri from authDomain. Pointing it at
+    // imc-er-manager.web.app produced redirect_uri_mismatch from Google and
+    // broke sign-in outright — being a Hosting host says nothing about whether
+    // the handler URL is on the OAuth client's list.
+    expect(onHost('imc-er-manager.web.app', resolveAuthDomain))
       .toBe('imc-er-manager.firebaseapp.com');
   });
 
-  it('only ever resolves to a host the app is allowed to run on', () => {
-    // The runtime guard in app.js admits localhost, 127.0.0.1 and *.web.app;
-    // authDomain must never point somewhere that guard would have blocked.
+  it('falls back on preview channels, which can never be pre-registered', () => {
+    // Every pull request gets a fresh hostname, so no redirect URI can exist
+    // for it in advance. A preview channel therefore cannot rehearse same-origin
+    // sign-in — only the canonical domain can.
+    const channel = 'imc-er-manager--pr6-claude-new-user-logi-76a9bqgx.web.app';
+    expect(onHost(channel, resolveAuthDomain)).toBe('imc-er-manager.firebaseapp.com');
+  });
+
+  it('falls back on localhost and on any unrelated host', () => {
+    for (const host of ['localhost', '127.0.0.1', 'example.com', 'imc-er-manager.web.app.evil.test']) {
+      expect(onHost(host, resolveAuthDomain)).toBe('imc-er-manager.firebaseapp.com');
+    }
+  });
+
+  it('never resolves to a host the runtime guard would have blocked', () => {
     const guard = read('public/js/app.js');
     expect(guard).toContain("currentHost.endsWith('.web.app')");
+  });
+
+  it('keeps the registered-hosts list and the fallback in step', () => {
+    // Adding a host here without registering its redirect URI in the Google
+    // Cloud console breaks sign-in on it, so the list is asserted explicitly
+    // rather than left to drift.
+    const cfg = read('public/js/config.js');
+    expect(cfg).toContain('const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN];');
   });
 });
 

@@ -97,22 +97,34 @@ document reads nothing from `patients`.
 
 ## 3a. Auth handler origin
 
-`FIREBASE_CONFIG.authDomain` is resolved at load time, not hardcoded. On a
-Firebase Hosting host (`*.web.app`, `*.firebaseapp.com` — production, the legacy
-domain, and every preview channel) it is set to the page's own hostname;
-anywhere else, including localhost, it falls back to
-`imc-er-manager.firebaseapp.com`.
+`FIREBASE_CONFIG.authDomain` is resolved at load time against
+`OAUTH_REGISTERED_HOSTS` in `public/js/config.js`: if the page is served from a
+host on that list, `authDomain` is that host; otherwise it falls back to
+`imc-er-manager.firebaseapp.com`. Today the list holds the canonical domain
+alone, so every other host — including `imc-er-manager.web.app` and all preview
+channels — uses the fallback.
 
-Hosting serves the reserved `/__/auth/*` namespace on every site of the project,
-so this keeps the sign-in handshake same-origin. A redirect sign-in parks its
-pending credential in storage belonging to `authDomain`; when that was a
-different origin from the page, the credential was third-party storage on the
-way back and browsers discarded it, so the redirect returned empty and the user
-was asked to sign in again.
+The list exists because Firebase derives the OAuth `redirect_uri` from
+`authDomain`, and Google rejects sign-in with `redirect_uri_mismatch` unless
+that exact URL is an authorised redirect URI on the project's OAuth client
+(`50161304724-8d03eb66…`). Only `https://imc-er-manager.firebaseapp.com/__/auth/handler`
+is registered; Firebase adds it when it creates the client and adds nothing
+else. Neither Hosting serving `/__/auth/*` on a domain nor Firebase Auth listing
+it under authorizedDomains implies the redirect URI exists — they are three
+separate registries.
 
-Consequence for new hosts: anything serving this app from a domain that is not a
-Firebase Hosting site of this project keeps the canonical `authDomain` and
-remains subject to that third-party-storage behaviour.
+A same-origin `authDomain` is still worth having: a redirect sign-in parks its
+pending credential in storage belonging to `authDomain`, and across origins
+browsers discard it, so the redirect returns empty. To enable it for a host:
+
+1. Google Cloud Console → APIs & Services → Credentials → the Web client
+2. Authorised redirect URIs → add `https://<host>/__/auth/handler`
+3. Add `<host>` to `OAUTH_REGISTERED_HOSTS`
+
+Steps 1–2 alone change nothing. Step 3 alone breaks sign-in on that host.
+
+Preview channels cannot be enabled this way — each pull request gets a fresh
+hostname — so a preview channel cannot be used to rehearse same-origin sign-in.
 
 ---
 
