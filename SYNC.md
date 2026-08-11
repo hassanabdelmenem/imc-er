@@ -158,15 +158,6 @@ to the project owner.
 
 Flagged rather than changed, because each is a decision rather than a fix:
 
-- **`trafficSplit` in `firebase.json` does nothing.** It declares
-  `canary-v2: 100 / stable: 0`, but `trafficSplit` is not part of the Hosting
-  config schema (`firebase-tools` allows only `public`, `site`, `ignore`,
-  `headers`, `redirects`, `rewrites`, `cleanUrls`, `trailingSlash`,
-  `appAssociation`, `i18n`, `target`, `source`, `predeploy`, `postdeploy`,
-  `frameworksBackend`). Deploys ignore it, so 100% of traffic goes to the
-  single live version. If canary releases were intended, they need Hosting
-  version rollout via the Console or API. If not, delete the key.
-
 - **Tests do not run in CI.** `vitest` and `playwright` suites are configured
   and `npm test` works locally, but no workflow invokes them — the only checks
   on a PR are the preview deploy and the `dist/` gate. Adding a test job to the
