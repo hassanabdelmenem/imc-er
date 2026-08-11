@@ -8,9 +8,49 @@
 
   const LCP_MOBILE_THRESHOLD_MS = 2500;
   const INP_THRESHOLD_MS = 200;
+  // Enough to cover a page load's worth of alerts before auth resolves.
+  const MAX_BUFFERED_EVENTS = 50;
 
   function isMobileViewport() {
     return window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
+  /**
+   * Firestore sink, installed by app.js.
+   *
+   * This file is a classic script loaded in <head> so its PerformanceObserver
+   * is registered before LCP happens; it cannot import the modular SDK itself.
+   * It previously reached for `window.firebase.firestore()` — the *compat*
+   * global, which this app never loads. Both writes below therefore evaluated
+   * to nothing, in silence, while firestore.rules carried rules for both
+   * collections and CLINICAL_SOP promised that no clinical note is ever
+   * discarded. Nothing was ever written to either.
+   *
+   * Events raised before the sink exists are buffered rather than dropped:
+   * telemetry fires during page load, long before auth resolves, and the rules
+   * admit writes from approved clinical staff only.
+   */
+  let firestoreSink = null;
+  let currentUid = 'anonymous';
+  let buffered = [];
+  let droppedBeforeSink = 0;
+
+  function emit(collectionName, payload) {
+    if (!firestoreSink) {
+      if (buffered.length < MAX_BUFFERED_EVENTS) buffered.push({ collectionName, payload });
+      else droppedBeforeSink++;
+      return Promise.resolve();
+    }
+    return Promise.resolve()
+      .then(() => firestoreSink(collectionName, payload))
+      .catch((err) => {
+        // The dead-letter queue is the last line: if even this write fails there
+        // is nowhere further to escalate, so say so loudly rather than swallow.
+        console.error(
+          `[Telemetry] write to ${collectionName} failed:`,
+          (err && (err.code || err.message)) || err
+        );
+      });
   }
 
   function sendTelemetryAlert(type, metricValue, threshold, extra = {}) {
@@ -32,17 +72,7 @@
       detail: alertData
     }));
 
-    // If Firestore is available, log asynchronously to telemetry_alerts collection
-    try {
-      if (window.firebase && window.firebase.firestore) {
-        const db = window.firebase.firestore();
-        db.collection('telemetry_alerts').add(alertData).catch(() => {
-          // Fallback if telemetry logging fails (do not crash app)
-        });
-      }
-    } catch (e) {
-      // Ignore errors during telemetry transmission
-    }
+    emit('telemetry_alerts', alertData);
   }
 
   // 1. Observe Largest Contentful Paint (LCP)
@@ -90,6 +120,34 @@
   // Expose Telemetry RUM API globally for manual trigger, dead-letter queueing & testing
   window.TelemetryRUM = {
     sendAlert: sendTelemetryAlert,
+
+    /**
+     * Install the Firestore writer. Called by app.js once the modular SDK is
+     * ready and the signed-in user is approved clinical staff, which is who
+     * firestore.rules admits to these collections. Flushes anything buffered
+     * during page load.
+     */
+    setSink: function(sink) {
+      firestoreSink = sink;
+      const pending = buffered;
+      buffered = [];
+      if (droppedBeforeSink > 0) {
+        console.warn(`[Telemetry] ${droppedBeforeSink} event(s) dropped before the sink was installed.`);
+        droppedBeforeSink = 0;
+      }
+      if (sink) pending.forEach((e) => emit(e.collectionName, e.payload));
+    },
+
+    /** Clear the sink on sign-out; writes would be denied by the rules anyway. */
+    clearSink: function() {
+      firestoreSink = null;
+      currentUid = 'anonymous';
+    },
+
+    setUser: function(uid) {
+      currentUid = uid || 'anonymous';
+    },
+
     recordFailedBatch: function(payload, errorMsg, targetInfo = {}) {
       const dlqPayload = {
         failedAt: new Date().toISOString(),
@@ -98,21 +156,13 @@
         targetCollection: targetInfo.collection || 'unknown',
         targetDocId: targetInfo.docId || 'unknown',
         url: window.location.href,
-        userUid: (window.firebase && window.firebase.auth && window.firebase.auth().currentUser) ? window.firebase.auth().currentUser.uid : 'anonymous'
+        userUid: currentUid
       };
 
       console.error('[Telemetry DLQ] Atomic batch write failed, pushing to dead_letter_queue:', dlqPayload);
       window.dispatchEvent(new CustomEvent('telemetry:dlq-record', { detail: dlqPayload }));
 
-      try {
-        if (window.firebase && window.firebase.firestore) {
-          const db = window.firebase.firestore();
-          return db.collection('dead_letter_queue').add(dlqPayload);
-        }
-      } catch (e) {
-        console.error('[Telemetry DLQ] Could not write to dead_letter_queue Firestore:', e);
-      }
-      return Promise.resolve();
+      return emit('dead_letter_queue', dlqPayload);
     }
   };
 

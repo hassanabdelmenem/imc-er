@@ -78,6 +78,9 @@ import {
   logout,
   getUserRole,
   ensureUserRecord,
+  recordDeadLetter,
+  recordTelemetryAlert,
+  subscribeToRemoteConfig,
   completeRedirectSignIn,
   isRedirectSignInPending,
   updateUserRole,
@@ -107,45 +110,56 @@ window.AppRemoteConfig = {
 };
 let unsubscribeRemoteConfig = null;
 
+/**
+ * Show or hide the purge controls for the current role and kill-switch state.
+ *
+ * Toggles the `hidden` class rather than assigning style.display. The design
+ * system sets `display: inline-flex !important` on `.btn`, which beats any
+ * inline display an element carries — so `style.display = 'none'` left these
+ * buttons on screen and clickable no matter what the kill-switch said. `.hidden`
+ * is also `!important`, at equal specificity, and style.css loads after the
+ * design system, so it wins on source order.
+ */
 function applyRemoteConfigUI() {
+    const purgeEnabled = window.AppRemoteConfig?.enable_batch_purge !== false;
+
     const btnDisch = $('btn-delete-discharged');
     if (btnDisch) {
-        btnDisch.style.display = (window.AppRemoteConfig?.enable_batch_purge !== false && (isManager || isOwner)) ? 'inline-block' : 'none';
+        btnDisch.classList.toggle('hidden', !(purgeEnabled && (isManager || isOwner)));
     }
     const btnAll = $('btn-delete-all');
     if (btnAll) {
-        btnAll.style.display = (window.AppRemoteConfig?.enable_batch_purge !== false && isOwner) ? 'inline-block' : 'none';
+        btnAll.classList.toggle('hidden', !(purgeEnabled && isOwner));
     }
 }
 
+/**
+ * Subscribe to the live kill-switches.
+ *
+ * Both branches of the previous implementation were gated on
+ * `typeof firebase !== 'undefined'` — the compat global. This app imports the
+ * modular SDK only, so that global never exists and neither branch ever ran:
+ * window.AppRemoteConfig stayed on its hardcoded defaults for the life of the
+ * page, and flipping a switch to shut off purging during an incident did
+ * nothing whatsoever.
+ *
+ * The source is the Firestore document /settings/remote_config, which the rules
+ * already expose to clinical staff for reading and to the owner for writing. It
+ * needs no extra SDK and no project configuration this repo does not have; see
+ * DEPLOYMENT_MANIFEST for why Firebase Remote Config proper is not the source.
+ */
 function startRemoteConfigSync() {
     if (unsubscribeRemoteConfig) { unsubscribeRemoteConfig(); unsubscribeRemoteConfig = null; }
-    try {
-        if (typeof firebase !== 'undefined' && typeof firebase.remoteConfig === 'function') {
-            const rc = firebase.remoteConfig();
-            rc.settings = { minimumFetchIntervalMillis: 3600000 };
-            rc.fetchAndActivate().then(() => {
-                if (typeof rc.getBoolean === 'function') {
-                    window.AppRemoteConfig.enable_edge_ai_synthesis = rc.getBoolean('enable_edge_ai_synthesis');
-                    window.AppRemoteConfig.enable_batch_purge = rc.getBoolean('enable_batch_purge');
-                    applyRemoteConfigUI();
-                }
-            }).catch(e => console.warn("RemoteConfig SDK fetch fallback:", e));
+
+    unsubscribeRemoteConfig = subscribeToRemoteConfig((data) => {
+        if (typeof data.enable_edge_ai_synthesis === 'boolean') {
+            window.AppRemoteConfig.enable_edge_ai_synthesis = data.enable_edge_ai_synthesis;
         }
-    } catch (e) {
-        console.warn("RemoteConfig init warning:", e);
-    }
-    if (typeof firebase !== 'undefined' && firebase.firestore) {
-        const db = firebase.firestore();
-        unsubscribeRemoteConfig = db.collection('settings').doc('remote_config').onSnapshot(doc => {
-            if (doc && doc.exists) {
-                const data = doc.data();
-                if (typeof data.enable_edge_ai_synthesis === 'boolean') window.AppRemoteConfig.enable_edge_ai_synthesis = data.enable_edge_ai_synthesis;
-                if (typeof data.enable_batch_purge === 'boolean') window.AppRemoteConfig.enable_batch_purge = data.enable_batch_purge;
-                applyRemoteConfigUI();
-            }
-        }, err => console.warn("Remote config firestore sync warning:", err));
-    }
+        if (typeof data.enable_batch_purge === 'boolean') {
+            window.AppRemoteConfig.enable_batch_purge = data.enable_batch_purge;
+        }
+        applyRemoteConfigUI();
+    });
 }
 
 // Utility DOM selector helper
@@ -389,6 +403,18 @@ document.addEventListener('DOMContentLoaded', () => {
       isManager = checkIfManager(user.email, role);
       isOwner = role === ROLE_OWNER || checkIfOwner(user.email);
 
+      // Give telemetry a real Firestore writer. Deferred to here on purpose:
+      // firestore.rules admits these collections to approved clinical staff
+      // only, so installing it earlier would turn every buffered event into a
+      // permission-denied. setSink() flushes whatever queued during load.
+      if (window.TelemetryRUM && typeof window.TelemetryRUM.setSink === 'function') {
+        window.TelemetryRUM.setUser(user.uid);
+        window.TelemetryRUM.setSink((collectionName, entry) =>
+          collectionName === 'dead_letter_queue'
+            ? recordDeadLetter(entry)
+            : recordTelemetryAlert(entry));
+      }
+
       if ($('data-control-actions')) $('data-control-actions').style.display = (isManager || isOwner) ? 'flex' : 'none';
       if ($('tab-owner')) $('tab-owner').classList.toggle('hidden', !isOwner);
 
@@ -469,6 +495,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /** Render the signed-out state. */
 function showSignedOut() {
+  if (window.TelemetryRUM && typeof window.TelemetryRUM.clearSink === 'function') {
+    window.TelemetryRUM.clearSink();
+  }
   $('loading-overlay').classList.add('hidden');
   $('auth-section').classList.remove('hidden');
   $('app-section').classList.add('hidden');
