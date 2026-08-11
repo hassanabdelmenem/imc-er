@@ -12,6 +12,7 @@
     "test:e2e": "playwright test",
     "build": "node scripts/build-prod.js",
     "build:check": "node scripts/build-prod.js --check",
+    "preflight": "node scripts/preflight.js",
     "deploy:hosting": "firebase deploy --only hosting --project imc-er-manager",
     "deploy:rules": "firebase deploy --only firestore:rules --project imc-er-manager",
     "deploy:remoteconfig": "node deploy-remote-config.js"

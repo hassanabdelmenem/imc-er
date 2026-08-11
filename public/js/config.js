@@ -48,7 +48,10 @@ const CANONICAL_AUTH_DOMAIN = "imc-er-manager.firebaseapp.com";
  *   4. Add `<host>` to this list.
  * Steps 1–3 without step 4 change nothing; step 4 without 1–3 breaks sign-in.
  */
-const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN];
+export const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN];
+
+/** The host the live site is served from. Checked by scripts/preflight.js. */
+export const PRODUCTION_HOST = 'imc-er-manager.web.app';
 
 export function resolveAuthDomain() {
   if (typeof window === 'undefined' || !window.location) return CANONICAL_AUTH_DOMAIN;
