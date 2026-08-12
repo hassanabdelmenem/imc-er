@@ -120,6 +120,22 @@ export function loginWithGoogle() {
  */
 export async function completeRedirectSignIn() {
   const attempted = isRedirectSignInPending();
+
+  // getRedirectResult() is not a cheap read. It resolves through
+  // RedirectAction -> resolver._initialize() -> _openIframe(), which loads the
+  // gapi script and opens a hidden iframe against the auth domain. Calling it
+  // unconditionally at startup put that whole bootstrap on every cold load,
+  // for every user, on the overwhelming majority of loads where no redirect
+  // ever happened.
+  //
+  // The marker is safe to gate on: Firebase persists its own `pendingRedirect`
+  // through BrowserSessionPersistence, i.e. the same sessionStorage. Where that
+  // is unavailable to us it is unavailable to the SDK too, and a redirect
+  // sign-in could not have completed either way.
+  if (!attempted) {
+    return { user: null, attempted: false, failedSilently: false, error: null };
+  }
+
   try {
     const result = await getRedirectResult(auth);
     setRedirectPending(false);
@@ -251,6 +267,44 @@ export function subscribeToUsers(callback) {
     secLog("Firestore subscribeToUsers Error:", error);
     alert("Notice: Could not load real-time users list from Firestore (" + error.message + "). Please verify Firestore Security Rules.");
   });
+}
+
+/**
+ * Observability sinks.
+ *
+ * These collections have rules in firestore.rules and a promise in
+ * CLINICAL_SOP §2.2 that no clinical note is ever discarded. Nothing had ever
+ * written to either: telemetry-rum.js reached for the compat
+ * `firebase.firestore()` global, which this app does not load. Both writers
+ * throw on failure — the caller logs it, because a dead-letter queue that
+ * fails silently is the thing being fixed here.
+ */
+export async function recordDeadLetter(entry) {
+  await addDoc(collection(db, "dead_letter_queue"), entry);
+}
+
+export async function recordTelemetryAlert(entry) {
+  await addDoc(collection(db, "telemetry_alerts"), entry);
+}
+
+/**
+ * Live kill-switches, from /settings/remote_config.
+ *
+ * The previous implementation subscribed through the compat SDK, so the
+ * switches never moved off their hardcoded defaults: setting enable_batch_purge
+ * to false during an incident did nothing at all. Firestore is used rather than
+ * Firebase Remote Config because it needs no additional SDK and no config this
+ * project does not already have — see startRemoteConfigSync() in app.js.
+ */
+export function subscribeToRemoteConfig(callback, onError) {
+  return onSnapshot(
+    doc(db, "settings", "remote_config"),
+    (snap) => callback(snap.exists() ? (snap.data() || {}) : {}),
+    (error) => {
+      secLog("Remote config subscription error:", error);
+      if (onError) onError(error);
+    }
+  );
 }
 
 /**

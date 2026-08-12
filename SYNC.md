@@ -158,10 +158,54 @@ to the project owner.
 
 Flagged rather than changed, because each is a decision rather than a fix:
 
-- **Tests do not run in CI.** `vitest` and `playwright` suites are configured
-  and `npm test` works locally, but no workflow invokes them — the only checks
-  on a PR are the preview deploy and the `dist/` gate. Adding a test job to the
-  PR workflow would close this.
+- _(none open)_
+
+## The three registries behind Google sign-in
+
+Sign-in depends on three separate lists in three separate places. They look
+interchangeable and are not. Conflating them took Google sign-in down in
+production: `authDomain` was pointed at `imc-er-manager.web.app` after
+confirming the first two, without knowing the third existed.
+
+| Registry | Where | Answers |
+| --- | --- | --- |
+| Hosting reserved paths | Firebase Hosting, automatic | Is `/__/auth/handler` **served** on this host? |
+| Authorised domains | Firebase Console → Authentication → Settings | May a page on this origin **start** a sign-in? |
+| OAuth redirect URIs | Google Cloud Console → Credentials → Web client | Will Google **accept** a redirect back to this handler? |
+
+The first two are true for every Hosting site of the project, including every
+preview channel. The third is true only for
+`https://imc-er-manager.firebaseapp.com/__/auth/handler`, because that is the
+one Firebase registers when it creates the client. Nothing else is registered
+and nothing registers itself.
+
+`public/js/config.js` encodes the third list as `OAUTH_REGISTERED_HOSTS`, and
+`scripts/preflight.js` checks it against Google on every pull request.
+
+### Changing where sign-in happens
+
+1. Add `https://<host>/__/auth/handler` to the Web client in Google Cloud
+   Console → APIs & Services → Credentials → Authorised redirect URIs.
+2. Add `<host>` to `OAUTH_REGISTERED_HOSTS` in `public/js/config.js`.
+3. `npm run preflight` — it fails if you did 2 without 1.
+
+Do not use a preview channel to test this. Each pull request gets a fresh
+hostname that cannot be pre-registered, so a preview can only ever exercise the
+fallback path, never same-origin sign-in. Preflight is the check; a green
+preview proves nothing about it.
+
+## What is verified automatically, and what is not
+
+| Claim | Checked by |
+| --- | --- |
+| `dist/` matches `public/` | `scripts/build-prod.js --check`, in every deploy workflow and in Checks |
+| the live site matches `dist/` | `firebase-drift-check.yml`, daily and after each deploy |
+| unit suite passes | `checks.yml`, on every pull request and push to `main` |
+| role model agrees across `config.js`, `firestore.rules`, `set-admin.js` | `tests/unit/roleModel.test.js` |
+| owner allowlist agrees between client and rules | `tests/unit/authDomain.test.js` |
+| OAuth redirect URIs, authorised domains, sign-in providers, `firebase.json` schema | `scripts/preflight.js`, in Checks and daily |
+| Firestore rules match `firestore.rules` | **nothing** — rules are not readable over HTTP. The deploy is automated instead, so the repo stays the only writer. |
+| Remote Config matches `remote-config.json` | **nothing**, same reason, same mitigation |
 
 ## When the drift check fails
 

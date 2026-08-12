@@ -1,0 +1,76 @@
+# Verification that runs before anything ships.
+#
+# Two gaps this closes.
+#
+# The unit suite existed and passed locally, but no workflow invoked it — the
+# only checks on a pull request were the preview deploy and the dist/ gate, so
+# every regression test in the repo protected nothing automatically.
+#
+# And nothing verified the repository's claims about systems it does not
+# contain. `trafficSplit` in firebase.json declared a canary rollout the Hosting
+# schema has no concept of; `authDomain` was pointed at a host whose handler URL
+# was never registered as an OAuth redirect URI, which took Google sign-in down
+# in production. scripts/preflight.js reaches the real Google endpoints and
+# fails when reality disagrees.
+#
+# Preflight uses only the public web API key already shipped in the client, so
+# it needs no secrets and runs on pull requests from forks. It reads only.
+#
+# The schedule matters as much as the pull-request run: the Google Cloud console
+# can change under a repository that has not changed at all. A redirect URI
+# deleted there is invisible here until someone tries to sign in, which is
+# exactly the failure this is meant to stop being discovered by users.
+
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    # 06:45 UTC daily, after the drift check at 06:15 so the two do not
+    # interleave in the Actions list.
+    - cron: '45 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm test
+
+      # Same gate the deploy workflows run. Cheap here, and it fails the PR on
+      # a public/-only edit before a reviewer spends time on it.
+      - name: Verify dist/ matches public/
+        run: node scripts/build-prod.js --check
+
+  preflight:
+    name: Preflight (live Firebase / Google Cloud)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: '20'
+
+      - name: Verify repository claims against live platform state
+        run: node scripts/preflight.js

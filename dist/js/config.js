@@ -13,19 +13,50 @@
  * the way back, and browsers now routinely discard it. The redirect returns
  * with nothing, and the user is asked to sign in again.
  *
- * Firebase Hosting serves the reserved `/__/auth/*` namespace on every site and
- * preview channel of the project, so on a Hosting host we can point `authDomain`
- * at the page's own origin and the handshake never leaves it. Anywhere else —
- * localhost, a dev server — there is no local handler, so the canonical domain
- * stays.
+ * Pointing `authDomain` at the page's own origin removes that boundary, but it
+ * is only usable on a host whose handler URL is a registered OAuth redirect URI
+ * — see OAUTH_REGISTERED_HOSTS below, which is the gate that decides. Today
+ * that is the canonical domain alone, so the cross-origin behaviour above is
+ * still in force everywhere else and the mitigation in app.js (naming the
+ * failure and offering email/password) is what carries users through it.
  */
 const CANONICAL_AUTH_DOMAIN = "imc-er-manager.firebaseapp.com";
+
+/**
+ * Hosts whose `/__/auth/handler` is registered as an authorised redirect URI on
+ * this project's OAuth client.
+ *
+ * Serving the app from a host is NOT enough. Firebase derives the OAuth
+ * `redirect_uri` from `authDomain`, and Google rejects the sign-in outright
+ * with `redirect_uri_mismatch` unless that exact URL is on the client's list.
+ * Firebase Hosting serving `/__/auth/*` on a domain, and Firebase Auth listing
+ * it under authorizedDomains, are both separate things that do not imply it.
+ *
+ * An earlier revision assumed any Hosting host would work and pointed
+ * `authDomain` at the page origin. `imc-er-manager.web.app` is not registered,
+ * so that broke Google sign-in in production; preview channels get a fresh
+ * hostname per pull request and can never be pre-registered at all.
+ *
+ * `imc-er-manager.firebaseapp.com` is registered automatically when Firebase
+ * creates the client, which is why it is the only entry here and the fallback
+ * for everything else.
+ *
+ * To add a host — and regain the same-origin sign-in handshake on it:
+ *   1. Google Cloud Console → APIs & Services → Credentials
+ *   2. Open the Web client (`50161304724-8d03eb66…`)
+ *   3. Authorised redirect URIs → add `https://<host>/__/auth/handler`
+ *   4. Add `<host>` to this list.
+ * Steps 1–3 without step 4 change nothing; step 4 without 1–3 breaks sign-in.
+ */
+export const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN];
+
+/** The host the live site is served from. Checked by scripts/preflight.js. */
+export const PRODUCTION_HOST = 'imc-er-manager.web.app';
 
 export function resolveAuthDomain() {
   if (typeof window === 'undefined' || !window.location) return CANONICAL_AUTH_DOMAIN;
   const host = window.location.hostname;
-  const isHostingSite = host.endsWith('.web.app') || host.endsWith('.firebaseapp.com');
-  return isHostingSite ? host : CANONICAL_AUTH_DOMAIN;
+  return OAUTH_REGISTERED_HOSTS.includes(host) ? host : CANONICAL_AUTH_DOMAIN;
 }
 
 export const FIREBASE_CONFIG = {

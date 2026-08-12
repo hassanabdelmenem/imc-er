@@ -1,7 +1,7 @@
 # IMC UNIFIED EMERGENCY COMMAND CENTER
 ## Standard Operating Procedures (SOP) & Clinical User Manual
 
-**Document Version:** 2026.5  
+**Document Version:** 2026.6  
 **Effective Date:** August 2026  
 **Applicability:** Clinical & Administrative Personnel using the IMC ER Console (`imc-er`)
 
@@ -47,7 +47,17 @@ Our 2026 architecture is built with an **Offline-First, Zero-Data-Loss Guarantee
 ### 2.2 Background Synchronization upon Reconnection
 1. **Automatic Flush:** As soon as network connectivity is restored, the system's Background Sync engine automatically detects the live connection and transmits all queued local updates (`background-sync:flushed`) to the Cloud Firestore database in strict chronological order.
 2. **Visual Confirmation:** Once all queued notes are synced, the status bar returns to **🟢 Online — Synchronized** and a confirmation notification appears.
-3. **Troubleshooting & Dead-Letter Protection:** If an atomic sync transaction encounters a network glitch during transmission, our backend **Dead-Letter Queue (`dead_letter_queue`)** captures the exact payload and alerts the IT On-Call Supervisor. No clinical note is ever discarded or overwritten.
+3. **Troubleshooting & Dead-Letter Protection:** If an atomic sync transaction fails during transmission, the payload is written to the **Dead-Letter Queue** (`dead_letter_queue`) with the failure reason, the target record and the signed-in user, so the write can be recovered and replayed by the Owner.
+
+   > [!NOTE]
+   > Two limits worth knowing. The queue raises **no alert** — it is a record,
+   > readable by the Owner, not a page to on-call; someone has to look. And a
+   > failure occurring before sign-in completes is held in memory and written
+   > once you are signed in, so closing the tab at the access gate loses it.
+   >
+   > Revisions of this document before 2026.6 stated that the queue "alerts the
+   > IT On-Call Supervisor" and that "no clinical note is ever discarded".
+   > Neither was true: until 2026.6 the queue was never written to at all.
 
 > [!IMPORTANT]
 > **Clinical Protocol During Offline Mode:** Do not close your browser tab while the **⚠️ Offline Mode** banner is displayed if you have unsaved notes. Wait until connection is restored and the banner turns green (`🟢 Synchronized`) before closing your session or logging out.
