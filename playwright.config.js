@@ -11,7 +11,15 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Unset everywhere that matters (CI, ordinary dev): Playwright
+        // downloads its own pinned browser as usual. Only a sandbox with a
+        // pre-installed Chromium at a fixed, non-standard path needs this.
+        launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+          ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+          : {},
+      },
     },
   ],
   webServer: {

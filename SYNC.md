@@ -207,6 +207,9 @@ preview proves nothing about it.
 | role model agrees across `config.js`, `firestore.rules`, `set-admin.js` | `tests/unit/roleModel.test.js` |
 | owner allowlist agrees between client and rules | `tests/unit/authDomain.test.js` |
 | OAuth redirect URIs, authorised domains, sign-in providers, `firebase.json` schema | `scripts/preflight.js`, in Checks and daily |
+| the Google Login button, clicked for real, reaches Google without `redirect_uri_mismatch` | `tests/e2e/authHandshake.spec.js`, in Checks |
+| a rejected email/password sign-in surfaces a real Firebase Auth error, not a silent discard | `tests/e2e/authHandshake.spec.js`, in Checks |
+| a *successful* email/password or Google sign-in reaches the dashboard | **nothing** — see the header comment in `tests/e2e/authHandshake.spec.js` for why: a disposable test account's `pending` record can only be deleted by the owner (`firestore.rules`, `/users/{userId}`), so completing that path on every Checks run would leave permanent debris in the real approval queue. Needs a pre-approved fixture account, set up by hand once, before this can close. |
 | Firestore rules match `firestore.rules` | **nothing** — rules are not readable over HTTP. The deploy is automated instead, so the repo stays the only writer. |
 | Remote Config matches `remote-config.json` | **nothing**, same reason, same mitigation |
 

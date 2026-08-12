@@ -20,6 +20,14 @@
 # can change under a repository that has not changed at all. A redirect URI
 # deleted there is invisible here until someone tries to sign in, which is
 # exactly the failure this is meant to stop being discovered by users.
+#
+# A third gap, closed by the e2e job below: preflight calls Google's endpoints
+# directly and never loads the app, so it would not catch a regression in the
+# button wiring or FIREBASE_CONFIG plumbing itself. tests/e2e/authHandshake.spec.js
+# clicks the real Google button in the real app and follows the real Google
+# navigation it produces, and separately drives a real (rejected) sign-in
+# through Firebase Auth to prove the error path is not a silent discard — see
+# that file for why a fully successful sign-in isn't exercised the same way.
 
 name: Checks
 
@@ -74,3 +82,25 @@ jobs:
 
       - name: Verify repository claims against live platform state
         run: node scripts/preflight.js
+
+  e2e:
+    name: End-to-end (Chromium, real Google + Firebase Auth)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      # tests/e2e/authHandshake.spec.js is deliberately narrow about what
+      # counts as a failure — see the file for why — but it still depends on
+      # accounts.google.com being reachable and behaving. The retry setting in
+      # playwright.config.js (2 retries under CI) absorbs a transient hiccup on
+      # Google's side without masking the one failure this exists to catch.
+      - run: npm run test:e2e
