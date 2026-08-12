@@ -26,13 +26,15 @@ describe('authDomain is only ever a host with a registered OAuth redirect URI', 
       .toBe('imc-er-manager.firebaseapp.com');
   });
 
-  it('falls back on the production web.app host, which is NOT registered', () => {
+  it('uses the page origin on the production host, now that it is registered', () => {
     // Firebase derives the OAuth redirect_uri from authDomain. Pointing it at
-    // imc-er-manager.web.app produced redirect_uri_mismatch from Google and
-    // broke sign-in outright — being a Hosting host says nothing about whether
-    // the handler URL is on the OAuth client's list.
+    // imc-er-manager.web.app while the handler URL was absent from the OAuth
+    // client produced redirect_uri_mismatch from Google and broke sign-in
+    // outright. The URI has since been registered, so the live site keeps the
+    // handshake same-origin — but that is a fact about the Google Cloud
+    // console, not about the hostname, and preflight is what confirms it.
     expect(onHost('imc-er-manager.web.app', resolveAuthDomain))
-      .toBe('imc-er-manager.firebaseapp.com');
+      .toBe('imc-er-manager.web.app');
   });
 
   it('falls back on preview channels, which can never be pre-registered', () => {
@@ -57,9 +59,11 @@ describe('authDomain is only ever a host with a registered OAuth redirect URI', 
   it('keeps the registered-hosts list and the fallback in step', () => {
     // Adding a host here without registering its redirect URI in the Google
     // Cloud console breaks sign-in on it, so the list is asserted explicitly
-    // rather than left to drift.
+    // rather than left to drift. `npm run preflight` is the check that proves
+    // each entry is genuinely registered; this one only pins the membership so
+    // a change to it has to be deliberate.
     const cfg = read('public/js/config.js');
-    expect(cfg).toContain('const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN];');
+    expect(cfg).toContain('const OAUTH_REGISTERED_HOSTS = [CANONICAL_AUTH_DOMAIN, PRODUCTION_HOST];');
   });
 });
 

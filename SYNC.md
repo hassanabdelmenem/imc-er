@@ -174,10 +174,13 @@ confirming the first two, without knowing the third existed.
 | OAuth redirect URIs | Google Cloud Console → Credentials → Web client | Will Google **accept** a redirect back to this handler? |
 
 The first two are true for every Hosting site of the project, including every
-preview channel. The third is true only for
-`https://imc-er-manager.firebaseapp.com/__/auth/handler`, because that is the
-one Firebase registers when it creates the client. Nothing else is registered
-and nothing registers itself.
+preview channel. The third is true for exactly two handlers:
+`https://imc-er-manager.firebaseapp.com/__/auth/handler`, which Firebase
+registers when it creates the client, and
+`https://imc-er-manager.web.app/__/auth/handler`, which was added by hand in the
+Cloud Console to bring the live site back up and to let it hold the handshake on
+its own origin. Nothing registers itself — a third host would need the same
+manual step.
 
 `public/js/config.js` encodes the third list as `OAUTH_REGISTERED_HOSTS`, and
 `scripts/preflight.js` checks it against Google on every pull request.
