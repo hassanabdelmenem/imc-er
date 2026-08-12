@@ -100,18 +100,22 @@ document reads nothing from `patients`.
 `FIREBASE_CONFIG.authDomain` is resolved at load time against
 `OAUTH_REGISTERED_HOSTS` in `public/js/config.js`: if the page is served from a
 host on that list, `authDomain` is that host; otherwise it falls back to
-`imc-er-manager.firebaseapp.com`. Today the list holds the canonical domain
-alone, so every other host — including `imc-er-manager.web.app` and all preview
-channels — uses the fallback.
+`imc-er-manager.firebaseapp.com`. The list holds the canonical domain and
+`imc-er-manager.web.app`, so the live site runs the handshake same-origin;
+preview channels and everything else use the fallback.
 
 The list exists because Firebase derives the OAuth `redirect_uri` from
 `authDomain`, and Google rejects sign-in with `redirect_uri_mismatch` unless
 that exact URL is an authorised redirect URI on the project's OAuth client
-(`50161304724-8d03eb66…`). Only `https://imc-er-manager.firebaseapp.com/__/auth/handler`
-is registered; Firebase adds it when it creates the client and adds nothing
-else. Neither Hosting serving `/__/auth/*` on a domain nor Firebase Auth listing
-it under authorizedDomains implies the redirect URI exists — they are three
-separate registries.
+(`50161304724-8d03eb66…`). Firebase registers
+`https://imc-er-manager.firebaseapp.com/__/auth/handler` when it creates the
+client and registers nothing else ever;
+`https://imc-er-manager.web.app/__/auth/handler` was added by hand afterwards,
+which is what makes the production entry above legitimate. Neither Hosting
+serving `/__/auth/*` on a domain nor Firebase Auth listing it under
+authorizedDomains implies the redirect URI exists — they are three separate
+registries, and `npm run preflight` is what confirms this one rather than
+assuming it.
 
 A same-origin `authDomain` is still worth having: a redirect sign-in parks its
 pending credential in storage belonging to `authDomain`, and across origins
