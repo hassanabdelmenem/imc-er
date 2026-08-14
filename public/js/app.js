@@ -693,7 +693,7 @@ function setupEventListeners() {
     const primaryDepartment = getVal('reg-dept') || 'Internal Medicine';
     const time = getVal('reg-time');
     
-    if (!/^[؀-ۿ\s]+$/.test(name)) {
+    if (!/^[\u0600-\u06FF\s]+$/.test(name)) {
       return alert(currentLang === 'en' ? 'Arabic Name Only.' : 'الاسم عربي فقط.');
     }
     if (!/^[A-Z]\d{9}$/.test(hospitalId)) {
