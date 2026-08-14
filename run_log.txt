@@ -1,0 +1,164 @@
+build_and_deploy	Set up job	﻿2026-08-13T00:43:05.6102319Z Current runner version: '2.336.0'
+build_and_deploy	Set up job	2026-08-13T00:43:05.6137896Z ##[group]Runner Image Provisioner
+build_and_deploy	Set up job	2026-08-13T00:43:05.6139630Z Hosted Compute Agent
+build_and_deploy	Set up job	2026-08-13T00:43:05.6141052Z Version: 20260707.563
+build_and_deploy	Set up job	2026-08-13T00:43:05.6142597Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+build_and_deploy	Set up job	2026-08-13T00:43:05.6144208Z Build Date: 2026-07-07T19:33:50Z
+build_and_deploy	Set up job	2026-08-13T00:43:05.6145821Z Worker ID: ***05b10bca-adcd-4f09-bb25-a67597cb256b***
+build_and_deploy	Set up job	2026-08-13T00:43:05.6147831Z Azure Region: centralus
+build_and_deploy	Set up job	2026-08-13T00:43:05.6149371Z ##[endgroup]
+build_and_deploy	Set up job	2026-08-13T00:43:05.6152098Z ##[group]Operating System
+build_and_deploy	Set up job	2026-08-13T00:43:05.6153526Z Ubuntu
+build_and_deploy	Set up job	2026-08-13T00:43:05.6154872Z 24.04.4
+build_and_deploy	Set up job	2026-08-13T00:43:05.6156003Z LTS
+build_and_deploy	Set up job	2026-08-13T00:43:05.6157574Z ##[endgroup]
+build_and_deploy	Set up job	2026-08-13T00:43:05.6158884Z ##[group]Runner Image
+build_and_deploy	Set up job	2026-08-13T00:43:05.6160408Z Image: ubuntu-24.04
+build_and_deploy	Set up job	2026-08-13T00:43:05.6161676Z Version: 20260720.247.2
+build_and_deploy	Set up job	2026-08-13T00:43:05.6163943Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+build_and_deploy	Set up job	2026-08-13T00:43:05.6167718Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+build_and_deploy	Set up job	2026-08-13T00:43:05.6169767Z ##[endgroup]
+build_and_deploy	Set up job	2026-08-13T00:43:05.6172336Z ##[group]GITHUB_TOKEN Permissions
+build_and_deploy	Set up job	2026-08-13T00:43:05.6175348Z Contents: read
+build_and_deploy	Set up job	2026-08-13T00:43:05.6176584Z Metadata: read
+build_and_deploy	Set up job	2026-08-13T00:43:05.6178175Z ##[endgroup]
+build_and_deploy	Set up job	2026-08-13T00:43:05.6181350Z Secret source: Actions
+build_and_deploy	Set up job	2026-08-13T00:43:05.6183505Z Prepare workflow directory
+build_and_deploy	Set up job	2026-08-13T00:43:05.7099210Z Prepare all required actions
+build_and_deploy	Set up job	2026-08-13T00:43:05.7227059Z Getting action download info
+build_and_deploy	Set up job	2026-08-13T00:43:05.9622229Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+build_and_deploy	Set up job	2026-08-13T00:43:06.0978847Z Download action repository 'FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a' (SHA:500ac625ca2dd40cbd15f7659af953801858032a)
+build_and_deploy	Set up job	2026-08-13T00:43:06.4940824Z Complete job name: build_and_deploy
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-08-13T00:43:06.5679962Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5688693Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5689716Z with:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5690274Z   repository: hassanabdelmenem/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5693799Z   token: ***
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5694324Z   ssh-strict: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5694848Z   ssh-user: git
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5695388Z   persist-credentials: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5695968Z   clean: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5696503Z   sparse-checkout-cone-mode: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5697117Z   fetch-depth: 1
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5697823Z   fetch-tags: false
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5698363Z   show-progress: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5698912Z   lfs: false
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5699454Z   submodules: false
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5700001Z   set-safe-directory: true
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.5700814Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7058861Z Syncing repository: hassanabdelmenem/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7061678Z ##[group]Getting Git version info
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7063338Z Working directory is '/home/runner/work/imc-er/imc-er'
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7108260Z [command]/usr/bin/git version
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7220615Z git version 2.54.0
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7277468Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7285599Z Temporarily overriding HOME='/home/runner/work/_temp/b346d25e-21e1-4917-af67-7038f59dc7d2' before making global git config changes
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7288757Z Adding repository directory to the temporary git global config as a safe directory
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7291037Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/imc-er/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7372055Z Deleting the contents of '/home/runner/work/imc-er/imc-er'
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7388861Z ##[group]Initializing the repository
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7401631Z [command]/usr/bin/git init /home/runner/work/imc-er/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7464925Z hint: Using 'master' as the name for the initial branch. This default branch name
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7481662Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7491554Z hint: to use in all of your new repositories, which will suppress this warning,
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7493129Z hint: call:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7494047Z hint:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7495144Z hint: 	git config --global init.defaultBranch <name>
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7496509Z hint:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7497945Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7499752Z hint: 'development'. The just-created branch can be renamed via this command:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7501316Z hint:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7502270Z hint: 	git branch -m <name>
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7503292Z hint:
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7504551Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7506576Z Initialized empty Git repository in /home/runner/work/imc-er/imc-er/.git/
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7510329Z [command]/usr/bin/git remote add origin https://github.com/hassanabdelmenem/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7573873Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7575684Z ##[group]Disabling automatic garbage collection
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7579422Z [command]/usr/bin/git config --local gc.auto 0
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7664832Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7666341Z ##[group]Setting up auth
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7668257Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.7721693Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8192613Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8279981Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8690241Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8693131Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8694026Z ##[group]Fetching the repository
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:06.8695978Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +11d1d41d7b450bf8daf0b0e6dfb4c7ae7443c29d:refs/remotes/origin/main
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3773235Z From https://github.com/hassanabdelmenem/imc-er
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3775779Z  * [new ref]         11d1d41d7b450bf8daf0b0e6dfb4c7ae7443c29d -> origin/main
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3863911Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3888886Z ##[group]Determining the checkout info
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3908809Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3910310Z [command]/usr/bin/git sparse-checkout disable
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.3968662Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4008953Z ##[group]Checking out the ref
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4089087Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4134054Z Switched to a new branch 'main'
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4154059Z branch 'main' set up to track 'origin/main'.
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4162365Z ##[endgroup]
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4201558Z [command]/usr/bin/git log -1 --format=%H
+build_and_deploy	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:07.4230108Z 11d1d41d7b450bf8daf0b0e6dfb4c7ae7443c29d
+build_and_deploy	Verify dist/ matches public/	﻿2026-08-13T00:43:07.4543772Z ##[group]Run node scripts/build-prod.js --check
+build_and_deploy	Verify dist/ matches public/	2026-08-13T00:43:07.4545325Z [36;1mnode scripts/build-prod.js --check[0m
+build_and_deploy	Verify dist/ matches public/	2026-08-13T00:43:07.4592166Z shell: /usr/bin/bash -e ***0***
+build_and_deploy	Verify dist/ matches public/	2026-08-13T00:43:07.4593302Z ##[endgroup]
+build_and_deploy	Verify dist/ matches public/	2026-08-13T00:43:07.6295302Z dist/ matches public/ (14 files).
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	﻿2026-08-13T00:43:07.6660586Z ##[group]Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6662223Z with:
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6665737Z   repoToken: ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6678298Z   firebaseServiceAccount: ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6679395Z   channelId: live
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6680426Z   projectId: imc-er-manager
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6681460Z   expires: 7d
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6682444Z   entryPoint: .
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6683443Z   firebaseToolsVersion: latest
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6684491Z   disableComment: false
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6685497Z   force: false
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.6686469Z ##[endgroup]
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7399913Z ##[group]Verifying firebase.json exists
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7402696Z firebase.json file found. Continuing deploy.
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7406068Z ##[endgroup]
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7409498Z ##[group]Setting up CLI credentials
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7413848Z (node:2002) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7429341Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7431702Z Created a temporary file with Application Default Credentials.
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7434140Z ##[endgroup]
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7436025Z ##[group]Deploying to production site
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:07.7463005Z [command]/usr/local/bin/npx firebase-tools@latest deploy --only hosting --project imc-er-manager --json
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:11.5388306Z npm warn exec The following package was not found and will be installed: firebase-tools@15.26.0
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:36.3558847Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:37.8779538Z npm warn deprecated json-ptr@3.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:38.2190340Z npm warn deprecated uuid@9.0.1: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:38.4222527Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.1170725Z ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.1171688Z   "status": "success",
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.1172466Z   "result": ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.1173616Z     "hosting": "projects/50161304724/sites/imc-er-manager/versions/686a83ac81df9463"
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.1183449Z   ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2071738Z ***::endgroup::
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2088362Z ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2098135Z   details_url: 'https://imc-er-manager.web.app/',
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2099293Z   conclusion: 'success',
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2100089Z   output: ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2100859Z     title: 'Production deploy succeeded',
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2101849Z     summary: '[imc-er-manager.web.app](https://imc-er-manager.web.app/)'
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2103033Z   ***
+build_and_deploy	Run FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a	2026-08-13T00:43:48.2103718Z ***
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-08-13T00:43:48.2276473Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.2277935Z Post job cleanup.
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3138851Z [command]/usr/bin/git version
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3184405Z git version 2.54.0
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3268738Z Temporarily overriding HOME='/home/runner/work/_temp/44596276-e2ba-46c2-aaed-c0f3dde36fd2' before making global git config changes
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3270478Z Adding repository directory to the temporary git global config as a safe directory
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3271894Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/imc-er/imc-er
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3312796Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3393970Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3701070Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3714277Z http.https://github.com/.extraheader
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3716677Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build_and_deploy	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-08-13T00:43:48.3755837Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build_and_deploy	Complete job	﻿2026-08-13T00:43:48.4416100Z Cleaning up orphan processes
+build_and_deploy	Complete job	2026-08-13T00:43:48.4744721Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
