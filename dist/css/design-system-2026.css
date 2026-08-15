@@ -60,7 +60,9 @@
        scale: it only ever appears on a large filled action button, never a status. */
     --cta: #d97757;
     --cta-dark: #ae5f46;
-    --on-cta: #faf9f5;
+    /* Dark text, not flat cream: cream-on-orange is only ~3:1 here (fails WCAG
+       AA) but near-black reads ~5.9:1 — same reasoning as --on-primary above. */
+    --on-cta: #141413;
     --cta-glow: rgba(217, 119, 87, 0.35);
 
     --danger: var(--error);
@@ -88,6 +90,10 @@
     --los-5: #c14436;
     --los-6: #a13226;
     --on-los: #141413;
+    /* los-5/los-6 are dark enough that dark text drops to 3.64:1 / 2.63:1
+       (fails AA) — exactly where the ramp needs to read clearest, since these
+       are the most-overdue tiers. Light text on those two tiers only. */
+    --on-los-hi: #faf9f5;
 
     /* Staff role identity accents */
     --role-owner: #d97757;
@@ -198,7 +204,9 @@
         --primary-gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
         --accent: var(--primary);
 
-        --cta: #b8613f;
+        /* Darkened from #b8613f: white text on the original tone was only
+           ~4.4:1 (borderline AA). This clears 5.1:1. */
+        --cta: #ab5636;
         --cta-dark: #93492d;
         --on-cta: #FFFFFF;
         --cta-glow: rgba(184, 97, 63, 0.35);
@@ -226,11 +234,15 @@
         --los-5: #8f2a1e;
         --los-6: #711c13;
         --on-los: #FFFFFF;
+        --on-los-hi: #FFFFFF;
 
-        --role-owner: #b8613f;
+        /* Darkened from the originals: as plain text on a card (e.g. the Owner
+           tab's role badge), the old tones were only 3.5-4.3:1 against the
+           card surface — under the 4.5:1 AA minimum for that text size. */
+        --role-owner: #93482a;
         --role-director: #3e6690;
-        --role-manager: #4f7aa8;
-        --role-deputy: #6b6a63;
+        --role-manager: #356184;
+        --role-deputy: #5c5b54;
     --role-nurse: #3d6f63;
         --role-pending: #7d5610;
         --role-blocked: #a83226;
@@ -300,7 +312,9 @@
     --primary-gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     --accent: var(--primary);
 
-    --cta: #b8613f;
+    /* Darkened from #b8613f: white text on the original tone was only
+       ~4.4:1 (borderline AA). This clears 5.1:1. */
+    --cta: #ab5636;
     --cta-dark: #93492d;
     --on-cta: #FFFFFF;
     --cta-glow: rgba(184, 97, 63, 0.35);
@@ -328,11 +342,15 @@
     --los-5: #8f2a1e;
     --los-6: #711c13;
     --on-los: #FFFFFF;
+    --on-los-hi: #FFFFFF;
 
-    --role-owner: #b8613f;
+    /* Darkened from the originals: as plain text on a card (e.g. the Owner
+       tab's role badge), the old tones were only 3.5-4.3:1 against the
+       card surface — under the 4.5:1 AA minimum for that text size. */
+    --role-owner: #93482a;
     --role-director: #3e6690;
-    --role-manager: #4f7aa8;
-    --role-deputy: #6b6a63;
+    --role-manager: #356184;
+    --role-deputy: #5c5b54;
     --role-nurse: #3d6f63;
     --role-pending: #7d5610;
     --role-blocked: #a83226;
@@ -403,7 +421,7 @@
 
     --cta: #d97757;
     --cta-dark: #ae5f46;
-    --on-cta: #faf9f5;
+    --on-cta: #141413;
     --cta-glow: rgba(217, 119, 87, 0.35);
 
     --danger: var(--error);
@@ -429,6 +447,7 @@
     --los-5: #c14436;
     --los-6: #a13226;
     --on-los: #141413;
+    --on-los-hi: #faf9f5;
 
     --role-owner: #d97757;
     --role-director: #6a9bcc;
@@ -600,6 +619,22 @@ p {
 
 .hidden {
     display: none !important;
+}
+
+/* Screen-reader-only content: still in the accessibility tree (unlike
+   `.hidden`'s display:none, which removes it) so aria-live announcers and
+   similar off-screen text actually get read out. Standard clip-rect pattern —
+   the same one already used ad hoc for .sentinel-btn-label on mobile. */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -1191,18 +1226,20 @@ table tr:hover td {
 
 /* ==========================================================================
    10. MODERN SKELETON LOADERS (SHIMMER ANIMATION)
-   ========================================================================== */
-@keyframes skeletonShimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
 
-.skeleton-line, .skeleton-card, .skeleton-table-row, .skeleton-avatar, .skeleton-badge,
-.skeleton-container .skeleton-line, .skeleton-container .skeleton-card {
+   The @keyframes and the shared shimmer background/animation for
+   .skeleton-line / .skeleton-card / .skeleton-table-row used to be declared
+   here AND again in style.css (loaded after this file) with slightly
+   different gradient stops — the style.css copy was the only one that ever
+   actually rendered, since equal-specificity !important rules resolve to
+   whichever one is *last* in the cascade. That single surviving definition
+   now lives in style.css; this file keeps only the two skeleton variants
+   style.css doesn't define (.skeleton-avatar, .skeleton-badge), and reuses
+   the same `skeletonShimmer` keyframe by name — @keyframes are looked up
+   globally by name, not by which stylesheet defines them, so this still
+   animates correctly even though the keyframe itself lives in the other file.
+   ========================================================================== */
+.skeleton-avatar, .skeleton-badge {
     background: linear-gradient(
         90deg,
         var(--surface) 25%,
@@ -1211,26 +1248,7 @@ table tr:hover td {
     ) !important;
     background-size: 200% 100% !important;
     animation: skeletonShimmer 1.8s infinite ease-in-out !important;
-    border-radius: var(--radius-md) !important;
     border: 1px solid var(--border-color) !important;
-}
-
-.skeleton-line {
-    height: 24px;
-    margin-bottom: var(--space-3);
-    width: 100%;
-}
-
-.skeleton-card {
-    height: 140px;
-    margin-bottom: var(--space-4);
-    border-radius: var(--radius-xl) !important;
-    padding: var(--space-4);
-}
-
-.skeleton-table-row {
-    height: 52px;
-    margin-bottom: var(--space-2);
 }
 
 .skeleton-badge {

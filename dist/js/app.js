@@ -169,6 +169,86 @@ const esc = (str) => { if (str === null || str === undefined) return ''; return 
 const secLog = (msg, err) => { if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') { console.error(msg, err); } else { console.error(msg, err ? (err.code || err.message || "Security Sanitized Error") : ''); } };
 
 /**
+ * Accessible modal dialog helpers (WAI-ARIA APG "Dialog (Modal)" pattern).
+ *
+ * Every modal-overlay in index.html carries role="dialog" + aria-modal="true"
+ * statically, but that markup alone does nothing for keyboard/screen-reader
+ * users unless focus actually moves into the dialog, stays trapped there
+ * while it's open, and returns to whatever triggered it on close. Previously
+ * every open/close call site here was a bare `.classList.add/remove('hidden')`
+ * — visually correct, but focus stayed wherever it was (often back on body),
+ * so keyboard users could tab straight through to page content sitting
+ * underneath the modal. These two functions are the single choke point for
+ * every modal open/close in the app so that behaviour is fixed everywhere at
+ * once instead of per-modal.
+ */
+const modalDialogState = new WeakMap();
+
+function getFocusableEls(container) {
+  return Array.from(container.querySelectorAll(
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+}
+
+function openModalDialog(overlay) {
+  if (!overlay) return;
+  const dialog = overlay.querySelector('.modal-content') || overlay;
+  const trigger = document.activeElement;
+  overlay.classList.remove('hidden');
+
+  // Move focus into the dialog — the first *meaningful* focusable field if
+  // there is one, otherwise the dialog shell itself (it carries
+  // tabindex="-1" for this). The "×" close control is always the first
+  // element in DOM order but is skipped here on purpose: landing a keyboard
+  // user on "close this form" the instant they open a registration form is
+  // more likely to be an accidental dismissal than a useful starting point.
+  // It's still the first stop going backwards (Shift+Tab) and still part of
+  // the trap either way.
+  const focusable = getFocusableEls(dialog).filter(el => !el.classList.contains('close-modal'));
+  (focusable[0] || dialog).focus({ preventScroll: true });
+
+  const onKeydown = (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModalDialog(overlay);
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const items = getFocusableEls(dialog);
+    if (items.length === 0) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    // Wrap Tab/Shift+Tab at the dialog's edges so focus can never leak onto
+    // the page content behind the modal overlay.
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+  overlay.addEventListener('keydown', onKeydown);
+  modalDialogState.set(overlay, { trigger, onKeydown });
+}
+
+function closeModalDialog(overlay) {
+  if (!overlay || overlay.classList.contains('hidden')) return;
+  overlay.classList.add('hidden');
+  const state = modalDialogState.get(overlay);
+  if (state) {
+    overlay.removeEventListener('keydown', state.onKeydown);
+    // Return focus to whatever opened this dialog (e.g. "Register Patient"),
+    // not just to <body> — otherwise a keyboard user's next Tab press starts
+    // back at the top of the page instead of where they left off.
+    if (state.trigger && typeof state.trigger.focus === 'function') {
+      state.trigger.focus({ preventScroll: true });
+    }
+    modalDialogState.delete(overlay);
+  }
+}
+
+/**
  * Owner check, matching firestore.rules exactly.
  *
  * This used to strip every dot from both addresses before comparing, which
@@ -458,9 +538,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!document.getElementById('firestore-error-banner')) {
           const banner = document.createElement('div');
           banner.id = 'firestore-error-banner';
-          banner.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:9999;background:var(--danger);color:var(--on-error);padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:0 8px 25px var(--danger-glow);cursor:pointer;';
-          banner.innerHTML = '⚠️ Failed to load patients from Firestore. Check connection & security rules. <span style="margin-left:12px;text-decoration:underline;">Dismiss</span>';
-          banner.onclick = () => banner.remove();
+          banner.setAttribute('role', 'alert');
+          banner.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:9999;background:var(--danger);color:var(--on-error);padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:0 8px 25px var(--danger-glow);display:flex;align-items:center;gap:12px;';
+          banner.innerHTML = '<span>⚠️ Failed to load patients from Firestore. Check connection &amp; security rules.</span><span class="banner-dismiss" role="button" tabindex="0" aria-label="Dismiss" style="text-decoration:underline;cursor:pointer;white-space:nowrap;">Dismiss</span>';
+          const dismiss = () => banner.remove();
+          banner.querySelector('.banner-dismiss').onclick = dismiss;
+          banner.querySelector('.banner-dismiss').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dismiss(); }
+          });
           document.body.appendChild(banner);
         }
       });
@@ -539,7 +624,24 @@ function setupEventListeners() {
   };
   
   const searchInp = $('patient-search-input');
-  if (searchInp) searchInp.addEventListener('input', renderActivePatientList);
+  if (searchInp) {
+    searchInp.addEventListener('input', () => {
+      renderActivePatientList();
+      // Scoped to the search box's own input event on purpose, rather than
+      // living inside renderActivePatientList itself — that function also
+      // re-runs on every real-time Firestore snapshot, and turning every one
+      // of those into a screen-reader announcement would bury the one that
+      // actually matters (the result of something the user just typed).
+      const announcer = $('search-results-announcer');
+      const countEl = $('list-header-count');
+      if (announcer && countEl) {
+        const n = countEl.innerText;
+        announcer.innerText = searchInp.value.trim()
+          ? (currentLang === 'en' ? `${n} patients match` : `${n} مريض مطابق`)
+          : '';
+      }
+    });
+  }
 
   $('tab-live-board').onclick = () => switchTab('live-board');
   $('tab-owner').onclick = () => switchTab('owner');
@@ -552,31 +654,31 @@ function setupEventListeners() {
     $('reg-age-display').innerText = '';
     populateRoomSelects();
     if (typeof populateDeptSelects === 'function') populateDeptSelects();
-    $('modal-register').classList.remove('hidden');
+    openModalDialog($('modal-register'));
   };
-  
+
   const btnSelectRoom = $('btn-select-room');
   if (btnSelectRoom) {
     btnSelectRoom.onclick = () => {
       populateRoomSelects();
-      $('modal-select-room').classList.remove('hidden');
+      openModalDialog($('modal-select-room'));
     };
   }
   const closeSelectRoom = $('close-modal-select-room');
   if (closeSelectRoom) {
-    closeSelectRoom.onclick = () => $('modal-select-room').classList.add('hidden');
+    closeSelectRoom.onclick = () => closeModalDialog($('modal-select-room'));
   }
 
   const btnSelectDept = $('btn-select-dept');
   if (btnSelectDept) {
     btnSelectDept.onclick = () => {
       if (typeof populateDeptSelects === 'function') populateDeptSelects();
-      $('modal-select-dept').classList.remove('hidden');
+      openModalDialog($('modal-select-dept'));
     };
   }
   const closeSelectDept = $('close-modal-select-dept');
   if (closeSelectDept) {
-    closeSelectDept.onclick = () => $('modal-select-dept').classList.add('hidden');
+    closeSelectDept.onclick = () => closeModalDialog($('modal-select-dept'));
   }
 
   $('reg-national-id').oninput = () => {
@@ -613,7 +715,7 @@ function setupEventListeners() {
       $('reg-name').value = '';
       $('reg-hospital-id').value = '';
       $('reg-national-id').value = '';
-      $('modal-register').classList.add('hidden');
+      closeModalDialog($('modal-register'));
     } catch (err) {
       alert(err.message);
     }
@@ -628,7 +730,7 @@ function setupEventListeners() {
     if (!outcome || !patientId) return;
     try {
       await dischargePatientRecord(patientId, outcome, summaryText);
-      $('modal-discharge').classList.add('hidden');
+      closeModalDialog($('modal-discharge'));
     } catch (err) {
       alert(err.message);
     }
@@ -694,14 +796,26 @@ function setupEventListeners() {
   // Modal background click close
   window.onclick = (e) => {
     if (e.target.classList.contains('modal-overlay')) {
-      e.target.classList.add('hidden');
+      closeModalDialog(e.target);
     }
   };
-  
+
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
-      btn.closest('.modal-overlay').classList.add('hidden');
+      closeModalDialog(btn.closest('.modal-overlay'));
     };
+    // These are <span role="button"> (styling reasons — a real <button> here
+    // would pick up the global 48px/padding/background button rules and stop
+    // looking like the small "×" glyph this is meant to be). Spans don't get
+    // Enter/Space activation for free the way a real button does, so wire it
+    // by hand or this close control would be a mouse-only trap for anyone
+    // navigating by keyboard.
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        closeModalDialog(btn.closest('.modal-overlay'));
+      }
+    });
   });
 
   // Analytics admissions dropdown toggle
@@ -839,7 +953,7 @@ function populateRoomSelects() {
         grid.querySelectorAll('.room-option-btn .check-mark').forEach(cm => cm.classList.add('hidden'));
         const cm = btn.querySelector('.check-mark');
         if (cm) cm.classList.remove('hidden');
-        $('modal-select-room').classList.add('hidden');
+        closeModalDialog($('modal-select-room'));
       };
     });
   }
@@ -861,7 +975,7 @@ function renderDeptPickerList(filterText = '') {
     if (!val) return;
     if (regDeptInput) regDeptInput.value = val;
     if (btnText) btnText.innerText = `🏥 ${tr('lDept')}: ${val}`;
-    $('modal-select-dept').classList.add('hidden');
+    closeModalDialog($('modal-select-dept'));
   };
 
   const query = filterText.toLowerCase().trim();
@@ -956,6 +1070,10 @@ function populateDeptSelects() {
 
 function updateTranslations() {
   document.documentElement.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+  // `dir` alone only fixes layout direction. Without also updating `lang`,
+  // a screen reader keeps using its English voice/pronunciation rules on the
+  // Arabic text that just replaced the English UI (WCAG 3.1.1/3.1.2).
+  document.documentElement.lang = currentLang === 'en' ? 'en' : 'ar';
   $('btn-lang-toggle').innerText = currentLang === 'en' ? 'عربي' : 'English';
   
   document.querySelectorAll('[data-i]').forEach(el => {
@@ -1663,7 +1781,7 @@ function attachPatientListHandlers() {
           summaryEditor.value = "";
         }
       }
-      $('modal-discharge').classList.remove('hidden');
+      openModalDialog($('modal-discharge'));
     };
   });
 }
