@@ -54,7 +54,7 @@
     </div>
     <button type="button" class="btn btn-primary-filled" id="btn-login" data-i="lB">Log In</button>
     <button type="button" class="btn btn-secondary-outline" id="btn-signup" data-i="sB">Sign Up</button>
-    <hr style="border:0;border-top:1px solid var(--border-light);margin:20px 0">
+    <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
     <button type="button" class="btn btn-secondary-outline" id="btn-google" data-i="gB">Google Login</button>
   </div>
 
@@ -255,7 +255,7 @@
     <div id="view-owner" class="view-section hidden">
       <div class="glass-panel" style="padding:24px;">
         <h2 style="color:var(--primary);margin-top:0" data-i="oM">Account Management & Role Governance</h2>
-        <p data-i="oD" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Manage staff assignments, role permissions (Doctor, Manager, Owner), or block access across ER units. Auto-saves directly to Firebase.</p>
+        <p data-i="oD" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Assign roles or block access entirely. Auto-saves.</p>
         <div id="users-list-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;">
           <div class="patient-card glass-panel skeleton-loader" style="padding:16px; border-radius:16px; border:1px solid var(--border);">
             <div style="width: 50%; height: 20px; background: var(--border); border-radius: 6px; margin-bottom:12px;"></div>
@@ -294,7 +294,7 @@
       <div class="form-group">
         <label class="form-label" data-i="lL">Room</label>
         <input type="hidden" id="reg-room" value="Arrest">
-        <button type="button" id="btn-select-room" class="btn btn-outline input-field" style="display:flex;justify-content:space-between;align-items:center;width:100%;font-weight:600;text-align:left;padding:10px 14px;border:1px solid var(--border-color);border-radius:10px;background:var(--input-bg);color:var(--text-main);">
+        <button type="button" id="btn-select-room" class="btn btn-outline input-field" style="display:flex;justify-content:space-between;align-items:center;width:100%;font-weight:600;text-align:start;padding:10px 14px;border:1px solid var(--border-color);border-radius:10px;background:var(--input-bg);color:var(--text-main);">
           <span id="btn-select-room-text">📍 Room: Arrest</span>
           <span style="font-size:12px;opacity:0.7;">▼ Change</span>
         </button>
@@ -302,7 +302,7 @@
       <div class="form-group">
         <label class="form-label" data-i="lDept">Primary Department</label>
         <input type="hidden" id="reg-dept" value="Internal Medicine">
-        <button type="button" id="btn-select-dept" class="btn btn-outline input-field" style="display:flex;justify-content:space-between;align-items:center;width:100%;font-weight:600;text-align:left;padding:10px 14px;border:1px solid var(--border-color);border-radius:10px;background:var(--input-bg);color:var(--primary);">
+        <button type="button" id="btn-select-dept" class="btn btn-outline input-field" style="display:flex;justify-content:space-between;align-items:center;width:100%;font-weight:600;text-align:start;padding:10px 14px;border:1px solid var(--border-color);border-radius:10px;background:var(--input-bg);color:var(--primary);">
           <span id="btn-select-dept-text">🏥 Department: Internal Medicine</span>
           <span style="font-size:12px;opacity:0.7;">▼ Change</span>
         </button>
