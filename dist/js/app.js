@@ -101,6 +101,7 @@ let activeFilter = { type: 'all', value: '' };
 let isManager = false;
 let isOwner = false;
 let usersUnsubscribe = null;
+let patientsUnsubscribe = null;
 let expandedPatientCardIds = new Set();
 
 // Remote Config & Kill-Switch state (Phase 9)
@@ -415,13 +416,20 @@ document.addEventListener('DOMContentLoaded', () => {
             : recordTelemetryAlert(entry));
       }
 
-      if ($('data-control-actions')) $('data-control-actions').style.display = (isManager || isOwner) ? 'flex' : 'none';
+      if ($('data-control-actions')) {
+        $('data-control-actions').style.display = (isManager || isOwner) ? 'flex' : 'none';
+        $('data-control-actions').classList.toggle('hidden', !(isManager || isOwner));
+      }
       if ($('tab-owner')) $('tab-owner').classList.toggle('hidden', !isOwner);
 
       if ($('user-info')) $('user-info').innerText = `${translateRole(role)} · ${user.email}`;
       
       // Subscribe to real-time patient updates
-      subscribeToPatients((patients) => {
+      if (patientsUnsubscribe) {
+        patientsUnsubscribe();
+        patientsUnsubscribe = null;
+      }
+      patientsUnsubscribe = subscribeToPatients((patients) => {
         patientsList = patients;
         if (window.NanostoreClinicalStore && window.NanostoreClinicalStore.activePatientsStore) {
           window.NanostoreClinicalStore.activePatientsStore.set(patients);
@@ -480,6 +488,21 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           renderAccountManagement();
         });
+      } else {
+        if (usersUnsubscribe) {
+          usersUnsubscribe();
+          usersUnsubscribe = null;
+        }
+        usersList = [];
+        const usersContainer = $('users-list-container');
+        if (usersContainer) {
+          usersContainer.innerHTML = '';
+        }
+        const badge = $('badge-pending-users');
+        if (badge) {
+          badge.innerText = '';
+          badge.style.display = 'none';
+        }
       }
     } else if (isRedirectSignInPending()) {
       // onAuthStateChanged always reports null once before a redirect
@@ -498,42 +521,75 @@ function showSignedOut() {
   if (window.TelemetryRUM && typeof window.TelemetryRUM.clearSink === 'function') {
     window.TelemetryRUM.clearSink();
   }
+  patientsList = [];
+  usersList = [];
+  isManager = false;
+  isOwner = false;
+  if (usersUnsubscribe) {
+    usersUnsubscribe();
+    usersUnsubscribe = null;
+  }
+  if (patientsUnsubscribe) {
+    patientsUnsubscribe();
+    patientsUnsubscribe = null;
+  }
+  if (unsubscribeRemoteConfig) {
+    unsubscribeRemoteConfig();
+    unsubscribeRemoteConfig = null;
+  }
+  if (window.NanostoreClinicalStore && window.NanostoreClinicalStore.activePatientsStore) {
+    window.NanostoreClinicalStore.activePatientsStore.set([]);
+  }
+  if (window.NanostoreClinicalStore && window.NanostoreClinicalStore.activeSentinelAlert) {
+    window.NanostoreClinicalStore.activeSentinelAlert.set(null);
+  }
+  const usersContainer = $('users-list-container');
+  if (usersContainer) {
+    usersContainer.innerHTML = '';
+  }
+  const badge = $('badge-pending-users');
+  if (badge) {
+    badge.innerText = '';
+    badge.style.display = 'none';
+  }
+  if ($('tab-owner')) $('tab-owner').classList.add('hidden');
+  if ($('data-control-actions')) {
+    $('data-control-actions').style.display = 'none';
+    $('data-control-actions').classList.add('hidden');
+  }
+
+  updateDashboardCounters();
+  renderActivePatientList();
+  renderShiftAnalytics();
   $('loading-overlay').classList.add('hidden');
   $('auth-section').classList.remove('hidden');
   $('app-section').classList.add('hidden');
   $('access-gate').classList.add('hidden');
   switchTab('live-board');
-  if (usersUnsubscribe) {
-    usersUnsubscribe();
-    usersUnsubscribe = null;
-  }
 }
 
-/**
- * Setup Event Listeners
- */
-function setupEventListeners() {
+export function setupEventListeners() {
   // Auth actions
-  $('btn-login').onclick = () => {
+  if ($('btn-login')) $('btn-login').onclick = () => {
     loginWithEmail(getVal('auth-email'), getVal('auth-password'))
       .catch(err => showAuthError(err.message));
   };
-  $('btn-signup').onclick = () => {
+  if ($('btn-signup')) $('btn-signup').onclick = () => {
     signUpWithEmail(getVal('auth-email'), getVal('auth-password'))
       .catch(err => showAuthError(err.message));
   };
-  $('btn-google').onclick = () => {
+  if ($('btn-google')) $('btn-google').onclick = () => {
     loginWithGoogle().catch(err => showAuthError(err.message));
   };
-  $('btn-app-logout').onclick = () => logout();
-  $('btn-gate-logout').onclick = () => logout();
+  if ($('btn-app-logout')) $('btn-app-logout').onclick = () => logout();
+  if ($('btn-gate-logout')) $('btn-gate-logout').onclick = () => logout();
   if ($('btn-gate-retry')) $('btn-gate-retry').onclick = retryAccessRequest;
   
   // Navigation & Theme & Language
   const themeBtn = $('btn-theme-toggle');
   if (themeBtn) themeBtn.onclick = toggleTheme;
 
-  $('btn-lang-toggle').onclick = () => {
+  if ($('btn-lang-toggle')) $('btn-lang-toggle').onclick = () => {
     toggleLangState();
     updateTranslations();
   };
@@ -541,11 +597,11 @@ function setupEventListeners() {
   const searchInp = $('patient-search-input');
   if (searchInp) searchInp.addEventListener('input', renderActivePatientList);
 
-  $('tab-live-board').onclick = () => switchTab('live-board');
-  $('tab-owner').onclick = () => switchTab('owner');
+  if ($('tab-live-board')) $('tab-live-board').onclick = () => switchTab('live-board');
+  if ($('tab-owner')) $('tab-owner').onclick = () => switchTab('owner');
   
   // Registration Modal
-  $('btn-open-register').onclick = () => {
+  if ($('btn-open-register')) $('btn-open-register').onclick = () => {
     const now = new Date();
     const localIso = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     $('reg-time').value = localIso;
@@ -579,11 +635,11 @@ function setupEventListeners() {
     closeSelectDept.onclick = () => $('modal-select-dept').classList.add('hidden');
   }
 
-  $('reg-national-id').oninput = () => {
+  if ($('reg-national-id')) $('reg-national-id').oninput = () => {
     $('reg-age-display').innerText = calculateAgeAndGender(getVal('reg-national-id'));
   };
   
-  $('btn-submit-register').onclick = async () => {
+  if ($('btn-submit-register')) $('btn-submit-register').onclick = async () => {
     const name = getVal('reg-name');
     const hospitalId = getVal('reg-hospital-id').toUpperCase();
     const nationalId = getVal('reg-national-id');
@@ -620,12 +676,22 @@ function setupEventListeners() {
   };
   
   // Discharge Modal
-  $('btn-submit-discharge').onclick = async () => {
+  const btnSubmitDischarge = $('btn-submit-discharge');
+  if (btnSubmitDischarge) btnSubmitDischarge.onclick = async () => {
     const outcome = getVal('discharge-outcome-select');
     const patientId = getVal('discharge-patient-id');
     const summaryEditor = $('ai-summary-editor');
+    const attestationCheckbox = $('ai-attestation-checkbox');
     const summaryText = summaryEditor && summaryEditor.value.trim() ? summaryEditor.value.trim() : null;
     if (!outcome || !patientId) return;
+
+    if (summaryText && (!attestationCheckbox || !attestationCheckbox.checked)) {
+      alert(currentLang === 'en'
+        ? "Clinical Attestation Required: Please verify and check the attestation box before completing discharge with a clinical summary."
+        : "إقرار سريري مطلوب: يرجى مراجعة وتحديد مربع التحقق من ملخص الخروج قبل إتمام الخروج.");
+      return;
+    }
+
     try {
       await dischargePatientRecord(patientId, outcome, summaryText);
       $('modal-discharge').classList.add('hidden');
@@ -688,8 +754,10 @@ function setupEventListeners() {
   }
   
   // Data Control Buttons in Manager Tab
-  $('btn-delete-discharged').onclick = () => confirmAndDeletePatients(false);
-  $('btn-delete-all').onclick = () => confirmAndDeletePatients(true);
+  const btnDeleteDischarged = $('btn-delete-discharged');
+  if (btnDeleteDischarged) btnDeleteDischarged.onclick = () => confirmAndDeletePatients(false);
+  const btnDeleteAll = $('btn-delete-all');
+  if (btnDeleteAll) btnDeleteAll.onclick = () => confirmAndDeletePatients(true);
   
   // Modal background click close
   window.onclick = (e) => {
@@ -705,9 +773,11 @@ function setupEventListeners() {
   });
 
   // Analytics admissions dropdown toggle
-  $('analytics-admissions-header').onclick = () => {
-    $('analytics-admissions-body').classList.toggle('hidden');
-  };
+  if ($('analytics-admissions-header')) {
+    $('analytics-admissions-header').onclick = () => {
+      if ($('analytics-admissions-body')) $('analytics-admissions-body').classList.toggle('hidden');
+    };
+  }
 
   // Setup time filters
   [4, 6, 12, 24, 48, 72].forEach(hours => {
@@ -750,10 +820,50 @@ function showAuthError(msg) {
  * @param {string} [overrideMessage] Text to show instead of the state default.
  */
 function showAccessGate(state, overrideMessage) {
+  patientsList = [];
+  usersList = [];
+  isManager = false;
+  isOwner = false;
+  if (usersUnsubscribe) {
+    usersUnsubscribe();
+    usersUnsubscribe = null;
+  }
+  if (patientsUnsubscribe) {
+    patientsUnsubscribe();
+    patientsUnsubscribe = null;
+  }
+  if (unsubscribeRemoteConfig) {
+    unsubscribeRemoteConfig();
+    unsubscribeRemoteConfig = null;
+  }
+  if (window.NanostoreClinicalStore && window.NanostoreClinicalStore.activePatientsStore) {
+    window.NanostoreClinicalStore.activePatientsStore.set([]);
+  }
+  if (window.NanostoreClinicalStore && window.NanostoreClinicalStore.activeSentinelAlert) {
+    window.NanostoreClinicalStore.activeSentinelAlert.set(null);
+  }
+  const usersContainer = $('users-list-container');
+  if (usersContainer) {
+    usersContainer.innerHTML = '';
+  }
+  const badge = $('badge-pending-users');
+  if (badge) {
+    badge.innerText = '';
+    badge.style.display = 'none';
+  }
+  if ($('tab-owner')) $('tab-owner').classList.add('hidden');
+  if ($('data-control-actions')) {
+    $('data-control-actions').style.display = 'none';
+    $('data-control-actions').classList.add('hidden');
+  }
+
   $('loading-overlay').classList.add('hidden');
   $('auth-section').classList.add('hidden');
   $('app-section').classList.add('hidden');
   $('access-gate').classList.remove('hidden');
+  updateDashboardCounters();
+  renderActivePatientList();
+  renderShiftAnalytics();
 
   const messages = {
     pending: tr('pnd'),
@@ -1102,7 +1212,7 @@ function updateDashboardCounters() {
  * by another member of staff doesn't yank the caret out of their field or
  * replace half-typed text with the stored value.
  */
-function captureActiveFieldState() {
+export function captureActiveFieldState() {
   const el = document.activeElement;
   if (!el || !el.id) return null;
   const isEditable = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT';
@@ -1116,7 +1226,7 @@ function captureActiveFieldState() {
   return state;
 }
 
-function restoreActiveFieldState(state) {
+export function restoreActiveFieldState(state) {
   if (!state) return;
   const el = $(state.id);
   if (!el) return;
@@ -1225,12 +1335,12 @@ function renderActivePatientList() {
           </div>
           
           <div class="card-summary-right">
-            <div class="card-summary-tags" style="display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:6px;">
-              <select id="loc_${esc(p.id)}" class="btn-mini location-tag quick-loc-select" data-id="${esc(p.id)}" title="${currentLang === 'en' ? 'Room Location' : 'الغرفة'}" style="font-size:11px;padding:3px 6px;border-radius:6px;max-width:105px;margin:0;">
+            <div class="card-summary-tags" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px;">
+              <select id="loc_${esc(p.id)}" class="btn-mini location-tag quick-loc-select" data-id="${esc(p.id)}" title="${currentLang === 'en' ? 'Room Location' : 'الغرفة'}" style="font-size:12px;padding:3px 8px;border-radius:6px;max-width:170px;margin:0;">
                 ${ROOMS.map(r => `<option value="${r}" ${p.location === r ? 'selected' : ''}>📍 ${r}</option>`).join('')}
               </select>
               <div style="display:inline-flex;gap:4px;align-items:center;margin:0;" onclick="event.stopPropagation();">
-                <select id="dept_sel_${esc(p.id)}" class="btn-mini location-tag quick-dept-select ${isCustomDept ? 'hidden' : ''}" data-id="${esc(p.id)}" style="font-size:11px;padding:3px 6px;border-radius:6px;max-width:130px;margin:0;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" title="${currentLang === 'en' ? 'Primary Department' : 'القسم الأساسي'}">
+                <select id="dept_sel_${esc(p.id)}" class="btn-mini location-tag quick-dept-select ${isCustomDept ? 'hidden' : ''}" data-id="${esc(p.id)}" style="font-size:12px;padding:3px 8px;border-radius:6px;max-width:190px;margin:0;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" title="${currentLang === 'en' ? 'Primary Department' : 'القسم الأساسي'}">
                   <option value="">🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}</option>
                   ${PRIMARY_DEPARTMENTS.map(d => {
                     const isSel = (cleanDept === d.en || cleanDept === d.ar);
@@ -1238,7 +1348,7 @@ function renderActivePatientList() {
                   }).join('')}
                   <option value="Other..." ${isCustomDept ? 'selected' : ''}>✏️ ${currentLang === 'en' ? 'Other...' : 'أخرى...'}</option>
                 </select>
-                <input type="text" id="custom_dept_${esc(p.id)}" class="btn-mini location-tag ${isCustomDept ? '' : 'hidden'}" style="font-size:11px;padding:3px 6px;border-radius:6px;margin:0;width:95px;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" placeholder="🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}" value="${esc(isCustomDept ? cleanDept : '')}" data-id="${esc(p.id)}">
+                <input type="text" id="custom_dept_${esc(p.id)}" class="btn-mini location-tag ${isCustomDept ? '' : 'hidden'}" style="font-size:12px;padding:3px 8px;border-radius:6px;margin:0;width:130px;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" placeholder="🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}" value="${esc(isCustomDept ? cleanDept : '')}" data-id="${esc(p.id)}">
                 <button type="button" class="btn btn-mini btn-outline ${isCustomDept ? '' : 'hidden'}" id="btn_reset_dept_${esc(p.id)}" data-id="${esc(p.id)}" title="Back to presets" style="padding:2px 6px;margin:0;font-size:11px;">📋</button>
               </div>
             </div>
@@ -1396,7 +1506,7 @@ async function savePatientCardFields(cardId, targetElement = null) {
     return box && !box.classList.contains('hidden') ? getVal(selectId) : undefined;
   };
 
-  const candidates = {
+  const allCandidates = {
     name: getVal(`name_${cardId}`),
     patientId: getVal(`hosp_${cardId}`).toUpperCase(),
     nationalId: getVal(`nid_${cardId}`),
@@ -1411,6 +1521,11 @@ async function savePatientCardFields(cardId, targetElement = null) {
     strokeCodeWorkup: visibleBoxValue(`stroke_box_${cardId}`, `stroke_${cardId}`),
     registrationTime: getVal(`regtime_${cardId}`) || undefined
   };
+
+  const targetField = targetElement?.dataset?.field;
+  const candidates = (targetField && targetField in allCandidates)
+    ? { [targetField]: allCandidates[targetField] }
+    : allCandidates;
 
   const updateData = diffPatientFields(patient, candidates);
   if (Object.keys(updateData).length === 0) return;
@@ -1654,14 +1769,19 @@ function attachPatientListHandlers() {
       $('discharge-patient-name').innerText = btn.dataset.name || '--';
       $('discharge-patient-id').value = btn.dataset.id;
       $('discharge-outcome-select').value = "";
+      const list = (typeof patientsList !== 'undefined' && patientsList.length > 0) ? patientsList : (window.patientsList || []);
+      const patient = list.find(p => p.id === btn.dataset.id);
       const summaryEditor = $('ai-summary-editor');
+      const attestationCheckbox = $('ai-attestation-checkbox');
       if (summaryEditor) {
-        const patient = patientsList.find(p => p.id === btn.dataset.id);
         if (patient && patient.dischargeSummary) {
           summaryEditor.value = patient.dischargeSummary;
         } else {
           summaryEditor.value = "";
         }
+      }
+      if (attestationCheckbox) {
+        attestationCheckbox.checked = Boolean(patient && patient.dischargeSummaryAttested);
       }
       $('modal-discharge').classList.remove('hidden');
     };
@@ -1670,10 +1790,13 @@ function attachPatientListHandlers() {
 
 window.generateAISummaryInModal = async function() {
   const id = $('discharge-patient-id').value;
-  const patient = patientsList.find(p => p.id === id);
+  const list = (typeof patientsList !== 'undefined' && patientsList.length > 0) ? patientsList : (window.patientsList || []);
+  const patient = list.find(p => p.id === id);
   if (!patient) { alert("Patient not found"); return; }
   const editor = $('ai-summary-editor');
   if (!editor) return;
+  const attestationCheckbox = $('ai-attestation-checkbox');
+  if (attestationCheckbox) attestationCheckbox.checked = false;
   const btn = $('btn-generate-ai-summary');
   if (btn) btn.disabled = true;
   editor.value = "⏳ Initializing AI Clinical Engine (checking on-device window.ai / Firebase AI Logic fallback)...\n\n";
@@ -1703,9 +1826,21 @@ window.saveAISummaryInModal = async function() {
   if (!id) return;
   const editor = $('ai-summary-editor');
   if (!editor || !editor.value.trim()) { alert("Summary box is empty"); return; }
+  const attestationCheckbox = $('ai-attestation-checkbox');
+  if (!attestationCheckbox || !attestationCheckbox.checked) {
+    alert(currentLang === 'en'
+      ? "Clinical Attestation Required: You must review and check the verification box before saving this summary."
+      : "إقرار سريري مطلوب: يجب مراجعة ملخص الخروج وتحديد مربع التحقق قبل الحفظ.");
+    return;
+  }
   try {
-    await updatePatientRecord(id, { dischargeSummary: editor.value.trim() });
-    alert("✅ AI Clinical Summary saved to Firestore patient record!");
+    await updatePatientRecord(id, {
+      dischargeSummary: editor.value.trim(),
+      dischargeSummaryAttested: true,
+      dischargeSummaryAttestedAt: new Date().toISOString(),
+      dischargeSummaryAttestedBy: (typeof auth !== 'undefined' && auth?.currentUser?.uid) ? auth.currentUser.uid : 'unknown'
+    });
+    alert("✅ AI Clinical Summary verified and saved to Firestore patient record!");
   } catch (err) {
     console.error("Error saving AI summary:", err);
     alert(`Failed to save: ${err.message}`);
@@ -1842,6 +1977,7 @@ async function confirmAndDeletePatients(deleteAll) {
   renderActivePatientList();
   renderShiftAnalytics();
 }
+window.confirmAndDeletePatients = confirmAndDeletePatients;
 
 /**
  * Split the roster into the three groups the Owner tab treats differently.
