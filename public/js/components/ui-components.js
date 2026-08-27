@@ -52,13 +52,13 @@ export function createSkeletonLoader(type = 'card', count = 1) {
   let itemHtml = '';
   if (type === 'card') {
     itemHtml = `
-      <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <div style="width: 40%; height: 20px; background: var(--border); border-radius: 6px;"></div>
-          <div style="width: 25%; height: 20px; background: var(--border); border-radius: 6px;"></div>
+      <div class="patient-card glass-panel skeleton-loader" style="padding:10px 14px; margin-bottom:10px; border-radius:12px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div style="width: 40%; height: 18px; background: var(--border); border-radius: 6px;"></div>
+          <div style="width: 25%; height: 18px; background: var(--border); border-radius: 6px;"></div>
         </div>
-        <div style="width: 75%; height: 14px; background: var(--border); border-radius: 4px; margin-bottom:8px;"></div>
-        <div style="width: 50%; height: 14px; background: var(--border); border-radius: 4px;"></div>
+        <div style="width: 75%; height: 12px; background: var(--border); border-radius: 4px; margin-bottom:6px;"></div>
+        <div style="width: 50%; height: 12px; background: var(--border); border-radius: 4px;"></div>
       </div>
     `;
   } else if (type === 'table-row') {
@@ -128,12 +128,12 @@ export function createPatientCardShell(patient, headerContentHtml, detailsConten
   const cardId = options.id || `card_${patient.id || Math.random().toString(36).substr(2, 9)}`;
   const isExpanded = options.isExpanded || false;
   const cardClass = options.className || 'patient-card glass-panel';
-  const cardStyle = options.style || 'padding: 16px; margin-bottom: 12px; transition: all 0.2s ease-out; border-radius: 16px;';
+  const cardStyle = options.style || 'padding: 10px 14px; margin-bottom: 10px; transition: all 0.2s ease-out; border-radius: 12px;';
   const onClickAttr = options.onHeaderClick ? `onclick="${options.onHeaderClick}"` : '';
 
   return `
     <div id="${cardId}" class="${cardClass}" style="${cardStyle}" ${options.dataAttrs || ''}>
-      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; flex-wrap: wrap; gap: 12px;" ${onClickAttr}>
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; flex-wrap: wrap; gap: 6px 10px;" ${onClickAttr}>
         ${headerContentHtml}
       </div>
       ${detailsContentHtml ? `<div id="details_${cardId}" class="card-details ${isExpanded ? '' : 'hidden'}" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;" onclick="event.stopPropagation()">${detailsContentHtml}</div>` : ''}
