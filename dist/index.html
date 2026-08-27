@@ -69,7 +69,7 @@
   <!-- Main Application Section -->
   <div id="app-section" class="wrapper hidden">
     <!-- Phase 6: Interactive Clinical Sentinel Banner -->
-    <div id="sentinel-banner" class="sentinel-banner hidden">
+    <div id="sentinel-banner" class="sentinel-banner hidden" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="sentinel-lead">
         <span class="sentinel-icon animate-pulse">🚨</span>
         <div>
@@ -159,11 +159,12 @@
             <div class="form-group" style="flex-grow:1;max-width:320px;margin:0;">
               <label class="form-label" for="patient-search-input">Search Patient</label>
               <input type="text" id="patient-search-input" placeholder="e.g. Search by name or hospital ID..." class="input-field" style="width:100%;margin:0;">
+              <span id="search-results-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></span>
             </div>
           </div>
           <div id="patient-list-container">
             <!-- Skeleton Loader injected initially -->
-            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
+            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div style="width: 40%; height: 20px; background: var(--border); border-radius: 6px;"></div>
                 <div style="width: 25%; height: 20px; background: var(--border); border-radius: 6px;"></div>
@@ -171,7 +172,7 @@
               <div style="width: 75%; height: 14px; background: var(--border); border-radius: 4px; margin-bottom:8px;"></div>
               <div style="width: 50%; height: 14px; background: var(--border); border-radius: 4px;"></div>
             </div>
-            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
+            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div style="width: 40%; height: 20px; background: var(--border); border-radius: 6px;"></div>
                 <div style="width: 25%; height: 20px; background: var(--border); border-radius: 6px;"></div>
@@ -198,38 +199,38 @@
 
           <!-- Shift Analytics Grid -->
           <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
-            <div class="metric-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center;">
-              <h3 data-i="mT" style="margin: 0 0 6px 0; font-size: 13px; color: var(--text-muted);">Total Visits</h3>
-              <div class="count" id="stat-total-visits" style="font-size: 1.75rem; font-weight: 700; color: var(--primary);">0</div>
+            <div class="metric-card stat-tile">
+              <h3 data-i="mT">Total Visits</h3>
+              <div class="count stat-count-primary" id="stat-total-visits">0</div>
             </div>
 
-            <div class="metric-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center; cursor: pointer;" id="analytics-admissions-header">
-              <h3 data-i="mA" style="margin: 0 0 6px 0; font-size: 13px; color: var(--text-muted);">Admissions ▾</h3>
-              <div class="count" id="stat-admissions" style="font-size: 1.75rem; font-weight: 700; color: var(--success);">0</div>
+            <div class="metric-card stat-tile stat-tile-clickable" id="analytics-admissions-header">
+              <h3 data-i="mA">Admissions ▾</h3>
+              <div class="count stat-count-success" id="stat-admissions">0</div>
             </div>
 
-            <div class="metric-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center;">
-              <h3 data-i="mI" style="margin: 0 0 6px 0; font-size: 13px; color: var(--text-muted);">Improved</h3>
-              <div class="count" id="stat-improved" style="font-size: 1.75rem; font-weight: 700; color: var(--primary);">0</div>
+            <div class="metric-card stat-tile">
+              <h3 data-i="mI">Improved</h3>
+              <div class="count stat-count-primary" id="stat-improved">0</div>
             </div>
 
-            <div class="metric-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center;">
-              <h3 data-i="mD" style="margin: 0 0 6px 0; font-size: 13px; color: var(--text-muted);">Mortality</h3>
-              <div class="count" id="stat-mortality" style="font-size: 1.75rem; font-weight: 700; color: var(--danger);">0</div>
+            <div class="metric-card stat-tile">
+              <h3 data-i="mD">Mortality</h3>
+              <div class="count stat-count-danger" id="stat-mortality">0</div>
             </div>
 
-            <div class="metric-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center;">
-              <h3 data-i="mDa" style="margin: 0 0 6px 0; font-size: 13px; color: var(--text-muted);">DAMA</h3>
-              <div class="count" id="stat-dama" style="font-size: 1.75rem; font-weight: 700; color: var(--warning);">0</div>
+            <div class="metric-card stat-tile">
+              <h3 data-i="mDa">DAMA</h3>
+              <div class="count stat-count-warning" id="stat-dama">0</div>
             </div>
           </div>
 
           <!-- Admissions Dropdown Details -->
-          <div id="analytics-admissions-body" class="dropdown-body hidden" style="margin-top: 12px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-            <div class="dropdown-item" style="display: flex; justify-content: space-between; padding: 6px 12px; background: var(--card-bg); border-radius: 6px;"><span data-i="oW">Ward</span><span id="stat-adm-ward" style="font-weight: 700;">0</span></div>
-            <div class="dropdown-item" style="display: flex; justify-content: space-between; padding: 6px 12px; background: var(--card-bg); border-radius: 6px;"><span>ICU</span><span id="stat-adm-icu" style="font-weight: 700;">0</span></div>
-            <div class="dropdown-item" style="display: flex; justify-content: space-between; padding: 6px 12px; background: var(--card-bg); border-radius: 6px;"><span>CCU</span><span id="stat-adm-ccu" style="font-weight: 700;">0</span></div>
-            <div class="dropdown-item" style="display: flex; justify-content: space-between; padding: 6px 12px; background: var(--card-bg); border-radius: 6px;"><span>PICU</span><span id="stat-adm-picu" style="font-weight: 700;">0</span></div>
+          <div id="analytics-admissions-body" class="admissions-breakdown hidden">
+            <div class="dropdown-item"><span data-i="oW">Ward</span><span id="stat-adm-ward">0</span></div>
+            <div class="dropdown-item"><span>ICU</span><span id="stat-adm-icu">0</span></div>
+            <div class="dropdown-item"><span>CCU</span><span id="stat-adm-ccu">0</span></div>
+            <div class="dropdown-item"><span>PICU</span><span id="stat-adm-picu">0</span></div>
           </div>
         </div>
 
@@ -237,7 +238,7 @@
         <div class="glass-panel" style="padding: 20px; border-radius: 16px;">
           <h2 style="color:var(--primary); margin: 0 0 16px 0; font-size: 1.25rem;" data-i="dPH">Discharged Patients</h2>
           <div id="discharged-list-container">
-            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
+            <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div style="width: 40%; height: 20px; background: var(--border); border-radius: 6px;"></div>
                 <div style="width: 25%; height: 20px; background: var(--border); border-radius: 6px;"></div>
@@ -256,7 +257,7 @@
         <h2 style="color:var(--primary);margin-top:0" data-i="oM">Account Management & Role Governance</h2>
         <p data-i="oD" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Manage staff assignments, role permissions (Doctor, Manager, Owner), or block access across ER units. Auto-saves directly to Firebase.</p>
         <div id="users-list-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;">
-          <div class="patient-card glass-panel skeleton-loader" style="padding:16px; border-radius:16px; border:1px solid var(--border); animation: pulse 1.5s infinite ease-in-out;">
+          <div class="patient-card glass-panel skeleton-loader" style="padding:16px; border-radius:16px; border:1px solid var(--border);">
             <div style="width: 50%; height: 20px; background: var(--border); border-radius: 6px; margin-bottom:12px;"></div>
             <div style="width: 80%; height: 14px; background: var(--border); border-radius: 4px; margin-bottom:12px;"></div>
             <div style="width: 100%; height: 36px; background: var(--border); border-radius: 8px;"></div>
@@ -274,9 +275,9 @@
 
   <!-- Register Patient Modal -->
   <div id="modal-register" class="modal-overlay hidden">
-    <div class="modal-content glass-panel">
-      <span class="close-modal">&times;</span>
-      <h2 style="color:var(--primary);margin-top:0" data-i="aT">Register Patient</h2>
+    <div class="modal-content glass-panel" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-register-title">
+      <span class="close-modal" role="button" tabindex="0" aria-label="Close">&times;</span>
+      <h2 id="modal-register-title" style="color:var(--primary);margin-top:0" data-i="aT">Register Patient</h2>
       <div class="form-group">
         <label class="form-label" data-i="lN" for="reg-name">Name (Arabic)</label>
         <input type="text" id="reg-name" dir="rtl" placeholder="e.g. محمد أحمد" class="input-field" maxlength="100">
@@ -316,18 +317,18 @@
 
   <!-- Room Selection Modal -->
   <div id="modal-select-room" class="modal-overlay hidden" style="z-index:9999;">
-    <div class="modal-content glass-panel" style="max-width:420px;height:auto;">
-      <span class="close-modal" id="close-modal-select-room">&times;</span>
-      <h3 style="color:var(--primary);margin-top:0" data-i="sR">Select Room / Unit</h3>
+    <div class="modal-content glass-panel" style="max-width:420px;height:auto;" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-select-room-title">
+      <span class="close-modal" id="close-modal-select-room" role="button" tabindex="0" aria-label="Close">&times;</span>
+      <h3 id="modal-select-room-title" style="color:var(--primary);margin-top:0" data-i="sR">Select Room / Unit</h3>
       <div id="room-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:16px;"></div>
     </div>
   </div>
 
   <!-- Department Selection Modal -->
   <div id="modal-select-dept" class="modal-overlay hidden" style="z-index:9999;">
-    <div class="modal-content glass-panel" style="max-width:420px;height:auto;">
-      <span class="close-modal" id="close-modal-select-dept">&times;</span>
-      <h3 style="color:var(--primary);margin-top:0" data-i="deptModalTitle">Select Primary Department</h3>
+    <div class="modal-content glass-panel" style="max-width:420px;height:auto;" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-select-dept-title">
+      <span class="close-modal" id="close-modal-select-dept" role="button" tabindex="0" aria-label="Close">&times;</span>
+      <h3 id="modal-select-dept-title" style="color:var(--primary);margin-top:0" data-i="deptModalTitle">Select Primary Department</h3>
       <input type="text" id="dept-picker-search" class="input-field" style="margin-top:12px;" data-p="deptSearchPh" placeholder="🔍 Search departments...">
       <div id="dept-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px;max-height:340px;overflow-y:auto;"></div>
     </div>
@@ -335,9 +336,9 @@
 
   <!-- Discharge Patient Modal -->
   <div id="modal-discharge" class="modal-overlay hidden">
-    <div class="modal-content glass-panel" style="height:auto">
-      <span class="close-modal">&times;</span>
-      <h2 style="color:var(--danger);margin-top:0" data-i="dT">Discharge</h2>
+    <div class="modal-content glass-panel" style="height:auto" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-discharge-title">
+      <span class="close-modal" role="button" tabindex="0" aria-label="Close">&times;</span>
+      <h2 id="modal-discharge-title" style="color:var(--danger);margin-top:0" data-i="dT">Discharge</h2>
       <strong id="discharge-patient-name" style="color:var(--primary);font-size:18px;display:block;margin:15px 0" dir="rtl"></strong>
       <div class="form-group">
         <label class="form-label" for="discharge-outcome-select">Discharge Outcome</label>

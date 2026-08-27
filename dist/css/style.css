@@ -139,18 +139,11 @@ html[dir="rtl"] .count, html[dir="rtl"] .btn, html[dir="rtl"] .tab-btn {
   padding: 20px;
 }
 
-.skeleton-card, .skeleton-line, .skeleton-loader, .skeleton-table-row {
-  background: linear-gradient(90deg, var(--tint-light) 25%, var(--tint-light-strong) 50%, var(--tint-light) 75%);
-  background-size: 200% 100%;
-  border-radius: 12px;
-  animation: skeletonPulse 1.5s infinite ease-in-out;
-  border: 1px solid var(--border-color);
-}
-
-@keyframes skeletonPulse {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+/* .skeleton-card / .skeleton-line's actual shimmer styling (background,
+   animation) lives once, below, in the "MICRO-INTERACTIONS, SKELETONS..."
+   section — this file used to redefine them twice with two different
+   @keyframes (skeletonPulse here, skeletonShimmer there), where only the
+   later !important rule ever actually rendered. */
 
 /* Forms & Inputs (Touch Ergonomic 16px font to stop iOS Zoom) */
 input, select, textarea {
@@ -442,14 +435,20 @@ input:focus, select:focus {
    most-critical >72h card. */
 .metric-card.card-time-4 .count,   .metric-card.card-time-4 h3,
 .metric-card.card-time-6 .count,   .metric-card.card-time-6 h3,
-.metric-card.card-time-12 .count,  .metric-card.card-time-12 h3 {
+.metric-card.card-time-12 .count,  .metric-card.card-time-12 h3,
+.metric-card.card-time-24 .count,  .metric-card.card-time-24 h3 {
   color: var(--on-los) !important;
   opacity: 1 !important;
 }
-.metric-card.card-time-24 .count,  .metric-card.card-time-24 h3,
+
+/* >48h / >72h tiers sit on the darkest end of the LOS ramp (down to 2.63:1
+   against the dark-theme --on-los text — fails AA right where the escalation
+   matters most, since these are the most-overdue patients). Light text
+   instead: 4.81:1 / 6.65:1 against those fills. */
 .metric-card.card-time-48 .count,  .metric-card.card-time-48 h3,
 .metric-card.card-time-72 .count,  .metric-card.card-time-72 h3 {
-  color: var(--on-los-strong) !important;
+  color: var(--on-los-hi) !important;
+}
   opacity: 1 !important;
 }
 
@@ -770,6 +769,60 @@ input:focus, select:focus {
 
 .select-warning { border-color: var(--warning-glow); color: var(--warning); }
 .select-danger { border-color: var(--danger-glow); color: var(--danger); }
+
+/* Shift Analytics stat tiles — factored out of index.html, which previously
+   repeated this same style="" block inline on 5 separate <div>s (and 4 more
+   for the admissions breakdown), diverging slightly each time. One of those
+   copies referenced --bg-main, a token that was never defined anywhere in
+   this file, silently falling back to a transparent tile background. */
+.stat-tile {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-tile-clickable {
+  cursor: pointer;
+}
+
+.stat-tile h3 {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.stat-tile .count {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.stat-count-primary { color: var(--primary); }
+.stat-count-success { color: var(--success); }
+.stat-count-danger { color: var(--danger); }
+.stat-count-warning { color: var(--warning); }
+
+.admissions-breakdown {
+  margin-top: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  /* auto-fit instead of a hardcoded 4 columns: the fixed version squeezed
+     4 columns into a 375px phone width regardless of content. */
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 8px;
+}
+
+.admissions-breakdown .dropdown-item {
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--card-bg);
+  border-radius: 6px;
+  font-weight: 700;
+}
 
 /* Stat Row (Manager View) */
 .stat-row {
@@ -1328,6 +1381,23 @@ html[dir="rtl"] .close-modal {
   font-weight: 600;
 }
 
+/* 4. VISUAL HIERARCHY & STYLING */
+/* Shares the single skeletonShimmer keyframe (defined once, further down in
+   this file) instead of its own near-identical @keyframes skeleton-pulse —
+   this class previously had its own copy, and the four patient-card skeleton
+   placeholders in index.html additionally set an inline
+   `animation: pulse 1.5s ...` that referenced a keyframe named "pulse" which
+   was never defined anywhere, so those four specific skeletons rendered as a
+   static (non-shimmering) gradient. Both are fixed together here. */
+.skeleton-loader {
+  background: linear-gradient(90deg, var(--tint-light) 25%, var(--tint-light-strong) 50%, var(--tint-light) 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite ease-in-out;
+  border-radius: 8px;
+  height: 24px;
+}
+.card-outer { border-radius: 16px !important; } /* rounded-2xl */
+.card-inner { border-radius: 8px !important; }  /* rounded-lg */
 .dashboard-grid {
   display: grid;
   gap: 24px;
