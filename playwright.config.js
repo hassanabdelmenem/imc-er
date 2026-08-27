@@ -4,8 +4,18 @@ export default defineConfig({
   testDir: './tests/e2e',
   timeout: 30000,
   retries: process.env.CI ? 2 : 0,
+  workers: 1,
+  testMatch: [
+    'chiefNurseWorkflow.spec.js',
+    'leadershipWorkflow.spec.js',
+    'ownerWorkflow.spec.js',
+    'accessGateSecurity.spec.js',
+    'concurrencyAndViewports.spec.js',
+    'authHandshake.spec.js',
+    'offlineSync.spec.js',
+  ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
     trace: 'on-first-retry',
   },
   projects: [
@@ -23,9 +33,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'python3 -m http.server 3000 --directory public',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    command: 'node scripts/serve.js 3000',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: true,
     timeout: 120000,
   },
 });

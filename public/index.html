@@ -362,7 +362,13 @@
           <button id="btn-generate-ai-summary" type="button" class="btn btn-secondary-outline btn-ai-generate">⚡ Generate AI Summary</button>
         </div>
         <textarea id="ai-summary-editor" rows="6" placeholder="Click 'Generate AI Summary' above to stream real-time clinical timeline from Edge AI (window.ai) / Firebase AI Logic..." class="input-field ai-summary-editor"></textarea>
-        <button id="btn-save-ai-summary" type="button" class="btn btn-secondary-outline btn-ai-save">💾 Save Summary to Firestore Record</button>
+        <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-main); cursor: pointer; user-select: none;">
+            <input type="checkbox" id="ai-attestation-checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+            <span>I have clinically reviewed and verified this discharge summary</span>
+          </label>
+        </div>
+        <button id="btn-save-ai-summary" type="button" class="btn btn-secondary-outline btn-ai-save" style="margin-top: 10px;">💾 Save Summary to Firestore Record</button>
       </div>
       <input type="hidden" id="discharge-patient-id">
       <button class="btn btn-confirm btn-confirm-danger cta-sticky-mobile" id="btn-submit-discharge" data-i="dB">Discharge</button>

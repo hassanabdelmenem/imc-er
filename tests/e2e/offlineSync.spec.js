@@ -57,32 +57,36 @@ test.describe('IMC ER Console - E2E Chaos Testing: Offline Mode & Background Syn
       });
     });
 
-    await page.goto('http://localhost:3000');
+    try {
+      await page.goto('/');
 
-    // 1. Simulate network disconnection (Chaos Offline Mode)
-    await context.setOffline(true);
-    await page.evaluate(() => {
-      window.__isOnline = false;
-      window.dispatchEvent(new Event('offline'));
-    });
-
-    // 2. Simulate doctor updating diagnosis offline
-    const queuedCount = await page.evaluate(() => {
-      const patient = window.mockPatients[0];
-      const db = window.firebase.firestore();
-      db.collection('patients').doc(patient.id).update({
-        diagnosis: 'Acute Myocardial Infarction (Offline Triage)'
+      // 1. Simulate network disconnection (Chaos Offline Mode)
+      await context.setOffline(true);
+      await page.evaluate(() => {
+        window.__isOnline = false;
+        window.dispatchEvent(new Event('offline'));
       });
-      return window.offlineQueue.length;
-    });
-    expect(queuedCount).toBe(1);
 
-    // 3. Simulate network restoration (Online Mode)
-    await context.setOffline(false);
-    const queueAfterReconnect = await page.evaluate(() => {
-      window.dispatchEvent(new Event('online'));
-      return window.offlineQueue.length;
-    });
-    expect(queueAfterReconnect).toBe(0);
+      // 2. Simulate doctor updating diagnosis offline
+      const queuedCount = await page.evaluate(() => {
+        const patient = window.mockPatients[0];
+        const db = window.firebase.firestore();
+        db.collection('patients').doc(patient.id).update({
+          diagnosis: 'Acute Myocardial Infarction (Offline Triage)'
+        });
+        return window.offlineQueue.length;
+      });
+      expect(queuedCount).toBe(1);
+
+      // 3. Simulate network restoration (Online Mode)
+      await context.setOffline(false);
+      const queueAfterReconnect = await page.evaluate(() => {
+        window.dispatchEvent(new Event('online'));
+        return window.offlineQueue.length;
+      });
+      expect(queueAfterReconnect).toBe(0);
+    } finally {
+      await context.setOffline(false);
+    }
   });
 });

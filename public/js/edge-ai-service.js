@@ -12,6 +12,7 @@
 class NetworkIsolationGatekeeper {
     static isLocked = false;
     static originalFetch = null;
+    static originalXHROpen = null;
     static originalXHRSend = null;
     static originalBeacon = null;
     static originalWebSocket = null;
@@ -23,28 +24,45 @@ class NetworkIsolationGatekeeper {
 
         // Preserve original APIs
         this.originalFetch = window.fetch;
+        this.originalXHROpen = XMLHttpRequest.prototype.open;
         this.originalXHRSend = XMLHttpRequest.prototype.send;
-        if (navigator.sendBeacon) this.originalBeacon = navigator.sendBeacon.bind(navigator);
+        if (navigator.sendBeacon) this.originalBeacon = navigator.sendBeacon;
         if (window.WebSocket) this.originalWebSocket = window.WebSocket;
         if (window.EventSource) this.originalEventSource = window.EventSource;
 
         // Intercept fetch
         window.fetch = async (...args) => {
-            const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url ? args[0].url : '');
+            let url = '';
+            if (typeof args[0] === 'string') {
+                url = args[0];
+            } else if (args[0] instanceof URL) {
+                url = args[0].href;
+            } else if (args[0] && typeof args[0] === 'object') {
+                url = args[0].url || args[0].href || String(args[0]);
+            }
             if (this._isExternalRequest(url)) {
                 console.error(`[NetworkIsolationGatekeeper] Blocked external fetch during active PHI inference: ${url}`);
                 if (window.TelemetryRUM && window.TelemetryRUM.recordSecurityViolation) {
-                    window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_fetch_during_phi_inference', url });
+                    window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_fetch_during_phi_inference', url: String(url) });
                 }
                 throw new Error("SECURITY_EXCEPTION: Outbound network transmissions blocked during local Edge AI PHI inference.");
             }
             return this.originalFetch.apply(window, args);
         };
 
-        // Intercept XHR
+        // Intercept XHR open to capture target URL
+        XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+            this._url = url;
+            return NetworkIsolationGatekeeper.originalXHROpen.apply(this, [method, url, ...rest]);
+        };
+
+        // Intercept XHR send
         XMLHttpRequest.prototype.send = function(...args) {
             if (NetworkIsolationGatekeeper.isLocked && NetworkIsolationGatekeeper._isExternalRequest(this._url || '')) {
                 console.error(`[NetworkIsolationGatekeeper] Blocked external XHR during active PHI inference.`);
+                if (window.TelemetryRUM && window.TelemetryRUM.recordSecurityViolation) {
+                    window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_xhr_during_phi_inference', url: this._url || '' });
+                }
                 throw new Error("SECURITY_EXCEPTION: Outbound XHR transmissions blocked during local Edge AI PHI inference.");
             }
             return NetworkIsolationGatekeeper.originalXHRSend.apply(this, args);
@@ -55,9 +73,12 @@ class NetworkIsolationGatekeeper {
             navigator.sendBeacon = (url, data) => {
                 if (this.isLocked && this._isExternalRequest(url)) {
                     console.error(`[NetworkIsolationGatekeeper] Blocked external sendBeacon during active PHI inference: ${url}`);
+                    if (window.TelemetryRUM && window.TelemetryRUM.recordSecurityViolation) {
+                        window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_sendBeacon_during_phi_inference', url });
+                    }
                     return false;
                 }
-                return this.originalBeacon(url, data);
+                return this.originalBeacon.call(navigator, url, data);
             };
         }
 
@@ -66,6 +87,9 @@ class NetworkIsolationGatekeeper {
             window.WebSocket = function(url, ...args) {
                 if (NetworkIsolationGatekeeper.isLocked && NetworkIsolationGatekeeper._isExternalRequest(url)) {
                     console.error(`[NetworkIsolationGatekeeper] Blocked external WebSocket during active PHI inference: ${url}`);
+                    if (window.TelemetryRUM && window.TelemetryRUM.recordSecurityViolation) {
+                        window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_websocket_during_phi_inference', url });
+                    }
                     throw new Error("SECURITY_EXCEPTION: Outbound WebSocket connections blocked during local Edge AI PHI inference.");
                 }
                 return new NetworkIsolationGatekeeper.originalWebSocket(url, ...args);
@@ -77,6 +101,9 @@ class NetworkIsolationGatekeeper {
             window.EventSource = function(url, ...args) {
                 if (NetworkIsolationGatekeeper.isLocked && NetworkIsolationGatekeeper._isExternalRequest(url)) {
                     console.error(`[NetworkIsolationGatekeeper] Blocked external EventSource during active PHI inference: ${url}`);
+                    if (window.TelemetryRUM && window.TelemetryRUM.recordSecurityViolation) {
+                        window.TelemetryRUM.recordSecurityViolation({ action: 'blocked_eventsource_during_phi_inference', url });
+                    }
                     throw new Error("SECURITY_EXCEPTION: Outbound EventSource connections blocked during local Edge AI PHI inference.");
                 }
                 return new NetworkIsolationGatekeeper.originalEventSource(url, ...args);
@@ -90,6 +117,7 @@ class NetworkIsolationGatekeeper {
         if (!this.isLocked) return;
         this.isLocked = false;
         if (this.originalFetch) window.fetch = this.originalFetch;
+        if (this.originalXHROpen) XMLHttpRequest.prototype.open = this.originalXHROpen;
         if (this.originalXHRSend) XMLHttpRequest.prototype.send = this.originalXHRSend;
         if (this.originalBeacon) navigator.sendBeacon = this.originalBeacon;
         if (this.originalWebSocket) window.WebSocket = this.originalWebSocket;
@@ -97,15 +125,66 @@ class NetworkIsolationGatekeeper {
         console.info("[NetworkIsolationGatekeeper] Unlocked network transmissions after safe session destruction & memory scrubbing.");
     }
 
-
     static _isExternalRequest(url) {
         if (!url) return false;
-        const str = url.toString().toLowerCase();
-        // Allow local application resources and authorized Firebase Firestore sync connections
-        if (str.startsWith('/') || str.startsWith('./') || str.startsWith('../')) return false;
-        if (str.includes('localhost') || str.includes('127.0.0.1')) return false;
-        if (str.includes('firestore.googleapis.com') || str.includes('firebaseio.com') || str.includes('identitytoolkit.googleapis.com')) return false;
-        return true;
+        let str = '';
+        if (typeof url === 'string') {
+            str = url.trim();
+        } else if (url instanceof URL) {
+            str = url.href.trim();
+        } else if (url && typeof url === 'object') {
+            str = (url.url || url.href || String(url)).trim();
+        } else {
+            str = String(url).trim();
+        }
+
+        if (!str) return false;
+
+        // Allow local application resources (relative paths, excluding protocol-relative '//')
+        if ((str.startsWith('/') && !str.startsWith('//')) || str.startsWith('./') || str.startsWith('../')) {
+            return false;
+        }
+
+        try {
+            const baseOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null')
+                ? window.location.origin
+                : 'http://localhost';
+            const parsed = new URL(str, baseOrigin);
+
+            // Verify protocol is http: or https: (or ws:/wss: for WebSockets)
+            const protocol = (parsed.protocol || '').toLowerCase();
+            if (!['http:', 'https:', 'ws:', 'wss:'].includes(protocol)) {
+                return true;
+            }
+
+            const hostname = (parsed.hostname || '').toLowerCase();
+
+            // Match against current window hostname if available
+            const currentHostname = (typeof window !== 'undefined' && window.location && window.location.hostname)
+                ? window.location.hostname.toLowerCase()
+                : '';
+            if (currentHostname && hostname === currentHostname) {
+                return false;
+            }
+
+            // Local development hosts
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return false;
+            }
+
+            // Authorized Firebase Firestore / Auth / Realtime DB endpoints
+            if (hostname === 'firestore.googleapis.com' || hostname === 'identitytoolkit.googleapis.com') {
+                return false;
+            }
+            if (hostname === 'firebaseio.com' || hostname.endsWith('.firebaseio.com')) {
+                return false;
+            }
+
+            return true;
+        } catch (_) {
+            // Fail-closed on malformed or unparseable URLs
+            return true;
+        }
     }
 }
 
