@@ -97,11 +97,11 @@ test.describe("Concurrency & Responsive Viewports — E2E Suite", () => {
     const roomsGrid = page.locator("#rooms-grid");
     await expect(roomsGrid).toBeVisible();
 
-    // Patient card rendered in wide format
+    // Patient card rendered in compact multi-column format
     const patientCard = page.locator(".patient-card");
     await expect(patientCard).toBeVisible();
     const box = await patientCard.boundingBox();
-    expect(box?.width).toBeGreaterThan(500);
+    expect(box?.width).toBeGreaterThan(340);
   });
 
   test("3. Tablet Viewport (768x1024) Intermediate Layout", async ({ page }) => {
