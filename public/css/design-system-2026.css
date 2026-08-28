@@ -161,7 +161,7 @@
 
         --primary: #3e6690;
         --on-primary: #FFFFFF;
-        --secondary: #6b6a63;
+        --secondary: #606059;
         --on-secondary: #FFFFFF;
         --background: #faf9f5;
         --on-background: #141413;
@@ -267,7 +267,7 @@
 
     --primary: #3e6690;
     --on-primary: #FFFFFF;
-    --secondary: #6b6a63;
+    --secondary: #606059;
     --on-secondary: #FFFFFF;
     --background: #faf9f5;
     --on-background: #141413;
@@ -490,6 +490,41 @@ p {
 
 .hidden {
     display: none !important;
+}
+
+/* Fix (design audit 2026-08-28): permanently visually-hidden but screen-reader-
+   accessible text. Previously referenced as class="visually-hidden" on the
+   search-results live region with no matching CSS anywhere -- the region was
+   never actually hidden. Standard clip-based sr-only pattern. */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip-to-content link: hidden off-screen until keyboard-focused. */
+.skip-link {
+    position: absolute;
+    top: -48px;
+    left: 8px;
+    z-index: 10000;
+    background: var(--surface-solid);
+    color: var(--text-main);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid var(--primary);
+    transition: top 0.15s ease;
+}
+.skip-link:focus {
+    top: 8px;
 }
 
 /* --------------------------------------------------------------------------

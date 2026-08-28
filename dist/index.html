@@ -24,6 +24,8 @@
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <!-- Ambient Glassmorphism Glow Backgrounds -->
   <div class="ambient-glow glow-primary"></div>
   <div class="ambient-glow glow-secondary"></div>
@@ -39,6 +41,8 @@
     <div data-i="ld" style="margin-top:20px; font-weight:700; color:var(--primary); font-size:16px;">Loading...</div>
   </div>
 
+  <main id="main-content">
+
   <!-- Authentication Section -->
   <div id="auth-section" class="wrapper hidden">
     <h2 style="color:var(--primary);margin:0 0 5px" data-i="t">IMC ER</h2>
@@ -53,9 +57,9 @@
       <input type="password" id="auth-password" data-p="pp" placeholder="••••••••" class="input-field">
     </div>
     <button type="button" class="btn btn-primary-filled" id="btn-login" data-i="lB">Log In</button>
-    <button type="button" class="btn btn-secondary-outline" id="btn-signup" data-i="sB">Sign Up</button>
+    <button type="button" class="btn btn-outline" id="btn-signup" data-i="sB">Sign Up</button>
     <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
-    <button type="button" class="btn btn-secondary-outline" id="btn-google" data-i="gB">Google Login</button>
+    <button type="button" class="btn btn-outline" id="btn-google" data-i="gB">Google Login</button>
   </div>
 
   <!-- Access Gate Section -->
@@ -63,7 +67,7 @@
     <h2 style="color:var(--danger);margin:0 0 15px">Access Gate</h2>
     <p id="gate-message" style="color:var(--text-muted);font-weight:700"></p>
     <button type="button" class="btn btn-primary-filled hidden" style="margin-top:20px;" id="btn-gate-retry" data-i="gRetry">🔄 Retry Access Request</button>
-    <button class="btn btn-secondary-outline" style="border-color:var(--danger);color:var(--danger);margin-top:20px;" id="btn-gate-logout" data-i="oB">Logout</button>
+    <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);margin-top:20px;" id="btn-gate-logout" data-i="oB">Logout</button>
   </div>
 
   <!-- Main Application Section -->
@@ -92,7 +96,7 @@
         <div id="user-info"></div>
       </div>
       <div class="nav-actions">
-        <button class="btn btn-mini btn-outline btn-icon-only" id="btn-theme-toggle">🌓</button>
+        <button class="btn btn-mini btn-outline btn-icon-only" id="btn-theme-toggle" aria-label="Toggle theme">🌓</button>
         <button class="btn btn-mini btn-lang-toggle" id="btn-lang-toggle">عربي</button>
         <button class="btn btn-mini btn-outline" id="btn-app-logout" data-i="oB">Logout</button>
       </div>
@@ -110,8 +114,8 @@
     <!-- Live Board View -->
     <div id="view-live-board">
       <!-- Top Action Bar -->
-      <div class="stitch-command-banner">
-        <div class="stitch-console-badge">
+      <div class="dashboard-command-banner">
+        <div class="dashboard-console-badge">
           <span class="pulse-dot"></span>
           <span data-i="cStatus">Emergency Command Console</span>
         </div>
@@ -119,38 +123,38 @@
       </div>
       
       <!-- Stitch Dashboard Top KPI Section -->
-      <div class="stitch-kpi-layout">
-        <div class="stitch-kpi-pane stitch-los-pane">
-          <div class="section-title" data-i="sT">Length of Stay</div>
+      <div class="dashboard-kpi-layout">
+        <div class="dashboard-kpi-pane dashboard-los-pane">
+          <h2 class="section-title" data-i="sT">Length of Stay</h2>
           <div class="metrics-grid">
-            <div class="metric-card card-time-4" id="filter-time-4"><h3 data-i="t4">> 4 Hrs</h3><div class="count" id="count-time-4">0</div></div>
-            <div class="metric-card card-time-6" id="filter-time-6"><h3 data-i="t6">> 6 Hrs</h3><div class="count" id="count-time-6">0</div></div>
-            <div class="metric-card card-time-12" id="filter-time-12"><h3 data-i="t12">> 12 Hrs</h3><div class="count" id="count-time-12">0</div></div>
-            <div class="metric-card card-time-24" id="filter-time-24"><h3 data-i="t24">> 24 Hrs</h3><div class="count" id="count-time-24">0</div></div>
-            <div class="metric-card card-time-48" id="filter-time-48"><h3 data-i="t48">> 48 Hrs</h3><div class="count" id="count-time-48">0</div></div>
-            <div class="metric-card card-time-72" id="filter-time-72"><h3 data-i="t72">> 72 Hrs</h3><div class="count" id="count-time-72">0</div></div>
+            <div class="metric-card card-time-4" id="filter-time-4" role="button" tabindex="0"><span class="metric-card-label" data-i="t4">> 4 Hrs</span><div class="count" id="count-time-4">0</div></div>
+            <div class="metric-card card-time-6" id="filter-time-6" role="button" tabindex="0"><span class="metric-card-label" data-i="t6">> 6 Hrs</span><div class="count" id="count-time-6">0</div></div>
+            <div class="metric-card card-time-12" id="filter-time-12" role="button" tabindex="0"><span class="metric-card-label" data-i="t12">> 12 Hrs</span><div class="count" id="count-time-12">0</div></div>
+            <div class="metric-card card-time-24" id="filter-time-24" role="button" tabindex="0"><span class="metric-card-label" data-i="t24">> 24 Hrs</span><div class="count" id="count-time-24">0</div></div>
+            <div class="metric-card card-time-48" id="filter-time-48" role="button" tabindex="0"><span class="metric-card-label" data-i="t48">> 48 Hrs</span><div class="count" id="count-time-48">0</div></div>
+            <div class="metric-card card-time-72" id="filter-time-72" role="button" tabindex="0"><span class="metric-card-label" data-i="t72">> 72 Hrs</span><div class="count" id="count-time-72">0</div></div>
           </div>
         </div>
 
-        <div class="stitch-kpi-pane stitch-wait-pane">
-          <div class="section-title" data-i="sW">Waitlists</div>
+        <div class="dashboard-kpi-pane dashboard-wait-pane">
+          <h2 class="section-title" data-i="sW">Waitlists</h2>
           <div class="metrics-grid">
-            <div class="metric-card card-wait" id="filter-wait-icu"><h3 data-i="wi">Wait ICU</h3><div class="count" id="count-wait-icu">0</div></div>
-            <div class="metric-card card-wait" id="filter-wait-ccu"><h3 data-i="wc">Wait CCU</h3><div class="count" id="count-wait-ccu">0</div></div>
-            <div class="metric-card card-wait" id="filter-wait-picu"><h3 data-i="wp">Wait PICU</h3><div class="count" id="count-wait-picu">0</div></div>
-            <div class="metric-card card-wait" id="filter-wait-ward"><h3 data-i="ww">Wait Ward</h3><div class="count" id="count-wait-ward">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-icu" role="button" tabindex="0"><span class="metric-card-label" data-i="wi">Wait ICU</span><div class="count" id="count-wait-icu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-ccu" role="button" tabindex="0"><span class="metric-card-label" data-i="wc">Wait CCU</span><div class="count" id="count-wait-ccu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-picu" role="button" tabindex="0"><span class="metric-card-label" data-i="wp">Wait PICU</span><div class="count" id="count-wait-picu">0</div></div>
+            <div class="metric-card card-wait" id="filter-wait-ward" role="button" tabindex="0"><span class="metric-card-label" data-i="ww">Wait Ward</span><div class="count" id="count-wait-ward">0</div></div>
           </div>
         </div>
       </div>
 
       <!-- Stitch Workspace Split Section -->
-      <div class="stitch-workspace-layout">
-        <div class="stitch-workspace-sidebar">
-          <div class="section-title" data-i="sR">ER Rooms</div>
+      <div class="dashboard-workspace-layout">
+        <div class="dashboard-workspace-sidebar">
+          <h2 class="section-title" data-i="sR">ER Rooms</h2>
           <div class="metrics-grid" id="rooms-grid"></div>
         </div>
 
-        <div class="stitch-workspace-main">
+        <div class="dashboard-workspace-main">
           <div class="list-header glass-panel" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
             <div>
               <span id="list-header-title">All Patients</span>
@@ -185,42 +189,42 @@
       </div>
 
       <!-- Shift Analytics & Discharged Patients Section (Integrated from Manager View) -->
-      <div class="stitch-analytics-layout">
+      <div class="dashboard-analytics-layout">
         <!-- Top Row: Shift KPI Cards & Operations -->
         <div class="glass-panel" style="padding: 20px; border-radius: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
             <h2 style="color:var(--primary); margin:0; font-size: 1.25rem;" data-i="mS">Shift Analytics (From 8 AM)</h2>
             <!-- Data Control buttons (visible/enabled for Manager/Owner) -->
             <div id="data-control-actions" style="display: flex; gap: 8px; align-items: center;">
-              <button class="btn btn-secondary-outline" style="border-color:var(--warning); color:var(--warning); padding: 6px 12px; font-size: 13px;" id="btn-delete-discharged" data-i="p1">Delete Discharged</button>
-              <button class="btn btn-secondary-outline" style="border-color:var(--danger); color:var(--danger); padding: 6px 12px; font-size: 13px;" id="btn-delete-all" data-i="p2">Delete ALL</button>
+              <button class="btn btn-outline" style="border-color:var(--warning); color:var(--warning); padding: 6px 12px; font-size: 13px;" id="btn-delete-discharged" data-i="p1">Delete Discharged</button>
+              <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding: 6px 12px; font-size: 13px;" id="btn-delete-all" data-i="p2">Delete ALL</button>
             </div>
           </div>
 
           <!-- Shift Analytics Grid -->
           <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
             <div class="metric-card stat-tile">
-              <h3 data-i="mT">Total Visits</h3>
+              <span class="metric-card-label" data-i="mT">Total Visits</span>
               <div class="count stat-count-primary" id="stat-total-visits">0</div>
             </div>
 
-            <div class="metric-card stat-tile stat-tile-clickable" id="analytics-admissions-header">
-              <h3 data-i="mA">Admissions ▾</h3>
+            <div class="metric-card stat-tile stat-tile-clickable" id="analytics-admissions-header" role="button" tabindex="0" aria-expanded="false" aria-controls="analytics-admissions-body">
+              <span class="metric-card-label" data-i="mA">Admissions ▾</span>
               <div class="count stat-count-success" id="stat-admissions">0</div>
             </div>
 
             <div class="metric-card stat-tile">
-              <h3 data-i="mI">Improved</h3>
+              <span class="metric-card-label" data-i="mI">Improved</span>
               <div class="count stat-count-primary" id="stat-improved">0</div>
             </div>
 
             <div class="metric-card stat-tile">
-              <h3 data-i="mD">Mortality</h3>
+              <span class="metric-card-label" data-i="mD">Mortality</span>
               <div class="count stat-count-danger" id="stat-mortality">0</div>
             </div>
 
             <div class="metric-card stat-tile">
-              <h3 data-i="mDa">DAMA</h3>
+              <span class="metric-card-label" data-i="mDa">DAMA</span>
               <div class="count stat-count-warning" id="stat-dama">0</div>
             </div>
           </div>
@@ -266,6 +270,8 @@
       </div>
     </div>
   </div>
+
+  </main>
 
   <!-- Proprietary Legal Ownership Watermark -->
   <footer style="text-align:center;padding:24px 16px;font-size:11px;color:var(--text-muted);user-select:none;letter-spacing:0.3px;opacity:0.8;position:relative;z-index:10;">
@@ -359,7 +365,7 @@
       <div id="ai-copilot-container" class="ai-copilot-box">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <span style="font-weight: 700; color: var(--primary); font-size: 14px;">🤖 AI Clinical Summary & ESI Synthesis</span>
-          <button id="btn-generate-ai-summary" type="button" class="btn btn-secondary-outline btn-ai-generate">⚡ Generate AI Summary</button>
+          <button id="btn-generate-ai-summary" type="button" class="btn btn-outline btn-ai-generate">⚡ Generate AI Summary</button>
         </div>
         <textarea id="ai-summary-editor" rows="6" placeholder="Click 'Generate AI Summary' above to stream real-time clinical timeline from Edge AI (window.ai) / Firebase AI Logic..." class="input-field ai-summary-editor"></textarea>
         <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
@@ -368,7 +374,7 @@
             <span>I have clinically reviewed and verified this discharge summary</span>
           </label>
         </div>
-        <button id="btn-save-ai-summary" type="button" class="btn btn-secondary-outline btn-ai-save" style="margin-top: 10px;">💾 Save Summary to Firestore Record</button>
+        <button id="btn-save-ai-summary" type="button" class="btn btn-outline btn-ai-save" style="margin-top: 10px;">💾 Save Summary to Firestore Record</button>
       </div>
       <input type="hidden" id="discharge-patient-id">
       <button class="btn btn-confirm btn-confirm-danger cta-sticky-mobile" id="btn-submit-discharge" data-i="dB">Discharge</button>

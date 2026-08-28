@@ -201,15 +201,6 @@ input:focus, select:focus {
   transform: translateY(0) scale(0.98);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  box-shadow: 0 4px 15px var(--primary-glow);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 20px var(--primary-glow);
-}
-
 .btn-hero {
   font-size: 17px;
   padding: 16px;
@@ -231,16 +222,6 @@ input:focus, select:focus {
 .btn-danger {
   background: linear-gradient(135deg, var(--danger-strong), var(--danger));
   box-shadow: 0 4px 15px var(--danger-glow);
-}
-
-.btn-success {
-  background: linear-gradient(135deg, var(--success), var(--success-light));
-  box-shadow: 0 4px 15px var(--success-glow);
-}
-
-.btn-warning {
-  background: linear-gradient(135deg, var(--warning-strong), var(--warning));
-  box-shadow: 0 4px 15px var(--warning-glow);
 }
 
 .btn-mini {
@@ -396,7 +377,7 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px var(--primary), 0 12px 25px rgba(0, 0, 0, 0.3);
 }
 
-.metric-card h3 {
+.metric-card .metric-card-label {
   margin: 0 0 6px;
   font-size: 13px;
   font-weight: 600;
@@ -433,10 +414,10 @@ input:focus, select:focus {
    (by design, to read as "more overdue") that they need light text instead —
    using one dark colour across all six previously failed contrast on the
    most-critical >72h card. */
-.metric-card.card-time-4 .count,   .metric-card.card-time-4 h3,
-.metric-card.card-time-6 .count,   .metric-card.card-time-6 h3,
-.metric-card.card-time-12 .count,  .metric-card.card-time-12 h3,
-.metric-card.card-time-24 .count,  .metric-card.card-time-24 h3 {
+.metric-card.card-time-4 .count,   .metric-card.card-time-4 .metric-card-label,
+.metric-card.card-time-6 .count,   .metric-card.card-time-6 .metric-card-label,
+.metric-card.card-time-12 .count,  .metric-card.card-time-12 .metric-card-label,
+.metric-card.card-time-24 .count,  .metric-card.card-time-24 .metric-card-label {
   color: var(--on-los) !important;
   opacity: 1 !important;
 }
@@ -445,19 +426,19 @@ input:focus, select:focus {
    against the dark-theme --on-los text — fails AA right where the escalation
    matters most, since these are the most-overdue patients). Light text
    instead: 4.81:1 / 6.65:1 against those fills. */
-.metric-card.card-time-48 .count,  .metric-card.card-time-48 h3,
-.metric-card.card-time-72 .count,  .metric-card.card-time-72 h3 {
+.metric-card.card-time-48 .count,  .metric-card.card-time-48 .metric-card-label,
+.metric-card.card-time-72 .count,  .metric-card.card-time-72 .metric-card-label {
   color: var(--on-los-hi) !important;
 }
   opacity: 1 !important;
 }
 
-.metric-card.card-wait .count, .metric-card.card-wait h3 {
+.metric-card.card-wait .count, .metric-card.card-wait .metric-card-label {
   color: var(--on-primary) !important;
   opacity: 1 !important;
 }
 
-.metric-card.card-room .count, .metric-card.card-room h3 {
+.metric-card.card-room .count, .metric-card.card-room .metric-card-label {
   color: var(--text-main) !important;
   opacity: 1 !important;
 }
@@ -764,6 +745,20 @@ input:focus, select:focus {
   50% { box-shadow: 0 0 15px 4px var(--danger-bg); }
 }
 
+/* Added (design audit 2026-08-28): public/js/components/ui-components.js
+   (covered by tests/unit/m6-layout-adversarial-stress.test.js, not currently
+   wired into app.js) references these two animation names inline but neither
+   was ever defined -- both silently no-opped. */
+@keyframes criticalPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--danger-glow); transform: scale(1); }
+  50% { box-shadow: 0 0 15px 4px var(--danger-bg); transform: scale(1.04); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
 .alert-label {
   font-size: 12px;
   font-weight: 700;
@@ -801,7 +796,7 @@ input:focus, select:focus {
   cursor: pointer;
 }
 
-.stat-tile h3 {
+.stat-tile .metric-card-label {
   margin: 0 0 6px 0;
   font-size: 13px;
   color: var(--text-muted);
@@ -996,11 +991,11 @@ html[dir="rtl"] .close-modal {
 }
 
 /* Stitch Base Mobile Defaults */
-.stitch-command-banner {
+.dashboard-command-banner {
   margin-bottom: 0;
 }
 
-.stitch-console-badge {
+.dashboard-console-badge {
   display: none;
 }
 
@@ -1025,7 +1020,7 @@ html[dir="rtl"] .close-modal {
     max-width: 100%;
     padding: 24px 32px;
   }
-  .stitch-command-banner {
+  .dashboard-command-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1036,7 +1031,7 @@ html[dir="rtl"] .close-modal {
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
   }
-  .stitch-console-badge {
+  .dashboard-console-badge {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1044,24 +1039,24 @@ html[dir="rtl"] .close-modal {
     color: var(--text-main);
     font-size: 15px;
   }
-  .stitch-command-banner #btn-open-register {
+  .dashboard-command-banner #btn-open-register {
     width: auto !important;
     min-width: 220px;
     margin-bottom: 0;
   }
-  .stitch-kpi-layout, .stitch-analytics-layout {
+  .dashboard-kpi-layout, .dashboard-analytics-layout {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
     margin-top: 24px;
   }
-  .stitch-los-pane .metrics-grid {
+  .dashboard-los-pane .metrics-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .stitch-wait-pane .metrics-grid {
+  .dashboard-wait-pane .metrics-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-  .stitch-workspace-sidebar .metrics-grid {
+  .dashboard-workspace-sidebar .metrics-grid {
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
   #patient-list-container {
@@ -1173,7 +1168,7 @@ html[dir="rtl"] .close-modal {
     margin-bottom: 24px;
   }
   
-  .stitch-command-banner {
+  .dashboard-command-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1185,7 +1180,7 @@ html[dir="rtl"] .close-modal {
     border: 1px solid var(--border-highlight);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   }
-  .stitch-console-badge {
+  .dashboard-console-badge {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -1194,7 +1189,7 @@ html[dir="rtl"] .close-modal {
     color: var(--text-main);
     letter-spacing: 0.02em;
   }
-  .stitch-command-banner #btn-open-register {
+  .dashboard-command-banner #btn-open-register {
     width: auto !important;
     min-width: 260px;
     margin-bottom: 0;
@@ -1204,20 +1199,20 @@ html[dir="rtl"] .close-modal {
     box-shadow: 0 6px 24px var(--cta-glow);
   }
   
-  .stitch-kpi-layout {
+  .dashboard-kpi-layout {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     gap: 24px;
     align-items: start;
   }
-  .stitch-analytics-layout {
+  .dashboard-analytics-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 28px;
     align-items: start;
     margin-top: 28px;
   }
-  .stitch-kpi-pane {
+  .dashboard-kpi-pane {
     background: var(--card-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
@@ -1225,27 +1220,27 @@ html[dir="rtl"] .close-modal {
     padding: 18px 24px 24px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
-  .stitch-kpi-pane .section-title {
+  .dashboard-kpi-pane .section-title {
     margin-top: 2px;
     margin-bottom: 16px;
   }
-  .stitch-los-pane .metrics-grid {
+  .dashboard-los-pane .metrics-grid {
     grid-template-columns: repeat(6, 1fr);
     margin-bottom: 0;
   }
-  .stitch-wait-pane .metrics-grid {
+  .dashboard-wait-pane .metrics-grid {
     grid-template-columns: repeat(4, 1fr);
     margin-bottom: 0;
   }
   
-  .stitch-workspace-layout {
+  .dashboard-workspace-layout {
     display: grid;
     grid-template-columns: 360px 1fr;
     gap: 28px;
     align-items: start;
     margin-top: 28px;
   }
-  .stitch-workspace-sidebar {
+  .dashboard-workspace-sidebar {
     background: var(--card-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
@@ -1257,16 +1252,16 @@ html[dir="rtl"] .close-modal {
     overflow-y: auto;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
-  .stitch-workspace-sidebar .section-title {
+  .dashboard-workspace-sidebar .section-title {
     margin-top: 0;
   }
-  .stitch-workspace-sidebar .metrics-grid {
+  .dashboard-workspace-sidebar .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-bottom: 0;
   }
   
-  .stitch-workspace-main {
+  .dashboard-workspace-main {
     min-width: 0;
   }
   #patient-list-container {
@@ -1342,14 +1337,9 @@ html[dir="rtl"] .close-modal {
   color: var(--on-primary) !important;
   border: none !important;
 }
-.btn-secondary-outline {
-  background: transparent !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-main) !important;
-}
-.btn-secondary-outline:hover {
-  background: var(--tint-light) !important;
-}
+/* .btn-secondary-outline removed (design audit 2026-08-28): consolidated
+   onto .btn-outline, which was already the more widely-used of the two
+   near-identical "outline button" treatments. */
 @media (max-width: 640px) {
   .mobile-bottom-cta {
     position: sticky;

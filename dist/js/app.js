@@ -346,6 +346,7 @@ function initTheme() {
   const themeBtn = $('btn-theme-toggle');
   if (themeBtn) {
     themeBtn.innerText = currentTheme === 'light' ? '🌙' : '☀️';
+    themeBtn.setAttribute('aria-label', currentTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
   }
 }
 
@@ -678,7 +679,20 @@ export function setupEventListeners() {
     toggleLangState();
     updateTranslations();
   };
-  
+
+  // Keyboard support for filter/metric cards (LOS tiles, waitlist tiles, room
+  // cards, admissions dropdown header) -- these are non-button elements with
+  // role="button" + tabindex="0"; Enter/Space triggers the same handler a
+  // click already runs. Delegated on document so it also covers room cards,
+  // which are re-rendered dynamically after every board update.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    const target = e.target.closest('[role="button"]');
+    if (!target || typeof target.onclick !== 'function') return;
+    e.preventDefault();
+    target.click();
+  });
+
   const searchInp = $('patient-search-input');
   if (searchInp) {
     searchInp.addEventListener('input', () => {
@@ -889,7 +903,11 @@ export function setupEventListeners() {
   // Analytics admissions dropdown toggle
   if ($('analytics-admissions-header')) {
     $('analytics-admissions-header').onclick = () => {
-      if ($('analytics-admissions-body')) $('analytics-admissions-body').classList.toggle('hidden');
+      const body = $('analytics-admissions-body');
+      if (body) {
+        const nowHidden = body.classList.toggle('hidden');
+        $('analytics-admissions-header').setAttribute('aria-expanded', String(!nowHidden));
+      }
     };
   }
 
@@ -1312,8 +1330,8 @@ function updateDashboardCounters() {
     roomsGrid.innerHTML = ROOMS.map(roomName => {
       const isSelected = activeFilter.type === 'room' && activeFilter.value === roomName;
       return `
-        <div class="metric-card card-room ${isSelected ? 'active' : ''}" data-room="${roomName}">
-          <h3>📍 ${roomName}</h3>
+        <div class="metric-card card-room ${isSelected ? 'active' : ''}" data-room="${roomName}" role="button" tabindex="0">
+          <span class="metric-card-label">📍 ${roomName}</span>
           <div class="count">${roomCounts[roomName]}</div>
         </div>
       `;
