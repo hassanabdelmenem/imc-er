@@ -28,15 +28,15 @@
   );
   console.log(
     '%cThis application and its underlying source code are proprietary legal property of SEVENSN.\nUnauthorized cloning, scraping, inspection, or tampering is monitored and prohibited by copyright law.',
-    'color: #6a9bcc; font-size: 13px; font-weight: 600;'
+    'color: #6fa8dc; font-size: 13px; font-weight: 600;'
   );
 
   if (!AUTHORIZED_DOMAINS.includes(currentHost) && !currentHost.endsWith('.web.app')) {
     document.body.innerHTML = `
-      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#141413;color:#e5675a;font-family:sans-serif;padding:32px;text-align:center;">
+      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#10161d;color:#e5675a;font-family:sans-serif;padding:32px;text-align:center;">
         <div style="font-size:64px;margin-bottom:16px;">🛑</div>
-        <h1 style="font-size:24px;font-weight:800;margin-bottom:12px;color:#faf9f5;">SECURITY VIOLATION: UNAUTHORIZED HOST DETECTED</h1>
-        <p style="max-width:550px;color:#b0aea5;line-height:1.6;margin-bottom:24px;">
+        <h1 style="font-size:24px;font-weight:800;margin-bottom:12px;color:#f2f6fa;">SECURITY VIOLATION: UNAUTHORIZED HOST DETECTED</h1>
+        <p style="max-width:550px;color:#a9b9c9;line-height:1.6;margin-bottom:24px;">
           This web application is protected by international copyright law and trade secret protection.
           Execution on domain <strong>${currentHost}</strong> has been halted due to lack of authorization.
         </p>
@@ -1542,36 +1542,36 @@ function renderActivePatientList() {
             </div>
             
             <div class="workup-boxes">
-              <div id="referral_box_${esc(p.id)}" class="alert-box alert-warning ${isWaitlistAction ? '' : 'hidden'}" style="padding:10px;border:1px solid var(--alert-referral);background:var(--warning-bg);">
-                <label class="alert-label" style="color:var(--alert-referral);">${tr('rL')}</label>
-                <select id="ref_${esc(p.id)}" class="select-alert" style="background:transparent!important;border:none!important;font-weight:bold;color:var(--alert-referral);padding:2px 0!important;margin:4px 0 0 0;width:100%;cursor:pointer;" data-id="${esc(p.id)}" data-field="hasReferral">
+              <div id="referral_box_${esc(p.id)}" class="alert-box alert-warning alert-box-referral ${isWaitlistAction ? '' : 'hidden'}">
+                <label class="alert-label alert-label-referral">${tr('rL')}</label>
+                <select id="ref_${esc(p.id)}" class="select-alert select-alert-inline select-alert-referral" data-id="${esc(p.id)}" data-field="hasReferral">
                   <option value="" ${!p.hasReferral ? 'selected' : ''}>${currentLang === 'en' ? '-- No Referral --' : '-- بدون تحويل --'}</option>
                   <option value="Yes" ${p.hasReferral === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Referral Sent)' : 'نعم (تم إرسال التحويل)'}</option>
                   <option value="No" ${p.hasReferral === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
                 </select>
               </div>
               
-              <div id="sepsis_box_${esc(p.id)}" class="alert-box alert-danger ${isSepsisSuspected ? '' : 'hidden'}" style="padding:10px;border:1px solid var(--alert-sepsis);background:var(--danger-bg);">
-                <label class="alert-label" style="color:var(--alert-sepsis);">${tr('sepW')}</label>
-                <select id="sepsis_${esc(p.id)}" class="select-alert" style="background:transparent!important;border:none!important;font-weight:bold;color:var(--alert-sepsis);padding:2px 0!important;margin:4px 0 0 0;width:100%;cursor:pointer;" data-id="${esc(p.id)}" data-field="sepsisWorkup">
+              <div id="sepsis_box_${esc(p.id)}" class="alert-box alert-danger alert-box-sepsis ${isSepsisSuspected ? '' : 'hidden'}">
+                <label class="alert-label alert-label-sepsis">${tr('sepW')}</label>
+                <select id="sepsis_${esc(p.id)}" class="select-alert select-alert-inline select-alert-sepsis" data-id="${esc(p.id)}" data-field="sepsisWorkup">
                   <option value="" ${!p.sepsisWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending Workup --' : '-- في انتظار التحاليل --'}</option>
                   <option value="Yes" ${p.sepsisWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Protocol Initiated)' : 'نعم (تم تفعيل البروتوكول)'}</option>
                   <option value="No" ${p.sepsisWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
                 </select>
               </div>
 
-              <div id="mi_box_${esc(p.id)}" class="alert-box alert-danger ${isMiSuspected ? '' : 'hidden'}" style="padding:10px;border:1px solid var(--alert-mi);background:var(--danger-bg);">
-                <label class="alert-label" style="color:var(--alert-mi);">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
-                <select id="mi_${esc(p.id)}" class="select-alert" style="background:transparent!important;border:none!important;font-weight:bold;color:var(--alert-mi);padding:2px 0!important;margin:4px 0 0 0;width:100%;cursor:pointer;" data-id="${esc(p.id)}" data-field="miCodeWorkup">
+              <div id="mi_box_${esc(p.id)}" class="alert-box alert-danger alert-box-mi ${isMiSuspected ? '' : 'hidden'}">
+                <label class="alert-label alert-label-mi">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
+                <select id="mi_${esc(p.id)}" class="select-alert select-alert-inline select-alert-mi" data-id="${esc(p.id)}" data-field="miCodeWorkup">
                   <option value="" ${!p.miCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending ECG/Trop --' : '-- في انتظار رسم القلب والإنزيمات --'}</option>
                   <option value="Yes" ${p.miCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Cath Alerted)' : 'نعم (تم إبلاغ القسطرة)'}</option>
                   <option value="No" ${p.miCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
                 </select>
               </div>
 
-              <div id="stroke_box_${esc(p.id)}" class="alert-box alert-warning ${isStrokeSuspected ? '' : 'hidden'}" style="padding:10px;border:1px solid var(--alert-stroke);background:var(--warning-bg);">
-                <label class="alert-label" style="color:var(--alert-stroke);">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
-                <select id="stroke_${esc(p.id)}" class="select-alert" style="background:transparent!important;border:none!important;font-weight:bold;color:var(--alert-stroke);padding:2px 0!important;margin:4px 0 0 0;width:100%;cursor:pointer;" data-id="${esc(p.id)}" data-field="strokeCodeWorkup">
+              <div id="stroke_box_${esc(p.id)}" class="alert-box alert-warning alert-box-stroke ${isStrokeSuspected ? '' : 'hidden'}">
+                <label class="alert-label alert-label-stroke">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
+                <select id="stroke_${esc(p.id)}" class="select-alert select-alert-inline select-alert-stroke" data-id="${esc(p.id)}" data-field="strokeCodeWorkup">
                   <option value="" ${!p.strokeCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending CT Brain --' : '-- في انتظار الأشعة المقطعية --'}</option>
                   <option value="Yes" ${p.strokeCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Neuro Alerted)' : 'نعم (تم إبلاغ المخ والأعصاب)'}</option>
                   <option value="No" ${p.strokeCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>

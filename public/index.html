@@ -45,7 +45,7 @@
 
   <!-- Authentication Section -->
   <div id="auth-section" class="wrapper hidden">
-    <h2 style="color:var(--primary);margin:0 0 5px" data-i="t">IMC ER</h2>
+    <h2 class="heading-primary-tight" data-i="t">IMC ER</h2>
     <p style="color:var(--text-muted);margin:0 0 20px" data-i="s">Console</p>
     <div id="auth-error"></div>
     <div class="form-group">
@@ -64,7 +64,7 @@
 
   <!-- Access Gate Section -->
   <div id="access-gate" class="wrapper hidden">
-    <h2 style="color:var(--danger);margin:0 0 15px">Access Gate</h2>
+    <h2 class="heading-danger-tight">Access Gate</h2>
     <p id="gate-message" style="color:var(--text-muted);font-weight:700"></p>
     <button type="button" class="btn btn-primary-filled hidden" style="margin-top:20px;" id="btn-gate-retry" data-i="gRetry">🔄 Retry Access Request</button>
     <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);margin-top:20px;" id="btn-gate-logout" data-i="oB">Logout</button>
@@ -193,7 +193,7 @@
         <!-- Top Row: Shift KPI Cards & Operations -->
         <div class="glass-panel" style="padding: 20px; border-radius: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-            <h2 style="color:var(--primary); margin:0; font-size: 1.25rem;" data-i="mS">Shift Analytics (From 8 AM)</h2>
+            <h2 class="heading-primary-compact" data-i="mS">Shift Analytics (From 8 AM)</h2>
             <!-- Data Control buttons (visible/enabled for Manager/Owner) -->
             <div id="data-control-actions" style="display: flex; gap: 8px; align-items: center;">
               <button class="btn btn-outline" style="border-color:var(--warning); color:var(--warning); padding: 6px 12px; font-size: 13px;" id="btn-delete-discharged" data-i="p1">Delete Discharged</button>
@@ -240,7 +240,7 @@
 
         <!-- Bottom Row: Discharged Patients List -->
         <div class="glass-panel" style="padding: 20px; border-radius: 16px;">
-          <h2 style="color:var(--primary); margin: 0 0 16px 0; font-size: 1.25rem;" data-i="dPH">Discharged Patients</h2>
+          <h2 class="heading-primary-compact-spaced" data-i="dPH">Discharged Patients</h2>
           <div id="discharged-list-container">
             <div class="patient-card glass-panel skeleton-loader" style="padding:16px; margin-bottom:12px; border-radius:16px; border:1px solid var(--border);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -258,7 +258,7 @@
     <!-- Owner View -->
     <div id="view-owner" class="view-section hidden">
       <div class="glass-panel" style="padding:24px;">
-        <h2 style="color:var(--primary);margin-top:0" data-i="oM">Account Management & Role Governance</h2>
+        <h2 class="heading-primary" data-i="oM">Account Management & Role Governance</h2>
         <p data-i="oD" style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Assign roles or block access entirely. Auto-saves.</p>
         <div id="users-list-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;">
           <div class="patient-card glass-panel skeleton-loader" style="padding:16px; border-radius:16px; border:1px solid var(--border);">
@@ -283,7 +283,7 @@
   <div id="modal-register" class="modal-overlay hidden">
     <div class="modal-content glass-panel" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-register-title">
       <span class="close-modal" role="button" tabindex="0" aria-label="Close">&times;</span>
-      <h2 id="modal-register-title" style="color:var(--primary);margin-top:0" data-i="aT">Register Patient</h2>
+      <h2 id="modal-register-title" class="heading-primary" data-i="aT">Register Patient</h2>
       <div class="form-group">
         <label class="form-label" data-i="lN" for="reg-name">Name (Arabic)</label>
         <input type="text" id="reg-name" dir="rtl" placeholder="e.g. محمد أحمد" class="input-field" maxlength="100">
@@ -325,7 +325,7 @@
   <div id="modal-select-room" class="modal-overlay hidden" style="z-index:9999;">
     <div class="modal-content glass-panel" style="max-width:420px;height:auto;" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-select-room-title">
       <span class="close-modal" id="close-modal-select-room" role="button" tabindex="0" aria-label="Close">&times;</span>
-      <h3 id="modal-select-room-title" style="color:var(--primary);margin-top:0" data-i="sR">Select Room / Unit</h3>
+      <h3 id="modal-select-room-title" class="heading-primary" data-i="sR">Select Room / Unit</h3>
       <div id="room-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:16px;"></div>
     </div>
   </div>
@@ -334,7 +334,7 @@
   <div id="modal-select-dept" class="modal-overlay hidden" style="z-index:9999;">
     <div class="modal-content glass-panel" style="max-width:420px;height:auto;" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-select-dept-title">
       <span class="close-modal" id="close-modal-select-dept" role="button" tabindex="0" aria-label="Close">&times;</span>
-      <h3 id="modal-select-dept-title" style="color:var(--primary);margin-top:0" data-i="deptModalTitle">Select Primary Department</h3>
+      <h3 id="modal-select-dept-title" class="heading-primary" data-i="deptModalTitle">Select Primary Department</h3>
       <input type="text" id="dept-picker-search" class="input-field" style="margin-top:12px;" data-p="deptSearchPh" placeholder="🔍 Search departments...">
       <div id="dept-selection-grid" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px;max-height:340px;overflow-y:auto;"></div>
     </div>
@@ -344,7 +344,7 @@
   <div id="modal-discharge" class="modal-overlay hidden">
     <div class="modal-content glass-panel" style="height:auto" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-discharge-title">
       <span class="close-modal" role="button" tabindex="0" aria-label="Close">&times;</span>
-      <h2 id="modal-discharge-title" style="color:var(--danger);margin-top:0" data-i="dT">Discharge</h2>
+      <h2 id="modal-discharge-title" class="heading-danger" data-i="dT">Discharge</h2>
       <strong id="discharge-patient-name" style="color:var(--primary);font-size:18px;display:block;margin:15px 0" dir="rtl"></strong>
       <div class="form-group">
         <label class="form-label" for="discharge-outcome-select">Discharge Outcome</label>

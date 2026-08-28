@@ -60,13 +60,13 @@ html[dir="rtl"] .count, html[dir="rtl"] .btn, html[dir="rtl"] .tab-btn {
 .section-title {
   font-size: 13px;
   color: var(--primary);
-  margin: 24px 0 12px;
+  margin: var(--space-6) 0 var(--space-3);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .section-title::after {
@@ -136,7 +136,7 @@ html[dir="rtl"] .count, html[dir="rtl"] .btn, html[dir="rtl"] .tab-btn {
 .skeleton-container {
   width: 100%;
   max-width: 600px;
-  padding: 20px;
+  padding: var(--space-5);
 }
 
 /* .skeleton-card / .skeleton-line's actual shimmer styling (background,
@@ -148,8 +148,8 @@ html[dir="rtl"] .count, html[dir="rtl"] .btn, html[dir="rtl"] .tab-btn {
 /* Forms & Inputs (Touch Ergonomic 16px font to stop iOS Zoom) */
 input, select, textarea {
   width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 14px;
+  padding: var(--space-4) var(--space-4);
+  margin-bottom: var(--space-4);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   font-size: 16px !important;
@@ -171,14 +171,14 @@ input:focus, select:focus {
   border-color: var(--primary) !important;
   color: var(--primary) !important;
   font-weight: 700;
-  margin-top: 8px;
-  padding: 12px !important;
+  margin-top: var(--space-2);
+  padding: var(--space-3) !important;
 }
 
 /* Buttons */
 .btn {
   border: 0;
-  padding: 14px 20px;
+  padding: var(--space-4) var(--space-5);
   cursor: pointer;
   border-radius: 12px;
   color: var(--on-primary);
@@ -187,7 +187,7 @@ input:focus, select:focus {
   min-height: 48px;
   width: 100%;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -203,7 +203,7 @@ input:focus, select:focus {
 
 .btn-hero {
   font-size: 17px;
-  padding: 16px;
+  padding: var(--space-4);
   font-weight: 700;
   box-shadow: 0 4px 15px var(--cta-glow);
   border: 1px solid var(--tint-light-strong);
@@ -229,7 +229,7 @@ input:focus, select:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   font-size: 14px;
   min-height: 38px;
   margin: 0;
@@ -251,10 +251,10 @@ input:focus, select:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 18px 24px;
+  margin-bottom: var(--space-5);
+  padding: var(--space-5) var(--space-6);
   border-radius: 16px;
-  gap: 12px;
+  gap: var(--space-3);
   /* Sticky with a scroll-activated blur: app.js toggles `.scrolled` at
      scrollY > 10 (see btn-theme-toggle init), this is the CSS half. */
   position: sticky;
@@ -282,16 +282,16 @@ input:focus, select:focus {
 #user-info {
   font-size: 12px;
   color: var(--primary);
-  margin-top: 4px;
+  margin-top: var(--space-1);
   font-weight: 600;
 }
 
 .tabs-bar {
   display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
   overflow-x: auto;
-  padding: 6px;
+  padding: var(--space-2);
   background: var(--card-bg);
   border-radius: 16px;
   border: 1px solid var(--border-color);
@@ -299,7 +299,7 @@ input:focus, select:focus {
 
 .tab-btn {
   flex: 1;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   cursor: pointer;
   border: 0;
   background: transparent;
@@ -332,12 +332,12 @@ input:focus, select:focus {
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
-  margin-bottom: 25px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
 }
 
 .metric-card {
-  padding: 16px 12px;
+  padding: var(--space-4) var(--space-3);
   border-radius: 16px;
   text-align: center;
   color: var(--text-main);
@@ -378,7 +378,7 @@ input:focus, select:focus {
 }
 
 .metric-card .metric-card-label {
-  margin: 0 0 6px;
+  margin: 0 0 var(--space-2);
   font-size: 13px;
   font-weight: 600;
   opacity: 0.95;
@@ -445,21 +445,21 @@ input:focus, select:focus {
 
 /* Patient List Header & Cards */
 .list-header {
-  padding: 16px 20px;
+  padding: var(--space-4) var(--space-5);
   border-radius: 14px;
   font-size: 16px;
   font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   border-left: 4px solid var(--primary);
 }
 
 .list-header .count-pill {
   background: var(--primary);
   color: var(--on-primary);
-  padding: 4px 14px;
+  padding: var(--space-1) var(--space-4);
   border-radius: 20px;
   font-size: 14px;
   font-weight: 800;
@@ -471,6 +471,11 @@ input:focus, select:focus {
   backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: 12px;
+  /* Deliberately NOT tokenized (design pass 2026-08-28): 10px/14px is a
+     hand-tuned compact density for the most-repeated, most-scanned component
+     in the app (see the "compact collapsed patient cards for mobile
+     viewports" fix), slightly tighter than the nearest --space-* tokens
+     (12px/16px) would give. Keeping the exact tuned value here on purpose. */
   padding: 10px 14px;
   border-left: 5px solid var(--primary);
   margin-bottom: 10px;
@@ -495,14 +500,14 @@ input:focus, select:focus {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px 10px;
+  gap: var(--space-2) var(--space-3);
   width: 100%;
 }
 
 .card-summary-left {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
   flex: 1 1 180px;
   min-width: 0;
   text-align: start;
@@ -529,7 +534,7 @@ input:focus, select:focus {
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-2);
   flex: 0 1 auto;
   min-width: 0;
   max-width: 100%;
@@ -537,7 +542,7 @@ input:focus, select:focus {
 
 .card-summary-tags {
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -550,7 +555,7 @@ input:focus, select:focus {
 .patient-card .card-summary-right .btn-mini {
   min-height: 34px !important;
   height: 34px;
-  padding: 2px 8px !important;
+  padding: var(--space-1) var(--space-2) !important;
   font-size: 12px !important;
   margin: 0 !important;
   border-radius: 6px;
@@ -560,7 +565,7 @@ input:focus, select:focus {
   background: var(--danger-bg);
   color: var(--danger);
   border: 1px solid var(--danger-glow);
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 8px;
   font-weight: 700;
   font-size: 12px;
@@ -574,7 +579,7 @@ input:focus, select:focus {
   font-weight: 700;
   background: linear-gradient(135deg, var(--primary-dark), var(--primary));
   border: 1px solid var(--primary);
-  padding: 3px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 8px;
   white-space: nowrap;
   box-shadow: 0 2px 6px var(--primary-glow);
@@ -588,7 +593,7 @@ input:focus, select:focus {
   color: var(--primary);
   background: var(--primary-light);
   border: 1px solid var(--primary-glow);
-  padding: 3px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 8px;
   font-size: 12px;
   text-align: end;
@@ -601,15 +606,15 @@ input:focus, select:focus {
   color: var(--text-muted);
   background: var(--tint-light);
   border: 1px solid var(--border-color);
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 8px;
   white-space: nowrap;
 }
 
 /* Expanded Card Details */
 .card-details {
-  margin-top: 18px;
-  padding-top: 18px;
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
   border-top: 1px dashed var(--border-color);
   animation: fadeIn 0.25s ease-out;
 }
@@ -622,9 +627,9 @@ input:focus, select:focus {
 .details-grid-top {
   display: grid;
   grid-template-columns: minmax(100px, 1.5fr) auto minmax(105px, 1fr);
-  gap: 10px;
+  gap: var(--space-3);
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .input-name {
@@ -634,7 +639,7 @@ input:focus, select:focus {
   font-weight: 700;
   border: 1px dashed var(--border-color) !important;
   background: var(--input-bg) !important;
-  padding: 10px 14px !important;
+  padding: var(--space-3) var(--space-4) !important;
   color: var(--text-main) !important;
 }
 
@@ -657,7 +662,7 @@ input:focus, select:focus {
   color: var(--danger);
   background: var(--danger-light);
   border: 1px solid var(--danger-glow);
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 8px;
 }
 
@@ -669,7 +674,7 @@ input:focus, select:focus {
   border: 1px solid var(--border-color) !important;
   background: var(--input-bg) !important;
   width: 100%;
-  padding: 10px 12px !important;
+  padding: var(--space-3) var(--space-3) !important;
   margin: 0;
 }
 
@@ -682,31 +687,31 @@ input:focus, select:focus {
 }
 
 .select-room {
-  margin-bottom: 16px;
-  padding: 12px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
   text-align: center;
 }
 
 .details-grid-mid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .field-label {
   font-size: 12px;
   color: var(--text-muted);
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   display: block;
 }
 
 .details-grid-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
   align-items: start;
 }
 
@@ -714,17 +719,17 @@ input:focus, select:focus {
   border-width: 1px;
   font-weight: 600;
   margin: 0;
-  padding: 12px;
+  padding: var(--space-3);
 }
 
 .workup-boxes {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .alert-box {
-  padding: 12px;
+  padding: var(--space-3);
   border-radius: 12px;
   border: 1px solid;
 }
@@ -762,7 +767,7 @@ input:focus, select:focus {
 .alert-label {
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   display: block;
 }
 
@@ -771,13 +776,56 @@ input:focus, select:focus {
 
 .select-alert {
   margin: 0;
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-3);
   background: var(--input-bg);
   font-weight: 600;
 }
 
 .select-warning { border-color: var(--warning-glow); color: var(--warning); }
 .select-danger { border-color: var(--danger-glow); color: var(--danger); }
+
+/* Per-code alert accents (design pass 2026-08-28): consolidates 12 inline
+   style="" blocks in app.js (4 workup boxes + 4 labels + 4 dropdown selects,
+   one per code type) that only ever varied by this one accent color -- the
+   padding/background/layout they also repeated inline is now sourced
+   entirely from .alert-box/.alert-warning/.alert-danger/.select-alert above,
+   using the token scale instead of a literal "padding:10px" that quietly
+   overrode the class's own padding. */
+.alert-box-referral { border-color: var(--alert-referral); }
+.alert-box-sepsis   { border-color: var(--alert-sepsis); }
+.alert-box-mi       { border-color: var(--alert-mi); }
+.alert-box-stroke   { border-color: var(--alert-stroke); }
+
+.alert-label-referral { color: var(--alert-referral); }
+.alert-label-sepsis   { color: var(--alert-sepsis); }
+.alert-label-mi       { color: var(--alert-mi); }
+.alert-label-stroke   { color: var(--alert-stroke); }
+
+.select-alert-inline {
+  background: transparent !important;
+  border: none !important;
+  font-weight: bold;
+  padding: 2px 0 !important;
+  margin: var(--space-1) 0 0 0;
+  width: 100%;
+  cursor: pointer;
+}
+.select-alert-inline.select-alert-referral { color: var(--alert-referral); }
+.select-alert-inline.select-alert-sepsis   { color: var(--alert-sepsis); }
+.select-alert-inline.select-alert-mi       { color: var(--alert-mi); }
+.select-alert-inline.select-alert-stroke   { color: var(--alert-stroke); }
+
+/* Section/modal heading styles (design pass 2026-08-28): consolidates 9 inline
+   style="" headings in index.html that hand-repeated "color:var(--primary);
+   margin-..." with a slightly different margin value each time (design audit
+   finding: three-plus different spacing values for what should be one heading
+   style). Spacing now comes from the token scale instead of one-off pixels. */
+.heading-primary { color: var(--primary); margin-top: 0; }
+.heading-danger { color: var(--danger); margin-top: 0; }
+.heading-primary-tight { color: var(--primary); margin: 0 0 var(--space-1) 0; }
+.heading-danger-tight { color: var(--danger); margin: 0 0 var(--space-4) 0; }
+.heading-primary-compact { color: var(--primary); margin: 0; font-size: 1.25rem; }
+.heading-primary-compact-spaced { color: var(--primary); margin: 0 0 var(--space-4) 0; font-size: 1.25rem; }
 
 /* Shift Analytics stat tiles — factored out of index.html, which previously
    repeated this same style="" block inline on 5 separate <div>s (and 4 more
@@ -787,7 +835,7 @@ input:focus, select:focus {
 .stat-tile {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 14px;
+  padding: var(--space-4);
   border-radius: 12px;
   text-align: center;
 }
@@ -797,7 +845,7 @@ input:focus, select:focus {
 }
 
 .stat-tile .metric-card-label {
-  margin: 0 0 6px 0;
+  margin: 0 0 var(--space-2) 0;
   font-size: 13px;
   color: var(--text-muted);
 }
@@ -813,21 +861,21 @@ input:focus, select:focus {
 .stat-count-warning { color: var(--warning); }
 
 .admissions-breakdown {
-  margin-top: 12px;
+  margin-top: var(--space-3);
   background: var(--bg);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 12px;
+  padding: var(--space-3);
   display: grid;
   /* auto-fit instead of a hardcoded 4 columns: the fixed version squeezed
      4 columns into a 375px phone width regardless of content. */
   grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .admissions-breakdown .dropdown-item {
   justify-content: space-between;
-  padding: 6px 12px;
+  padding: var(--space-2) var(--space-3);
   background: var(--card-bg);
   border-radius: 6px;
   font-weight: 700;
@@ -835,9 +883,9 @@ input:focus, select:focus {
 
 /* Stat Row (Manager View) */
 .stat-row {
-  padding: 16px 20px;
+  padding: var(--space-4) var(--space-5);
   border-radius: 14px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   display: flex;
   justify-content: space-between;
   font-weight: 600;
@@ -852,9 +900,9 @@ input:focus, select:focus {
 
 .dropdown-body {
   background: var(--card-bg);
-  padding: 14px 20px;
+  padding: var(--space-4) var(--space-5);
   border-radius: 0 0 14px 14px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   border: 1px solid var(--border-color);
   border-top: 0;
   font-weight: 600;
@@ -864,7 +912,7 @@ input:focus, select:focus {
 .dropdown-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-3);
 }
 
 .dropdown-item:last-child {
@@ -875,13 +923,13 @@ input:focus, select:focus {
 .user-card {
   background: var(--card-bg);
   backdrop-filter: blur(16px);
-  padding: 18px 20px;
+  padding: var(--space-5) var(--space-5);
   border-radius: 14px;
   border: 1px solid var(--border-color);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   font-weight: 600;
 }
 
@@ -901,13 +949,13 @@ input:focus, select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: var(--space-5);
 }
 
 .modal-content {
   background: var(--card-bg);
   backdrop-filter: blur(20px);
-  padding: 30px 24px;
+  padding: var(--space-8) var(--space-6);
   border-radius: 24px;
   width: 100%;
   max-width: 520px;
@@ -959,7 +1007,7 @@ html[dir="rtl"] .close-modal {
 #auth-section, #access-gate {
   max-width: 420px;
   margin: 10vh auto;
-  padding: 36px 28px;
+  padding: var(--space-10) var(--space-8);
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
@@ -972,17 +1020,17 @@ html[dir="rtl"] .close-modal {
   color: var(--danger);
   background: var(--danger-light);
   border: 1px solid var(--danger-glow);
-  padding: 12px;
+  padding: var(--space-3);
   border-radius: 10px;
   font-size: 14px;
   display: none;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   font-weight: 600;
 }
 
 .empty-list {
   text-align: center;
-  padding: 40px;
+  padding: var(--space-10);
   color: var(--text-muted);
   font-weight: 600;
   background: var(--card-bg);
@@ -1018,15 +1066,15 @@ html[dir="rtl"] .close-modal {
 @media (min-width: 601px) and (max-width: 1024px) {
   .wrapper {
     max-width: 100%;
-    padding: 24px 32px;
+    padding: var(--space-6) var(--space-8);
   }
   .dashboard-command-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
+    padding: var(--space-4) var(--space-6);
     border-radius: 16px;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
     background: var(--card-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
@@ -1034,7 +1082,7 @@ html[dir="rtl"] .close-modal {
   .dashboard-console-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
     font-weight: 700;
     color: var(--text-main);
     font-size: 15px;
@@ -1047,8 +1095,8 @@ html[dir="rtl"] .close-modal {
   .dashboard-kpi-layout, .dashboard-analytics-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 24px;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
   }
   .dashboard-los-pane .metrics-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1062,7 +1110,7 @@ html[dir="rtl"] .close-modal {
   #patient-list-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: var(--space-3);
     align-items: start;
   }
   #patient-list-container .patient-card {
@@ -1075,24 +1123,24 @@ html[dir="rtl"] .close-modal {
 /* Mobile Bottom-Sheet & Ergonomic Adjustments (<600px) */
 @media (max-width: 600px) {
   .wrapper {
-    padding: 12px;
+    padding: var(--space-3);
   }
   .nav-bar {
-    padding: 14px 16px;
+    padding: var(--space-4) var(--space-4);
     flex-direction: column;
     align-items: flex-start;
   }
   .nav-bar > div:last-child {
     width: 100%;
     justify-content: flex-end;
-    margin-top: 12px;
+    margin-top: var(--space-3);
   }
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: var(--space-3);
   }
   .metric-card {
-    padding: 16px 8px;
+    padding: var(--space-4) var(--space-2);
     min-height: 80px;
   }
   .metric-card .count {
@@ -1102,7 +1150,7 @@ html[dir="rtl"] .close-modal {
     min-height: 48px;
   }
   .patient-card {
-    padding: 8px 10px;
+    padding: var(--space-2) var(--space-3);
     border-radius: 10px;
   }
   .card-header {
@@ -1110,7 +1158,7 @@ html[dir="rtl"] .close-modal {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 4px 8px;
+    gap: var(--space-1) var(--space-2);
   }
   .card-summary-left {
     flex: 1 1 auto;
@@ -1123,25 +1171,25 @@ html[dir="rtl"] .close-modal {
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-    gap: 4px 6px;
+    gap: var(--space-1) var(--space-2);
     border-top: none;
-    padding-top: 2px;
+    padding-top: var(--space-1);
   }
   .card-summary-tags {
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 4px 6px;
+    gap: var(--space-1) var(--space-2);
   }
   .details-grid-top, .details-grid-mid, .details-grid-bottom {
     grid-template-columns: 1fr !important;
-    gap: 14px;
+    gap: var(--space-4);
   }
   .modal-overlay {
     padding: 0;
     align-items: flex-end;
   }
   .modal-content {
-    padding: 24px 20px 36px;
+    padding: var(--space-6) var(--space-5) var(--space-10);
     border-radius: 28px 28px 0 0;
     max-height: 92vh;
     animation: slideUpBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1159,22 +1207,22 @@ html[dir="rtl"] .close-modal {
 @media (min-width: 1025px) {
   .wrapper {
     max-width: 1560px;
-    padding: 28px 48px;
+    padding: var(--space-8) var(--space-10);
   }
   
   .nav-bar {
-    padding: 18px 28px;
+    padding: var(--space-5) var(--space-8);
     border-radius: 20px;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
   }
   
   .dashboard-command-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 28px;
+    padding: var(--space-5) var(--space-8);
     border-radius: 20px;
-    margin-bottom: 28px;
+    margin-bottom: var(--space-8);
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-highlight);
@@ -1183,7 +1231,7 @@ html[dir="rtl"] .close-modal {
   .dashboard-console-badge {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
     font-weight: 700;
     font-size: 16px;
     color: var(--text-main);
@@ -1193,7 +1241,7 @@ html[dir="rtl"] .close-modal {
     width: auto !important;
     min-width: 260px;
     margin-bottom: 0;
-    padding: 14px 32px;
+    padding: var(--space-4) var(--space-8);
     font-size: 16px;
     border-radius: 14px;
     box-shadow: 0 6px 24px var(--cta-glow);
@@ -1202,27 +1250,27 @@ html[dir="rtl"] .close-modal {
   .dashboard-kpi-layout {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    gap: 24px;
+    gap: var(--space-6);
     align-items: start;
   }
   .dashboard-analytics-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: var(--space-8);
     align-items: start;
-    margin-top: 28px;
+    margin-top: var(--space-8);
   }
   .dashboard-kpi-pane {
     background: var(--card-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 18px 24px 24px;
+    padding: var(--space-5) var(--space-6) var(--space-6);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
   .dashboard-kpi-pane .section-title {
-    margin-top: 2px;
-    margin-bottom: 16px;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-4);
   }
   .dashboard-los-pane .metrics-grid {
     grid-template-columns: repeat(6, 1fr);
@@ -1236,16 +1284,16 @@ html[dir="rtl"] .close-modal {
   .dashboard-workspace-layout {
     display: grid;
     grid-template-columns: 360px 1fr;
-    gap: 28px;
+    gap: var(--space-8);
     align-items: start;
-    margin-top: 28px;
+    margin-top: var(--space-8);
   }
   .dashboard-workspace-sidebar {
     background: var(--card-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 20px 22px;
+    padding: var(--space-5) var(--space-6);
     position: sticky;
     top: 24px;
     max-height: calc(100vh - 48px);
@@ -1257,7 +1305,7 @@ html[dir="rtl"] .close-modal {
   }
   .dashboard-workspace-sidebar .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: var(--space-3);
     margin-bottom: 0;
   }
   
@@ -1267,7 +1315,7 @@ html[dir="rtl"] .close-modal {
   #patient-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 12px;
+    gap: var(--space-3);
     align-items: start;
   }
   #patient-list-container .patient-card {
@@ -1281,12 +1329,12 @@ html[dir="rtl"] .close-modal {
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
     border-radius: 24px;
-    padding: 36px;
+    padding: var(--space-10);
   }
   #discharged-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 12px;
+    gap: var(--space-3);
   }
   #discharged-list-container .patient-card {
     margin-bottom: 0;
@@ -1306,20 +1354,20 @@ html[dir="rtl"] .close-modal {
    clipped card content. This is the single, reconciled version.)
    ========================================================================== */
 .form-group {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   display: flex;
   flex-direction: column;
 }
 .form-label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   font-weight: 600;
   color: var(--text-muted);
   font-size: 0.875rem;
 }
 .pin-container {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .pin-box {
   width: 48px !important;
@@ -1347,7 +1395,7 @@ html[dir="rtl"] .close-modal {
     left: 0;
     right: 0;
     background: var(--surface);
-    padding: 12px 16px;
+    padding: var(--space-3) var(--space-4);
     border-top: 1px solid var(--border-color);
     z-index: 50;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
@@ -1356,15 +1404,15 @@ html[dir="rtl"] .close-modal {
 
 .segmented-control {
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   background: rgba(0, 0, 0, 0.2);
-  padding: 4px;
+  padding: var(--space-1);
   border-radius: 8px;
   border: 1px solid var(--border-color);
 }
 .segmented-btn {
   flex: 1;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   text-align: center;
   border-radius: 6px;
   border: none;
@@ -1382,8 +1430,8 @@ html[dir="rtl"] .close-modal {
 .pill-token {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
   border-radius: 9999px;
   background: var(--primary-light);
   border: 1px solid var(--primary);
@@ -1411,7 +1459,7 @@ html[dir="rtl"] .close-modal {
 .card-inner { border-radius: 8px !important; }  /* rounded-lg */
 .dashboard-grid {
   display: grid;
-  gap: 24px;
+  gap: var(--space-6);
 }
 .read-more-btn {
   color: var(--primary);
@@ -1419,7 +1467,7 @@ html[dir="rtl"] .close-modal {
   font-weight: 600;
   font-size: 0.8rem;
   display: inline-block;
-  margin-top: 4px;
+  margin-top: var(--space-1);
   text-decoration: underline;
 }
 
@@ -1475,9 +1523,9 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 12px 20px;
-  margin-bottom: 16px;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-4);
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--danger), var(--danger-strong));
   color: var(--on-error);
@@ -1486,7 +1534,7 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   transition: all 0.3s ease;
   z-index: 1000;
 }
-.sentinel-lead { display: flex; align-items: center; gap: 12px; }
+.sentinel-lead { display: flex; align-items: center; gap: var(--space-3); }
 .sentinel-icon { font-size: 24px; }
 .sentinel-title {
   font-weight: 800;
@@ -1495,14 +1543,14 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   text-transform: uppercase;
 }
 .sentinel-message { font-size: 13px; opacity: 0.95; }
-.sentinel-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.sentinel-actions { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 .sentinel-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-2);
   font-size: 12px;
-  padding: 6px 14px;
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   cursor: pointer;
   width: auto;
@@ -1551,8 +1599,8 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 }
 
 /* --- Nav bar actions --- */
-.nav-actions { display: flex; gap: 8px; align-items: center; }
-.btn-icon-only { font-size: 16px; padding: 6px 12px; }
+.nav-actions { display: flex; gap: var(--space-2); align-items: center; }
+.btn-icon-only { font-size: 16px; padding: var(--space-2) var(--space-3); }
 .btn-lang-toggle {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary));
   color: var(--on-primary);
@@ -1563,16 +1611,16 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 .pending-count-badge {
   color: var(--on-error);
   background: var(--danger);
-  padding: 2px 8px;
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-md);
-  margin-left: 6px;
+  margin-left: var(--space-2);
   display: none;
 }
 
 /* --- Modal confirm buttons (Register / Discharge) --- */
 .btn-confirm {
   width: 100%;
-  margin-top: 15px;
+  margin-top: var(--space-4);
   border: none;
   font-weight: 700;
 }
@@ -1584,11 +1632,11 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   background: var(--tint-light);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 14px;
-  margin-bottom: 16px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 .btn-ai-generate {
-  padding: 6px 12px;
+  padding: var(--space-2) var(--space-3);
   font-size: 12px;
   border-radius: var(--radius-lg);
   width: auto;
@@ -1604,9 +1652,9 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   box-sizing: border-box;
 }
 .btn-ai-save {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   font-size: 12px;
-  margin-top: 8px;
+  margin-top: var(--space-2);
   border-radius: var(--radius-sm);
   width: 100%;
   font-weight: 600;
@@ -1618,14 +1666,14 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 .account-summary-row {
   grid-column: 1 / -1;
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 .account-summary-tile {
   flex: 1;
   min-width: 140px;
-  padding: 12px;
+  padding: var(--space-3);
   text-align: center;
 }
 .account-summary-label {
@@ -1637,14 +1685,14 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 .account-summary-count {
   font-size: 20px;
   font-weight: 800;
-  margin-top: 2px;
+  margin-top: var(--space-1);
 }
 .account-section-heading {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 18px 0 2px;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 var(--space-1);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.05em;
@@ -1659,7 +1707,7 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 }
 .account-section-empty {
   grid-column: 1 / -1;
-  padding: 16px 18px;
+  padding: var(--space-4) var(--space-5);
   border-radius: 14px;
   border: 1px dashed var(--border-color);
   color: var(--text-muted);
@@ -1685,32 +1733,32 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
 .user-card-role { font-weight: 800; font-size: 13px; text-align: end; }
 .user-card-email { font-size: 12px; color: var(--text-muted); }
 .user-card-note {
-  margin-top: 6px;
+  margin-top: var(--space-2);
   font-size: 13px;
   color: var(--text-muted);
   border-top: 1px dashed var(--border-color);
-  padding-top: 8px;
+  padding-top: var(--space-2);
 }
 .user-card-controls {
-  margin-top: 6px;
+  margin-top: var(--space-2);
   border-top: 1px dashed var(--border-color);
-  padding-top: 8px;
+  padding-top: var(--space-2);
 }
 .user-card-control-label {
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   display: block;
   font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
 }
 .user-card-controls .select-role {
-  padding: 8px;
+  padding: var(--space-2);
   border-radius: var(--radius-sm);
   margin: 0;
   width: 100%;
 }
 .user-card-controls .btn-remove-user {
-  margin-top: 8px;
+  margin-top: var(--space-2);
   width: 100%;
   border-color: var(--danger) !important;
   color: var(--danger) !important;
