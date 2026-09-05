@@ -1,0 +1,2192 @@
+{
+  ".agents/skills/xcode-project-setup/scripts/xcode_spm_setup/Package.swift": {
+    "mtime": 1786581686.8791122,
+    "seen": 1788002458.457178,
+    "ast_hash": "d15b636f209428a352e37117be8ba6c6",
+    "semantic_hash": "d15b636f209428a352e37117be8ba6c6"
+  },
+  ".agents/skills/xcode-project-setup/scripts/xcode_spm_setup/Sources/main.swift": {
+    "mtime": 1786581686.8792434,
+    "seen": 1788002458.457182,
+    "ast_hash": "07a97f81b5c78073cf070db106e2fca4",
+    "semantic_hash": "07a97f81b5c78073cf070db106e2fca4"
+  },
+  ".agents/teamwork_preview_m1_explorer_2/proposed_rbac-security.test.js": {
+    "mtime": 1787842894.4336135,
+    "seen": 1788002458.457183,
+    "ast_hash": "4ec085a0bfcbb84f4bbca027e4e7ec7a",
+    "semantic_hash": "4ec085a0bfcbb84f4bbca027e4e7ec7a"
+  },
+  "deploy-remote-config.js": {
+    "mtime": 1786581686.8806334,
+    "seen": 1788002458.457184,
+    "ast_hash": "a37a1cd6ea5f354a8e89554bcef0cccd",
+    "semantic_hash": "a37a1cd6ea5f354a8e89554bcef0cccd"
+  },
+  "firebase.json": {
+    "mtime": 1786582208.678691,
+    "seen": 1788002458.457185,
+    "ast_hash": "905e881a7f13470c7f3e29d3af228543",
+    "semantic_hash": "905e881a7f13470c7f3e29d3af228543"
+  },
+  "package.json": {
+    "mtime": 1786581686.8832345,
+    "seen": 1788002458.4571881,
+    "ast_hash": "3a2e2c2cddef96c71f0bd3f224e490e1",
+    "semantic_hash": "3a2e2c2cddef96c71f0bd3f224e490e1"
+  },
+  "playwright.config.js": {
+    "mtime": 1787842894.469997,
+    "seen": 1788002458.457189,
+    "ast_hash": "5bd80ee150641e8b45843ca19d7a972a",
+    "semantic_hash": "5bd80ee150641e8b45843ca19d7a972a"
+  },
+  "public/js/app.js": {
+    "mtime": 1787907286.5883367,
+    "seen": 1788002458.457189,
+    "ast_hash": "5814491427b27e46f0c6b480415be6dc",
+    "semantic_hash": "5814491427b27e46f0c6b480415be6dc"
+  },
+  "public/js/components/ui-components.js": {
+    "mtime": 1787845935.5051017,
+    "seen": 1788002458.4571898,
+    "ast_hash": "eaf7a5ac3bac0eb9376380930ceaeb06",
+    "semantic_hash": "eaf7a5ac3bac0eb9376380930ceaeb06"
+  },
+  "public/js/config.js": {
+    "mtime": 1786581686.8842611,
+    "seen": 1788002458.4571898,
+    "ast_hash": "5083524efa4091a2545f1f4b65cfc2b4",
+    "semantic_hash": "5083524efa4091a2545f1f4b65cfc2b4"
+  },
+  "public/js/crypto-engine.js": {
+    "mtime": 1786581686.8844438,
+    "seen": 1788002458.457191,
+    "ast_hash": "8e121b027f7e15cb9e5a080903298210",
+    "semantic_hash": "8e121b027f7e15cb9e5a080903298210"
+  },
+  "public/js/edge-ai-service.js": {
+    "mtime": 1787842894.4716215,
+    "seen": 1788002458.457191,
+    "ast_hash": "65f354c6289eee4c63e0c473f95200c6",
+    "semantic_hash": "65f354c6289eee4c63e0c473f95200c6"
+  },
+  "public/js/firebase-service.js": {
+    "mtime": 1786581686.8847003,
+    "seen": 1788002458.457192,
+    "ast_hash": "f0131ff72760ae79c2b811401c387c1c",
+    "semantic_hash": "f0131ff72760ae79c2b811401c387c1c"
+  },
+  "public/js/i18n.js": {
+    "mtime": 1786581686.8847964,
+    "seen": 1788002458.457193,
+    "ast_hash": "d5643ddeec44d8b715d4abd2f47dfe6e",
+    "semantic_hash": "d5643ddeec44d8b715d4abd2f47dfe6e"
+  },
+  "public/js/store.js": {
+    "mtime": 1786581686.8849275,
+    "seen": 1788002458.457193,
+    "ast_hash": "c75486ab99cb68faa3f97fba5dcbbb61",
+    "semantic_hash": "c75486ab99cb68faa3f97fba5dcbbb61"
+  },
+  "public/js/telemetry-rum.js": {
+    "mtime": 1786581686.8850622,
+    "seen": 1788002458.457194,
+    "ast_hash": "558547efb98e15b1077ba3a1cf804dd9",
+    "semantic_hash": "558547efb98e15b1077ba3a1cf804dd9"
+  },
+  "public/sw.js": {
+    "mtime": 1786581686.8851416,
+    "seen": 1788002458.457194,
+    "ast_hash": "1db982a551139c8206a73f9c2bedc913",
+    "semantic_hash": "1db982a551139c8206a73f9c2bedc913"
+  },
+  "remote-config.json": {
+    "mtime": 1786581686.885331,
+    "seen": 1788002458.457195,
+    "ast_hash": "b15ee747a895455cfabc2cf6c4cdc7e7",
+    "semantic_hash": "b15ee747a895455cfabc2cf6c4cdc7e7"
+  },
+  "scripts/build-prod.js": {
+    "mtime": 1786581686.88545,
+    "seen": 1788002458.457195,
+    "ast_hash": "5f29be06f36b87a62ebf19489729228d",
+    "semantic_hash": "5f29be06f36b87a62ebf19489729228d"
+  },
+  "scripts/empirical-m2-concurrency-harness.js": {
+    "mtime": 1787842894.4718678,
+    "seen": 1788002458.457196,
+    "ast_hash": "d23e77fb87afd14b67ce647326e9358b",
+    "semantic_hash": "d23e77fb87afd14b67ce647326e9358b"
+  },
+  "scripts/empirical-stress-harness.js": {
+    "mtime": 1787842894.4720752,
+    "seen": 1788002458.457196,
+    "ast_hash": "c5486e4c3e39174e12e5207b9f6ebe31",
+    "semantic_hash": "c5486e4c3e39174e12e5207b9f6ebe31"
+  },
+  "scripts/m2-empirical-challenge-harness.js": {
+    "mtime": 1787842894.4722886,
+    "seen": 1788002458.457197,
+    "ast_hash": "4c12aed1d75d4e462fbb236f91c0d606",
+    "semantic_hash": "4c12aed1d75d4e462fbb236f91c0d606"
+  },
+  "scripts/preflight.js": {
+    "mtime": 1786581686.8855455,
+    "seen": 1788002458.457197,
+    "ast_hash": "416845ba2264ca9a91471874e2d5924a",
+    "semantic_hash": "416845ba2264ca9a91471874e2d5924a"
+  },
+  "scripts/serve.js": {
+    "mtime": 1787842894.4724486,
+    "seen": 1788002458.4571981,
+    "ast_hash": "1442648f81721d23ea8c7a324a5c5d72",
+    "semantic_hash": "1442648f81721d23ea8c7a324a5c5d72"
+  },
+  "scripts/set-admin.js": {
+    "mtime": 1786581686.8856802,
+    "seen": 1788002458.4571981,
+    "ast_hash": "d09c355dd861e88e47a96f30d4eeda6d",
+    "semantic_hash": "d09c355dd861e88e47a96f30d4eeda6d"
+  },
+  "skills-lock.json": {
+    "mtime": 1786581686.8857586,
+    "seen": 1788002458.457199,
+    "ast_hash": "1b2fedc87f3dbca708a06a028032fb90",
+    "semantic_hash": "1b2fedc87f3dbca708a06a028032fb90"
+  },
+  "tests/e2e/accessGateSecurity.spec.js": {
+    "mtime": 1787842894.4727066,
+    "seen": 1788002458.457199,
+    "ast_hash": "09b83f5af3fddcc70e609cebb5f3b05a",
+    "semantic_hash": "09b83f5af3fddcc70e609cebb5f3b05a"
+  },
+  "tests/e2e/adversarialBoundaryStress.spec.js": {
+    "mtime": 1787842894.472878,
+    "seen": 1788002458.4572,
+    "ast_hash": "38d2413518516138c78db38c8f2cf971",
+    "semantic_hash": "38d2413518516138c78db38c8f2cf971"
+  },
+  "tests/e2e/authHandshake.spec.js": {
+    "mtime": 1786581686.885974,
+    "seen": 1788002458.4572,
+    "ast_hash": "4d6266de0e4b044c7d819c056b021a2e",
+    "semantic_hash": "4d6266de0e4b044c7d819c056b021a2e"
+  },
+  "tests/e2e/chiefNurseWorkflow.spec.js": {
+    "mtime": 1787842894.473114,
+    "seen": 1788002458.457201,
+    "ast_hash": "c70fa299c2c738002f99aa2e3c871153",
+    "semantic_hash": "c70fa299c2c738002f99aa2e3c871153"
+  },
+  "tests/e2e/concurrencyAndViewports.spec.js": {
+    "mtime": 1787845935.5059083,
+    "seen": 1788002458.457201,
+    "ast_hash": "0b28b7ad4234b84a43cfecf3f96e5cfd",
+    "semantic_hash": "0b28b7ad4234b84a43cfecf3f96e5cfd"
+  },
+  "tests/e2e/helpers/mockFirebase.js": {
+    "mtime": 1787842894.4739566,
+    "seen": 1788002458.457202,
+    "ast_hash": "7a7f4d867bd6a8e43f5870806c0675b9",
+    "semantic_hash": "7a7f4d867bd6a8e43f5870806c0675b9"
+  },
+  "tests/e2e/leadershipWorkflow.spec.js": {
+    "mtime": 1787842894.4741638,
+    "seen": 1788002458.457202,
+    "ast_hash": "4adc4c8c0524ae442cab8c006250a38e",
+    "semantic_hash": "4adc4c8c0524ae442cab8c006250a38e"
+  },
+  "tests/e2e/m3-adversarial-stress.spec.js": {
+    "mtime": 1787842894.4744227,
+    "seen": 1788002458.457203,
+    "ast_hash": "62f364619967d7537ea714e7d70d2e68",
+    "semantic_hash": "62f364619967d7537ea714e7d70d2e68"
+  },
+  "tests/e2e/offlineSync.spec.js": {
+    "mtime": 1787842894.4746528,
+    "seen": 1788002458.4572039,
+    "ast_hash": "e9fe67d85d9e578923a5185227c3bf82",
+    "semantic_hash": "e9fe67d85d9e578923a5185227c3bf82"
+  },
+  "tests/e2e/ownerWorkflow.spec.js": {
+    "mtime": 1787842894.4748755,
+    "seen": 1788002458.4572039,
+    "ast_hash": "3f78ee5d469edae53b1f3192053b7cce",
+    "semantic_hash": "3f78ee5d469edae53b1f3192053b7cce"
+  },
+  "tests/integration/adversarialChaos.test.js": {
+    "mtime": 1787842894.4750738,
+    "seen": 1788002458.457205,
+    "ast_hash": "ed49e9d98f64e51a81425e6226bcb508",
+    "semantic_hash": "ed49e9d98f64e51a81425e6226bcb508"
+  },
+  "tests/integration/concurrent-collision.test.js": {
+    "mtime": 1787842894.47536,
+    "seen": 1788002458.457205,
+    "ast_hash": "a0f318fa04ff6a404a983589ecb3fa2c",
+    "semantic_hash": "a0f318fa04ff6a404a983589ecb3fa2c"
+  },
+  "tests/integration/discharge-attestation.test.js": {
+    "mtime": 1787842894.4755545,
+    "seen": 1788002458.457205,
+    "ast_hash": "33c077b98de332ce7eadf00e47c1cced",
+    "semantic_hash": "33c077b98de332ce7eadf00e47c1cced"
+  },
+  "tests/integration/m2-adversarial-challenge.test.js": {
+    "mtime": 1787842894.4757361,
+    "seen": 1788002458.457206,
+    "ast_hash": "32d7f89a48a23b2f48eae00e80fadbbb",
+    "semantic_hash": "32d7f89a48a23b2f48eae00e80fadbbb"
+  },
+  "tests/integration/m2-adversarial-challenger.test.js": {
+    "mtime": 1787842894.4762037,
+    "seen": 1788002458.457206,
+    "ast_hash": "7914bf8bc843cdf880c7019eea5afeb8",
+    "semantic_hash": "7914bf8bc843cdf880c7019eea5afeb8"
+  },
+  "tests/integration/offlineChaos.test.js": {
+    "mtime": 1787842894.4765131,
+    "seen": 1788002458.457207,
+    "ast_hash": "c8e8a23a09e265b8dcd8bbde9b338dee",
+    "semantic_hash": "c8e8a23a09e265b8dcd8bbde9b338dee"
+  },
+  "tests/integration/patientTransfer.test.js": {
+    "mtime": 1786581686.8862417,
+    "seen": 1788002458.4572082,
+    "ast_hash": "ef41bf11478d4d5888749142d4afe0f4",
+    "semantic_hash": "ef41bf11478d4d5888749142d4afe0f4"
+  },
+  "tests/load/adversarial-concurrency-stress.test.js": {
+    "mtime": 1787842894.4767156,
+    "seen": 1788002458.45721,
+    "ast_hash": "71dbaba9b4fd3a90e62742635c601151",
+    "semantic_hash": "71dbaba9b4fd3a90e62742635c601151"
+  },
+  "tests/load/chaos-concurrency-stress.test.js": {
+    "mtime": 1787842894.4770415,
+    "seen": 1788002458.45721,
+    "ast_hash": "b2b5f3f8ed671299061c455e1d41f857",
+    "semantic_hash": "b2b5f3f8ed671299061c455e1d41f857"
+  },
+  "tests/load/concurrentDoctors.test.js": {
+    "mtime": 1786581686.8863559,
+    "seen": 1788002458.4572108,
+    "ast_hash": "cae138ac6a76c02805ce1f9a092fd0f1",
+    "semantic_hash": "cae138ac6a76c02805ce1f9a092fd0f1"
+  },
+  "tests/load/concurrentEditingStress.test.js": {
+    "mtime": 1787842894.4774146,
+    "seen": 1788002458.4572108,
+    "ast_hash": "3290fa005da010c3c48e71914e7a922e",
+    "semantic_hash": "3290fa005da010c3c48e71914e7a922e"
+  },
+  "tests/setup.js": {
+    "mtime": 1786581686.886428,
+    "seen": 1788002458.457212,
+    "ast_hash": "bc5afcc9b5afe294b5777ba7b8157eb4",
+    "semantic_hash": "bc5afcc9b5afe294b5777ba7b8157eb4"
+  },
+  "tests/unit/accessRequests.test.js": {
+    "mtime": 1786581686.8865955,
+    "seen": 1788002458.457212,
+    "ast_hash": "d4903bab848dc7cdef3391154be0742f",
+    "semantic_hash": "d4903bab848dc7cdef3391154be0742f"
+  },
+  "tests/unit/adversarial-boundary-m3.test.js": {
+    "mtime": 1787842894.4776516,
+    "seen": 1788002458.457213,
+    "ast_hash": "dee5eec366074e4a2e38c30709fc1a31",
+    "semantic_hash": "dee5eec366074e4a2e38c30709fc1a31"
+  },
+  "tests/unit/authDomain.test.js": {
+    "mtime": 1786581686.886743,
+    "seen": 1788002458.457213,
+    "ast_hash": "3e288a4d79757fba21ae8b372442b2a3",
+    "semantic_hash": "3e288a4d79757fba21ae8b372442b2a3"
+  },
+  "tests/unit/concurrent-editing.test.js": {
+    "mtime": 1786581686.8868244,
+    "seen": 1788002458.4572139,
+    "ast_hash": "d04baf38f3d1873655febfa1a933a4cf",
+    "semantic_hash": "d04baf38f3d1873655febfa1a933a4cf"
+  },
+  "tests/unit/crypto-engine.test.js": {
+    "mtime": 1787842894.4780831,
+    "seen": 1788002458.4572139,
+    "ast_hash": "ce59ef5cc5e60ba6595bd7aa842ff61e",
+    "semantic_hash": "ce59ef5cc5e60ba6595bd7aa842ff61e"
+  },
+  "tests/unit/edge-ai-sandbox.test.js": {
+    "mtime": 1787842894.478365,
+    "seen": 1788002458.457215,
+    "ast_hash": "cae70d0ba25e148db4905c110c3e1e76",
+    "semantic_hash": "cae70d0ba25e148db4905c110c3e1e76"
+  },
+  "tests/unit/edge-ai-synthesis.test.js": {
+    "mtime": 1787842894.478571,
+    "seen": 1788002458.457215,
+    "ast_hash": "e26820a70532217a10d4db6ab8615290",
+    "semantic_hash": "e26820a70532217a10d4db6ab8615290"
+  },
+  "tests/unit/interactive-event-isolation-m6.test.js": {
+    "mtime": 1787845935.5074654,
+    "seen": 1788002458.457216,
+    "ast_hash": "2d4f56402486ef0670018390430d5fc4",
+    "semantic_hash": "2d4f56402486ef0670018390430d5fc4"
+  },
+  "tests/unit/keystroke-preservation.test.js": {
+    "mtime": 1787842894.4791768,
+    "seen": 1788002458.457216,
+    "ast_hash": "d3e764b4b27e5ab818de7b4a65dc4310",
+    "semantic_hash": "d3e764b4b27e5ab818de7b4a65dc4310"
+  },
+  "tests/unit/m6-layout-adversarial-stress.test.js": {
+    "mtime": 1787907071.6359103,
+    "seen": 1788002458.457217,
+    "ast_hash": "8dc2380fef4f2a023da18c02bb952dc3",
+    "semantic_hash": "8dc2380fef4f2a023da18c02bb952dc3"
+  },
+  "tests/unit/nationalId.test.js": {
+    "mtime": 1786581686.8869605,
+    "seen": 1788002458.457217,
+    "ast_hash": "9629feaaebede953c2cdf3541d377075",
+    "semantic_hash": "9629feaaebede953c2cdf3541d377075"
+  },
+  "tests/unit/observability.test.js": {
+    "mtime": 1786581686.8871005,
+    "seen": 1788002458.457218,
+    "ast_hash": "e283eb15fbe292f3310006781e061bbd",
+    "semantic_hash": "e283eb15fbe292f3310006781e061bbd"
+  },
+  "tests/unit/rbac-security.test.js": {
+    "mtime": 1787842894.4794497,
+    "seen": 1788002458.4572191,
+    "ast_hash": "4ec085a0bfcbb84f4bbca027e4e7ec7a",
+    "semantic_hash": "4ec085a0bfcbb84f4bbca027e4e7ec7a"
+  },
+  "tests/unit/redirectSignIn.test.js": {
+    "mtime": 1786581686.8872397,
+    "seen": 1788002458.4572191,
+    "ast_hash": "7c6e02b35de9dd95ec50463bcfcea218",
+    "semantic_hash": "7c6e02b35de9dd95ec50463bcfcea218"
+  },
+  "tests/unit/roleModel.test.js": {
+    "mtime": 1786581686.8873718,
+    "seen": 1788002458.45722,
+    "ast_hash": "eed6a1142c4bd0dea97233f27a422925",
+    "semantic_hash": "eed6a1142c4bd0dea97233f27a422925"
+  },
+  "tests/unit/roleSimulation.test.js": {
+    "mtime": 1787842894.4796715,
+    "seen": 1788002458.45722,
+    "ast_hash": "3bad3ea8644b896f8bd00cde5daf612a",
+    "semantic_hash": "3bad3ea8644b896f8bd00cde5daf612a"
+  },
+  "tests/unit/roleSimulationStress.test.js": {
+    "mtime": 1787842894.4799557,
+    "seen": 1788002458.457221,
+    "ast_hash": "74dba11d3a8c1eafbd397d84a519f8fd",
+    "semantic_hash": "74dba11d3a8c1eafbd397d84a519f8fd"
+  },
+  "vitest.config.js": {
+    "mtime": 1786581686.8874567,
+    "seen": 1788002458.457221,
+    "ast_hash": "bd7bf20e9599b5039c804f23d98e3db9",
+    "semantic_hash": "bd7bf20e9599b5039c804f23d98e3db9"
+  },
+  ".agents/ORIGINAL_REQUEST.md": {
+    "mtime": 1787845933.3320954,
+    "seen": 1788002458.457222,
+    "ast_hash": "27161dd896225d393e62904ac756cb6d",
+    "semantic_hash": "27161dd896225d393e62904ac756cb6d"
+  },
+  ".agents/rules/GLOBAL.md": {
+    "mtime": 1786581686.8693192,
+    "seen": 1788002458.457222,
+    "ast_hash": "0f7e4f869fc7aeb22f5603b7d336d9b9",
+    "semantic_hash": "0f7e4f869fc7aeb22f5603b7d336d9b9"
+  },
+  ".agents/sentinel/BRIEFING.md": {
+    "mtime": 1787845933.3326836,
+    "seen": 1788002458.457223,
+    "ast_hash": "063442510e9735b5ada08b2c8d8b60c4",
+    "semantic_hash": "063442510e9735b5ada08b2c8d8b60c4"
+  },
+  ".agents/sentinel/handoff.md": {
+    "mtime": 1787845933.3329604,
+    "seen": 1788002458.457223,
+    "ast_hash": "ab92f37c72d14df1fea03af9d0707475",
+    "semantic_hash": "ab92f37c72d14df1fea03af9d0707475"
+  },
+  ".agents/skills/firebase-ai-logic-basics/SKILL.md": {
+    "mtime": 1786581686.8695557,
+    "seen": 1788002458.457227,
+    "ast_hash": "eb585d76c2910fc26445e1e13fa5c70e",
+    "semantic_hash": "eb585d76c2910fc26445e1e13fa5c70e"
+  },
+  ".agents/skills/firebase-ai-logic-basics/references/flutter_setup.md": {
+    "mtime": 1786581686.869684,
+    "seen": 1788002458.457227,
+    "ast_hash": "137ae5c6a26bf9d3a636e7afff9d19a9",
+    "semantic_hash": "137ae5c6a26bf9d3a636e7afff9d19a9"
+  },
+  ".agents/skills/firebase-ai-logic-basics/references/ios_setup.md": {
+    "mtime": 1786581686.8698225,
+    "seen": 1788002458.457228,
+    "ast_hash": "5501e9c3ab095b23878dcbfce26ecee5",
+    "semantic_hash": "5501e9c3ab095b23878dcbfce26ecee5"
+  },
+  ".agents/skills/firebase-ai-logic-basics/references/usage_patterns_android.md": {
+    "mtime": 1786581686.8699534,
+    "seen": 1788002458.457228,
+    "ast_hash": "9dfcab941601fcb1ff8e1b2f75ae5241",
+    "semantic_hash": "9dfcab941601fcb1ff8e1b2f75ae5241"
+  },
+  ".agents/skills/firebase-ai-logic-basics/references/usage_patterns_web.md": {
+    "mtime": 1786581686.870079,
+    "seen": 1788002458.4572291,
+    "ast_hash": "2a4613051402d1ac6859301ae9bde3f7",
+    "semantic_hash": "2a4613051402d1ac6859301ae9bde3f7"
+  },
+  ".agents/skills/firebase-app-hosting-basics/SKILL.md": {
+    "mtime": 1786581686.870194,
+    "seen": 1788002458.45723,
+    "ast_hash": "50f1149b54724ca251f74f61eb380abf",
+    "semantic_hash": "50f1149b54724ca251f74f61eb380abf"
+  },
+  ".agents/skills/firebase-app-hosting-basics/references/cli_commands.md": {
+    "mtime": 1786581686.8703132,
+    "seen": 1788002458.45723,
+    "ast_hash": "0403657158d488bf24cbd63f32621109",
+    "semantic_hash": "0403657158d488bf24cbd63f32621109"
+  },
+  ".agents/skills/firebase-app-hosting-basics/references/configuration.md": {
+    "mtime": 1786581686.870383,
+    "seen": 1788002458.457231,
+    "ast_hash": "3d07374b336c68b918856aabd47c4259",
+    "semantic_hash": "3d07374b336c68b918856aabd47c4259"
+  },
+  ".agents/skills/firebase-app-hosting-basics/references/emulation.md": {
+    "mtime": 1786581686.8704498,
+    "seen": 1788002458.457231,
+    "ast_hash": "b260bc0b9d5ae868ca316edfb61f2cf0",
+    "semantic_hash": "b260bc0b9d5ae868ca316edfb61f2cf0"
+  },
+  ".agents/skills/firebase-auth-basics/SKILL.md": {
+    "mtime": 1786581686.870616,
+    "seen": 1788002458.4572318,
+    "ast_hash": "3e572eef3f0432dacdc65e2af5d5623e",
+    "semantic_hash": "3e572eef3f0432dacdc65e2af5d5623e"
+  },
+  ".agents/skills/firebase-auth-basics/references/client_sdk_android.md": {
+    "mtime": 1786581686.8707895,
+    "seen": 1788002458.4572318,
+    "ast_hash": "e3b774f14277d762ff51c9d9f0d17955",
+    "semantic_hash": "e3b774f14277d762ff51c9d9f0d17955"
+  },
+  ".agents/skills/firebase-auth-basics/references/client_sdk_web.md": {
+    "mtime": 1786581686.8709245,
+    "seen": 1788002458.457233,
+    "ast_hash": "1f2c9dbc9cd74a471cd81d513ffd782a",
+    "semantic_hash": "1f2c9dbc9cd74a471cd81d513ffd782a"
+  },
+  ".agents/skills/firebase-auth-basics/references/flutter_setup.md": {
+    "mtime": 1786581686.8710527,
+    "seen": 1788002458.457233,
+    "ast_hash": "f895b3bb2c9c593532e660731c9aa48c",
+    "semantic_hash": "f895b3bb2c9c593532e660731c9aa48c"
+  },
+  ".agents/skills/firebase-auth-basics/references/ios_setup.md": {
+    "mtime": 1786581686.8711329,
+    "seen": 1788002458.457234,
+    "ast_hash": "15c6a31eb676c4e059979d416f82d8ca",
+    "semantic_hash": "15c6a31eb676c4e059979d416f82d8ca"
+  },
+  ".agents/skills/firebase-auth-basics/references/security_rules.md": {
+    "mtime": 1786581686.8712049,
+    "seen": 1788002458.457234,
+    "ast_hash": "825de231c117fdc362581e8738283310",
+    "semantic_hash": "825de231c117fdc362581e8738283310"
+  },
+  ".agents/skills/firebase-basics/SKILL.md": {
+    "mtime": 1786581686.871376,
+    "seen": 1788002458.4572349,
+    "ast_hash": "18038eac6cb59b6d26d28b32d2ae6b56",
+    "semantic_hash": "18038eac6cb59b6d26d28b32d2ae6b56"
+  },
+  ".agents/skills/firebase-basics/references/android_setup.md": {
+    "mtime": 1786581686.8714871,
+    "seen": 1788002458.457236,
+    "ast_hash": "c123972562b4d40fdfe9e583759bc1e9",
+    "semantic_hash": "c123972562b4d40fdfe9e583759bc1e9"
+  },
+  ".agents/skills/firebase-basics/references/firebase-cli-guide.md": {
+    "mtime": 1786581686.871552,
+    "seen": 1788002458.457236,
+    "ast_hash": "cdb71fc2ab3e166bcd5374b0b284eb4d",
+    "semantic_hash": "cdb71fc2ab3e166bcd5374b0b284eb4d"
+  },
+  ".agents/skills/firebase-basics/references/firebase-service-init.md": {
+    "mtime": 1786581686.8716178,
+    "seen": 1788002458.457237,
+    "ast_hash": "963e169bd9e79b5b3ec7e520d696a67c",
+    "semantic_hash": "963e169bd9e79b5b3ec7e520d696a67c"
+  },
+  ".agents/skills/firebase-basics/references/flutter_setup.md": {
+    "mtime": 1786581686.8717408,
+    "seen": 1788002458.457237,
+    "ast_hash": "6957f1db750acd3bbd669daf16cd2795",
+    "semantic_hash": "6957f1db750acd3bbd669daf16cd2795"
+  },
+  ".agents/skills/firebase-basics/references/ios_setup.md": {
+    "mtime": 1786581686.8718219,
+    "seen": 1788002458.457238,
+    "ast_hash": "2b393e318136b69ff6e6124030e8a9ba",
+    "semantic_hash": "2b393e318136b69ff6e6124030e8a9ba"
+  },
+  ".agents/skills/firebase-basics/references/local-env-setup.md": {
+    "mtime": 1786581686.8718987,
+    "seen": 1788002458.457238,
+    "ast_hash": "65cd6a5bc411a2efd12d184d8e22228e",
+    "semantic_hash": "65cd6a5bc411a2efd12d184d8e22228e"
+  },
+  ".agents/skills/firebase-basics/references/refresh/android_studio.md": {
+    "mtime": 1786581686.8720036,
+    "seen": 1788002458.4572392,
+    "ast_hash": "9d144b7f9d558b170e3436e8cb71d2e0",
+    "semantic_hash": "9d144b7f9d558b170e3436e8cb71d2e0"
+  },
+  ".agents/skills/firebase-basics/references/refresh/antigravity.md": {
+    "mtime": 1786581686.8720684,
+    "seen": 1788002458.4572392,
+    "ast_hash": "6cd3121a97824ef97331f200a1f46c1c",
+    "semantic_hash": "6cd3121a97824ef97331f200a1f46c1c"
+  },
+  ".agents/skills/firebase-basics/references/refresh/claude.md": {
+    "mtime": 1786581686.872137,
+    "seen": 1788002458.45724,
+    "ast_hash": "823dcb8fc4e9c3be0821ab3a3008fb68",
+    "semantic_hash": "823dcb8fc4e9c3be0821ab3a3008fb68"
+  },
+  ".agents/skills/firebase-basics/references/refresh/gemini-cli.md": {
+    "mtime": 1786581686.8721945,
+    "seen": 1788002458.45724,
+    "ast_hash": "cd2e2a90b206fd2aedda7700d6568b7e",
+    "semantic_hash": "cd2e2a90b206fd2aedda7700d6568b7e"
+  },
+  ".agents/skills/firebase-basics/references/refresh/other-agents.md": {
+    "mtime": 1786581686.872269,
+    "seen": 1788002458.457241,
+    "ast_hash": "24706a04fd79d32044cc8fe8b2fb524b",
+    "semantic_hash": "24706a04fd79d32044cc8fe8b2fb524b"
+  },
+  ".agents/skills/firebase-basics/references/setup/android_studio.md": {
+    "mtime": 1786581686.872377,
+    "seen": 1788002458.457241,
+    "ast_hash": "2436037fa373c5dd26890f1f395a5819",
+    "semantic_hash": "2436037fa373c5dd26890f1f395a5819"
+  },
+  ".agents/skills/firebase-basics/references/setup/antigravity.md": {
+    "mtime": 1786581686.8724468,
+    "seen": 1788002458.457242,
+    "ast_hash": "ea827b3380b1d70088c480bd2920b169",
+    "semantic_hash": "ea827b3380b1d70088c480bd2920b169"
+  },
+  ".agents/skills/firebase-basics/references/setup/claude_code.md": {
+    "mtime": 1786581686.8725162,
+    "seen": 1788002458.457242,
+    "ast_hash": "ecf90f4beb94b2ed277fd553fb488d7d",
+    "semantic_hash": "ecf90f4beb94b2ed277fd553fb488d7d"
+  },
+  ".agents/skills/firebase-basics/references/setup/cursor.md": {
+    "mtime": 1786581686.8725982,
+    "seen": 1788002458.457243,
+    "ast_hash": "887433a0a4b2eedf3f5f6113a695bcfe",
+    "semantic_hash": "887433a0a4b2eedf3f5f6113a695bcfe"
+  },
+  ".agents/skills/firebase-basics/references/setup/gemini_cli.md": {
+    "mtime": 1786581686.872672,
+    "seen": 1788002458.457244,
+    "ast_hash": "67e034ce5c454ec4773e7af43c579f2b",
+    "semantic_hash": "67e034ce5c454ec4773e7af43c579f2b"
+  },
+  ".agents/skills/firebase-basics/references/setup/github_copilot.md": {
+    "mtime": 1786581686.8727562,
+    "seen": 1788002458.457244,
+    "ast_hash": "0ab1a0d4d0b3ea929fe4830afaf83bd8",
+    "semantic_hash": "0ab1a0d4d0b3ea929fe4830afaf83bd8"
+  },
+  ".agents/skills/firebase-basics/references/setup/other_agents.md": {
+    "mtime": 1786581686.872822,
+    "seen": 1788002458.4572449,
+    "ast_hash": "e40942687ca209227a04735b7e67dd88",
+    "semantic_hash": "e40942687ca209227a04735b7e67dd88"
+  },
+  ".agents/skills/firebase-basics/references/web_setup.md": {
+    "mtime": 1786581686.8728902,
+    "seen": 1788002458.4572449,
+    "ast_hash": "0e6f6485bb44054212983103e60eb977",
+    "semantic_hash": "0e6f6485bb44054212983103e60eb977"
+  },
+  ".agents/skills/firebase-crashlytics/SKILL.md": {
+    "mtime": 1786581686.8730044,
+    "seen": 1788002458.457246,
+    "ast_hash": "38beb63c6d3ed712f185b5ffc947b03b",
+    "semantic_hash": "38beb63c6d3ed712f185b5ffc947b03b"
+  },
+  ".agents/skills/firebase-crashlytics/references/android_setup.md": {
+    "mtime": 1786581686.8731716,
+    "seen": 1788002458.457246,
+    "ast_hash": "20084373e1b9d4ff9e90dad18b41ed8c",
+    "semantic_hash": "20084373e1b9d4ff9e90dad18b41ed8c"
+  },
+  ".agents/skills/firebase-crashlytics/references/ios_setup.md": {
+    "mtime": 1786581686.8732972,
+    "seen": 1788002458.457247,
+    "ast_hash": "f97380107b6dd6af6175eea4e29ebafe",
+    "semantic_hash": "f97380107b6dd6af6175eea4e29ebafe"
+  },
+  ".agents/skills/firebase-data-connect/SKILL.md": {
+    "mtime": 1786581686.8734775,
+    "seen": 1788002458.457247,
+    "ast_hash": "79bbe809d86dec404839d0182b54b419",
+    "semantic_hash": "79bbe809d86dec404839d0182b54b419"
+  },
+  ".agents/skills/firebase-data-connect/examples.md": {
+    "mtime": 1786581686.8735769,
+    "seen": 1788002458.457248,
+    "ast_hash": "c4e8f95776477ca8f3f7a34db18a74a1",
+    "semantic_hash": "c4e8f95776477ca8f3f7a34db18a74a1"
+  },
+  ".agents/skills/firebase-data-connect/reference/cloud_functions.md": {
+    "mtime": 1786581686.8737543,
+    "seen": 1788002458.457248,
+    "ast_hash": "8b950c620c65a5614355dabed902f25f",
+    "semantic_hash": "8b950c620c65a5614355dabed902f25f"
+  },
+  ".agents/skills/firebase-data-connect/reference/config.md": {
+    "mtime": 1786581686.8738854,
+    "seen": 1788002458.457249,
+    "ast_hash": "9e46754c3b6384dc02756f435bc9c82a",
+    "semantic_hash": "9e46754c3b6384dc02756f435bc9c82a"
+  },
+  ".agents/skills/firebase-data-connect/reference/data_seeding.md": {
+    "mtime": 1786581686.874017,
+    "seen": 1788002458.457249,
+    "ast_hash": "ee37fc3247019cf95584553ea038a433",
+    "semantic_hash": "ee37fc3247019cf95584553ea038a433"
+  },
+  ".agents/skills/firebase-data-connect/reference/native_sql.md": {
+    "mtime": 1786581686.874154,
+    "seen": 1788002458.45725,
+    "ast_hash": "893f0645a896f4afe1b61a8810f2c4cc",
+    "semantic_hash": "893f0645a896f4afe1b61a8810f2c4cc"
+  },
+  ".agents/skills/firebase-data-connect/reference/operations.md": {
+    "mtime": 1786581686.874252,
+    "seen": 1788002458.45725,
+    "ast_hash": "734af9e4e28810b02a4170c6002ff650",
+    "semantic_hash": "734af9e4e28810b02a4170c6002ff650"
+  },
+  ".agents/skills/firebase-data-connect/reference/realtime.md": {
+    "mtime": 1786581686.8743775,
+    "seen": 1788002458.457251,
+    "ast_hash": "baac382521707230cff21d522e29bb40",
+    "semantic_hash": "baac382521707230cff21d522e29bb40"
+  },
+  ".agents/skills/firebase-data-connect/reference/schema.md": {
+    "mtime": 1786581686.8745077,
+    "seen": 1788002458.457251,
+    "ast_hash": "5443f77e5fa668a118051cd022f74aa6",
+    "semantic_hash": "5443f77e5fa668a118051cd022f74aa6"
+  },
+  ".agents/skills/firebase-data-connect/reference/sdk_admin_node.md": {
+    "mtime": 1786581686.8746314,
+    "seen": 1788002458.457252,
+    "ast_hash": "d3c9edfb1b4ca9ee35c273bf383fd352",
+    "semantic_hash": "d3c9edfb1b4ca9ee35c273bf383fd352"
+  },
+  ".agents/skills/firebase-data-connect/reference/sdk_android.md": {
+    "mtime": 1786581686.8747094,
+    "seen": 1788002458.457252,
+    "ast_hash": "79936f8428dcca3484deb6750f6b5a19",
+    "semantic_hash": "79936f8428dcca3484deb6750f6b5a19"
+  },
+  ".agents/skills/firebase-data-connect/reference/sdk_flutter.md": {
+    "mtime": 1786581686.8747854,
+    "seen": 1788002458.4572532,
+    "ast_hash": "9e904be94ba2e5263f0431a8d4d6e3f6",
+    "semantic_hash": "9e904be94ba2e5263f0431a8d4d6e3f6"
+  },
+  ".agents/skills/firebase-data-connect/reference/sdk_ios.md": {
+    "mtime": 1786581686.8749204,
+    "seen": 1788002458.4572532,
+    "ast_hash": "198174777bb2b3d2dfcd4c901447443c",
+    "semantic_hash": "198174777bb2b3d2dfcd4c901447443c"
+  },
+  ".agents/skills/firebase-data-connect/reference/sdk_web.md": {
+    "mtime": 1786581686.8749957,
+    "seen": 1788002458.457254,
+    "ast_hash": "b0fbab37c67d1bb7ceb1d361d88a49f6",
+    "semantic_hash": "b0fbab37c67d1bb7ceb1d361d88a49f6"
+  },
+  ".agents/skills/firebase-data-connect/reference/search.md": {
+    "mtime": 1786581686.8751388,
+    "seen": 1788002458.457254,
+    "ast_hash": "abfbf1180db46fa104703ea1b71a7ecb",
+    "semantic_hash": "abfbf1180db46fa104703ea1b71a7ecb"
+  },
+  ".agents/skills/firebase-data-connect/reference/security.md": {
+    "mtime": 1786581686.8752716,
+    "seen": 1788002458.457255,
+    "ast_hash": "603f276cd9e8336aac22e31a833e671b",
+    "semantic_hash": "603f276cd9e8336aac22e31a833e671b"
+  },
+  ".agents/skills/firebase-data-connect/templates.md": {
+    "mtime": 1786581686.875403,
+    "seen": 1788002458.457255,
+    "ast_hash": "11768b51c23ed2bba54eb95c068f3731",
+    "semantic_hash": "11768b51c23ed2bba54eb95c068f3731"
+  },
+  ".agents/skills/firebase-firestore/SKILL.md": {
+    "mtime": 1786581686.8755183,
+    "seen": 1788002458.4572558,
+    "ast_hash": "b3c6e9f5d7ef821ced8c367c60a2b46f",
+    "semantic_hash": "b3c6e9f5d7ef821ced8c367c60a2b46f"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/android_sdk_usage.md": {
+    "mtime": 1786581686.875689,
+    "seen": 1788002458.457257,
+    "ast_hash": "827273f3166ddb3659baf2a1f78e035b",
+    "semantic_hash": "827273f3166ddb3659baf2a1f78e035b"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/data_model.md": {
+    "mtime": 1786581686.8757682,
+    "seen": 1788002458.457257,
+    "ast_hash": "0129d32b04b3a80ea3dedf6d6264ea13",
+    "semantic_hash": "0129d32b04b3a80ea3dedf6d6264ea13"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/flutter_setup.md": {
+    "mtime": 1786581686.875955,
+    "seen": 1788002458.457258,
+    "ast_hash": "66f91d9668d01cabe7482529ffd54ee1",
+    "semantic_hash": "66f91d9668d01cabe7482529ffd54ee1"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/indexes.md": {
+    "mtime": 1786581686.876119,
+    "seen": 1788002458.457258,
+    "ast_hash": "0424e1198fe0aad1abbbd2ce34fd74da",
+    "semantic_hash": "0424e1198fe0aad1abbbd2ce34fd74da"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/ios_setup.md": {
+    "mtime": 1786581686.8762589,
+    "seen": 1788002458.457259,
+    "ast_hash": "47678f94196f1a5c61e98a2b50ce909e",
+    "semantic_hash": "47678f94196f1a5c61e98a2b50ce909e"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/provisioning.md": {
+    "mtime": 1786581686.8763428,
+    "seen": 1788002458.457259,
+    "ast_hash": "5b3f7ff1bfac687433c69aadde87b8d5",
+    "semantic_hash": "5b3f7ff1bfac687433c69aadde87b8d5"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/python_sdk_usage.md": {
+    "mtime": 1786581686.8764277,
+    "seen": 1788002458.4572601,
+    "ast_hash": "39ae0323f9b2ef66ba1f07080bc3bdbf",
+    "semantic_hash": "39ae0323f9b2ef66ba1f07080bc3bdbf"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/security_rules.md": {
+    "mtime": 1786581686.8765483,
+    "seen": 1788002458.4572601,
+    "ast_hash": "5e73a8e931603cd854f6934fc55f985a",
+    "semantic_hash": "5e73a8e931603cd854f6934fc55f985a"
+  },
+  ".agents/skills/firebase-firestore/references/enterprise/web_sdk_usage.md": {
+    "mtime": 1786581686.876697,
+    "seen": 1788002458.457261,
+    "ast_hash": "e5f65b2d01a47a15ad08710c02662b01",
+    "semantic_hash": "e5f65b2d01a47a15ad08710c02662b01"
+  },
+  ".agents/skills/firebase-firestore/references/standard/android_sdk_usage.md": {
+    "mtime": 1786581686.8768718,
+    "seen": 1788002458.457261,
+    "ast_hash": "b562e7f92691cda0608b6bcb3eae8429",
+    "semantic_hash": "b562e7f92691cda0608b6bcb3eae8429"
+  },
+  ".agents/skills/firebase-firestore/references/standard/flutter_setup.md": {
+    "mtime": 1786581686.8770037,
+    "seen": 1788002458.457262,
+    "ast_hash": "749fd8c8bd76e8369fe7261bbeac5c1e",
+    "semantic_hash": "749fd8c8bd76e8369fe7261bbeac5c1e"
+  },
+  ".agents/skills/firebase-firestore/references/standard/indexes.md": {
+    "mtime": 1786581686.8771265,
+    "seen": 1788002458.457262,
+    "ast_hash": "a228b5e1cb36de2dcad0dc55e37b025d",
+    "semantic_hash": "a228b5e1cb36de2dcad0dc55e37b025d"
+  },
+  ".agents/skills/firebase-firestore/references/standard/ios_setup.md": {
+    "mtime": 1786581686.8772678,
+    "seen": 1788002458.457263,
+    "ast_hash": "eb50231fad476d8d3ab80c47240a2443",
+    "semantic_hash": "eb50231fad476d8d3ab80c47240a2443"
+  },
+  ".agents/skills/firebase-firestore/references/standard/provisioning.md": {
+    "mtime": 1786581686.8773563,
+    "seen": 1788002458.457263,
+    "ast_hash": "13a79739f24df769abf48b3d11eecea1",
+    "semantic_hash": "13a79739f24df769abf48b3d11eecea1"
+  },
+  ".agents/skills/firebase-firestore/references/standard/security_rules.md": {
+    "mtime": 1786581686.8774748,
+    "seen": 1788002458.4572642,
+    "ast_hash": "5e73a8e931603cd854f6934fc55f985a",
+    "semantic_hash": "5e73a8e931603cd854f6934fc55f985a"
+  },
+  ".agents/skills/firebase-firestore/references/standard/web_sdk_usage.md": {
+    "mtime": 1786581686.8776097,
+    "seen": 1788002458.4572642,
+    "ast_hash": "c7e06eedcdfebd8d1aca59611756bc7c",
+    "semantic_hash": "c7e06eedcdfebd8d1aca59611756bc7c"
+  },
+  ".agents/skills/firebase-hosting-basics/SKILL.md": {
+    "mtime": 1786581686.877724,
+    "seen": 1788002458.457265,
+    "ast_hash": "d68eccf43abd95ffc97ef8dfac7bbe33",
+    "semantic_hash": "d68eccf43abd95ffc97ef8dfac7bbe33"
+  },
+  ".agents/skills/firebase-hosting-basics/references/configuration.md": {
+    "mtime": 1786581686.877834,
+    "seen": 1788002458.457265,
+    "ast_hash": "f02657bc397346896bab1cb0ec61edec",
+    "semantic_hash": "f02657bc397346896bab1cb0ec61edec"
+  },
+  ".agents/skills/firebase-hosting-basics/references/deploying.md": {
+    "mtime": 1786581686.8779042,
+    "seen": 1788002458.4572659,
+    "ast_hash": "c729a6ecfed24994501fecb9e2d65f73",
+    "semantic_hash": "c729a6ecfed24994501fecb9e2d65f73"
+  },
+  ".agents/skills/firebase-remote-config-basics/SKILL.md": {
+    "mtime": 1786581686.878145,
+    "seen": 1788002458.4572659,
+    "ast_hash": "76c454f2eed5bb95f01ac131b1e3b5cf",
+    "semantic_hash": "76c454f2eed5bb95f01ac131b1e3b5cf"
+  },
+  ".agents/skills/firebase-remote-config-basics/references/android_setup.md": {
+    "mtime": 1786581686.878288,
+    "seen": 1788002458.457267,
+    "ast_hash": "ea3932c72ec77d401259579e9dc9900e",
+    "semantic_hash": "ea3932c72ec77d401259579e9dc9900e"
+  },
+  ".agents/skills/firebase-remote-config-basics/references/ios_setup.md": {
+    "mtime": 1786581686.878369,
+    "seen": 1788002458.457267,
+    "ast_hash": "8b0913f4cb6951549a2e067a73ffefb5",
+    "semantic_hash": "8b0913f4cb6951549a2e067a73ffefb5"
+  },
+  ".agents/skills/firebase-security-rules-auditor/SKILL.md": {
+    "mtime": 1786581686.8786361,
+    "seen": 1788002458.457268,
+    "ast_hash": "01a3c6692ad53a61aea7f76e929f3366",
+    "semantic_hash": "01a3c6692ad53a61aea7f76e929f3366"
+  },
+  ".agents/skills/xcode-project-setup/SKILL.md": {
+    "mtime": 1786581686.8788235,
+    "seen": 1788002458.457268,
+    "ast_hash": "2c01de6bfe0097fe1cdc85c087f117a5",
+    "semantic_hash": "2c01de6bfe0097fe1cdc85c087f117a5"
+  },
+  ".agents/teamwork_preview_explorer_m3_1/BRIEFING.md": {
+    "mtime": 1787842894.4223669,
+    "seen": 1788002458.457269,
+    "ast_hash": "eb241809faf56955bb22a8dcf8dc1adc",
+    "semantic_hash": "eb241809faf56955bb22a8dcf8dc1adc"
+  },
+  ".agents/teamwork_preview_explorer_m3_1/DISPATCH.md": {
+    "mtime": 1787842894.422547,
+    "seen": 1788002458.457269,
+    "ast_hash": "8ab328e2b1a04f62c026cbfd613ce5f8",
+    "semantic_hash": "8ab328e2b1a04f62c026cbfd613ce5f8"
+  },
+  ".agents/teamwork_preview_explorer_m3_1/analysis.md": {
+    "mtime": 1787842894.4227962,
+    "seen": 1788002458.45727,
+    "ast_hash": "df6f712a9d1f66731d5d445172f8f756",
+    "semantic_hash": "df6f712a9d1f66731d5d445172f8f756"
+  },
+  ".agents/teamwork_preview_explorer_m3_1/handoff.md": {
+    "mtime": 1787842894.4231634,
+    "seen": 1788002458.45727,
+    "ast_hash": "4a33d66b89b3c5569881c385d9f7565c",
+    "semantic_hash": "4a33d66b89b3c5569881c385d9f7565c"
+  },
+  ".agents/teamwork_preview_explorer_m3_1/progress.md": {
+    "mtime": 1787842894.4233303,
+    "seen": 1788002458.457271,
+    "ast_hash": "c53b121345fa0ac502d01321c826379a",
+    "semantic_hash": "c53b121345fa0ac502d01321c826379a"
+  },
+  ".agents/teamwork_preview_explorer_m3_2/BRIEFING.md": {
+    "mtime": 1787842894.4235466,
+    "seen": 1788002458.457271,
+    "ast_hash": "a88d7628bb100b103e463ad6cf9fec29",
+    "semantic_hash": "a88d7628bb100b103e463ad6cf9fec29"
+  },
+  ".agents/teamwork_preview_explorer_m3_2/DISPATCH.md": {
+    "mtime": 1787842894.4236944,
+    "seen": 1788002458.457272,
+    "ast_hash": "f34082b177e8be04e7961eae753ab616",
+    "semantic_hash": "f34082b177e8be04e7961eae753ab616"
+  },
+  ".agents/teamwork_preview_explorer_m3_2/analysis.md": {
+    "mtime": 1787842894.423953,
+    "seen": 1788002458.457272,
+    "ast_hash": "364ad89a562dd637d171786993b19133",
+    "semantic_hash": "364ad89a562dd637d171786993b19133"
+  },
+  ".agents/teamwork_preview_explorer_m3_2/handoff.md": {
+    "mtime": 1787842894.4245842,
+    "seen": 1788002458.457273,
+    "ast_hash": "cccea6c647b18104168deb256e475dd1",
+    "semantic_hash": "cccea6c647b18104168deb256e475dd1"
+  },
+  ".agents/teamwork_preview_explorer_m3_2/progress.md": {
+    "mtime": 1787842894.4247727,
+    "seen": 1788002458.457273,
+    "ast_hash": "fbd4898f0eaadf73357eaeb9610e5fb8",
+    "semantic_hash": "fbd4898f0eaadf73357eaeb9610e5fb8"
+  },
+  ".agents/teamwork_preview_explorer_m3_3/BRIEFING.md": {
+    "mtime": 1787842894.4250388,
+    "seen": 1788002458.4572742,
+    "ast_hash": "366f659b827122260765bfbb5389d429",
+    "semantic_hash": "366f659b827122260765bfbb5389d429"
+  },
+  ".agents/teamwork_preview_explorer_m3_3/DISPATCH.md": {
+    "mtime": 1787842894.4252057,
+    "seen": 1788002458.4572742,
+    "ast_hash": "587b34d099b7eb4acbe8877ce3522d45",
+    "semantic_hash": "587b34d099b7eb4acbe8877ce3522d45"
+  },
+  ".agents/teamwork_preview_explorer_m3_3/analysis.md": {
+    "mtime": 1787842894.4254012,
+    "seen": 1788002458.457275,
+    "ast_hash": "ea7e9673974e25bd58dda83fe05d1268",
+    "semantic_hash": "ea7e9673974e25bd58dda83fe05d1268"
+  },
+  ".agents/teamwork_preview_explorer_m3_3/handoff.md": {
+    "mtime": 1787842894.4257157,
+    "seen": 1788002458.457275,
+    "ast_hash": "e5cd0f11c01e304818011575970deefb",
+    "semantic_hash": "e5cd0f11c01e304818011575970deefb"
+  },
+  ".agents/teamwork_preview_explorer_m3_3/progress.md": {
+    "mtime": 1787842894.4258986,
+    "seen": 1788002458.4572759,
+    "ast_hash": "28b785d23eb9d494e7a0b2d44771e0b3",
+    "semantic_hash": "28b785d23eb9d494e7a0b2d44771e0b3"
+  },
+  ".agents/teamwork_preview_explorer_survey_1/BRIEFING.md": {
+    "mtime": 1787842894.4261281,
+    "seen": 1788002458.4572759,
+    "ast_hash": "fdcaafc0ead40c9c1bf882a704fdf402",
+    "semantic_hash": "fdcaafc0ead40c9c1bf882a704fdf402"
+  },
+  ".agents/teamwork_preview_explorer_survey_1/DISPATCH.md": {
+    "mtime": 1787842894.4263554,
+    "seen": 1788002458.4572768,
+    "ast_hash": "6f2494ac286b90bd41e84b35f90254b8",
+    "semantic_hash": "6f2494ac286b90bd41e84b35f90254b8"
+  },
+  ".agents/teamwork_preview_explorer_survey_1/handoff.md": {
+    "mtime": 1787842894.4267175,
+    "seen": 1788002458.457278,
+    "ast_hash": "2ca3438528505b00ec3036ac6aa1852b",
+    "semantic_hash": "2ca3438528505b00ec3036ac6aa1852b"
+  },
+  ".agents/teamwork_preview_explorer_survey_1/progress.md": {
+    "mtime": 1787842894.4268982,
+    "seen": 1788002458.457278,
+    "ast_hash": "c2efc0513d96651dd6b869bbab3c11de",
+    "semantic_hash": "c2efc0513d96651dd6b869bbab3c11de"
+  },
+  ".agents/teamwork_preview_explorer_survey_2/BRIEFING.md": {
+    "mtime": 1787842894.4271607,
+    "seen": 1788002458.457279,
+    "ast_hash": "fdaaab77762fa027964bd52cf4d0cc24",
+    "semantic_hash": "fdaaab77762fa027964bd52cf4d0cc24"
+  },
+  ".agents/teamwork_preview_explorer_survey_2/DISPATCH.md": {
+    "mtime": 1787842894.4273286,
+    "seen": 1788002458.457279,
+    "ast_hash": "142c701c542b4b2371a3200f3e9a4bde",
+    "semantic_hash": "142c701c542b4b2371a3200f3e9a4bde"
+  },
+  ".agents/teamwork_preview_explorer_survey_2/handoff.md": {
+    "mtime": 1787842894.427575,
+    "seen": 1788002458.45728,
+    "ast_hash": "149d5ffc9901eecf80950100e601281a",
+    "semantic_hash": "149d5ffc9901eecf80950100e601281a"
+  },
+  ".agents/teamwork_preview_explorer_survey_2/progress.md": {
+    "mtime": 1787842894.4277115,
+    "seen": 1788002458.457281,
+    "ast_hash": "0395f408f63a7c58cf63d1ae38f166ef",
+    "semantic_hash": "0395f408f63a7c58cf63d1ae38f166ef"
+  },
+  ".agents/teamwork_preview_m1_auditor_1/BRIEFING.md": {
+    "mtime": 1787842894.42789,
+    "seen": 1788002458.457281,
+    "ast_hash": "4c2c1e9114d518fe83364b48c57e9882",
+    "semantic_hash": "4c2c1e9114d518fe83364b48c57e9882"
+  },
+  ".agents/teamwork_preview_m1_auditor_1/DISPATCH.md": {
+    "mtime": 1787842894.4280248,
+    "seen": 1788002458.457282,
+    "ast_hash": "be617cb4befa8ce6c5e5a0f72b17e625",
+    "semantic_hash": "be617cb4befa8ce6c5e5a0f72b17e625"
+  },
+  ".agents/teamwork_preview_m1_auditor_1/handoff.md": {
+    "mtime": 1787842894.42825,
+    "seen": 1788002458.457282,
+    "ast_hash": "dd52da2f31b4db86f6cd8a2a15b2ab57",
+    "semantic_hash": "dd52da2f31b4db86f6cd8a2a15b2ab57"
+  },
+  ".agents/teamwork_preview_m1_auditor_1/progress.md": {
+    "mtime": 1787842894.428385,
+    "seen": 1788002458.457283,
+    "ast_hash": "77ab123a13a3e45b215a488446f3df65",
+    "semantic_hash": "77ab123a13a3e45b215a488446f3df65"
+  },
+  ".agents/teamwork_preview_m1_auditor_2/BRIEFING.md": {
+    "mtime": 1787842894.4285607,
+    "seen": 1788002458.457283,
+    "ast_hash": "464012c93bf71adf9a27cbee01dc808d",
+    "semantic_hash": "464012c93bf71adf9a27cbee01dc808d"
+  },
+  ".agents/teamwork_preview_m1_auditor_2/DISPATCH.md": {
+    "mtime": 1787842894.4287262,
+    "seen": 1788002458.4572842,
+    "ast_hash": "52f3ce097e91dd008e2004c5563701ca",
+    "semantic_hash": "52f3ce097e91dd008e2004c5563701ca"
+  },
+  ".agents/teamwork_preview_m1_auditor_2/handoff.md": {
+    "mtime": 1787842894.4291327,
+    "seen": 1788002458.4572842,
+    "ast_hash": "94be8578b7adcbcaf36cf99677a1b6b9",
+    "semantic_hash": "94be8578b7adcbcaf36cf99677a1b6b9"
+  },
+  ".agents/teamwork_preview_m1_challenger_1/BRIEFING.md": {
+    "mtime": 1787842894.429485,
+    "seen": 1788002458.4572852,
+    "ast_hash": "7e034f7ae795d7ed5240e435608eef59",
+    "semantic_hash": "7e034f7ae795d7ed5240e435608eef59"
+  },
+  ".agents/teamwork_preview_m1_challenger_1/DISPATCH.md": {
+    "mtime": 1787842894.4296646,
+    "seen": 1788002458.4572852,
+    "ast_hash": "e269bf6f3baf0c05ecb03b27b3ce4782",
+    "semantic_hash": "e269bf6f3baf0c05ecb03b27b3ce4782"
+  },
+  ".agents/teamwork_preview_m1_challenger_1/handoff.md": {
+    "mtime": 1787842894.4300976,
+    "seen": 1788002458.457286,
+    "ast_hash": "e958202f39ed7a06ff15cc93436aedaa",
+    "semantic_hash": "e958202f39ed7a06ff15cc93436aedaa"
+  },
+  ".agents/teamwork_preview_m1_challenger_1/progress.md": {
+    "mtime": 1787842894.4304957,
+    "seen": 1788002458.457286,
+    "ast_hash": "8cd6fd0161df10b1e98f5e3fac205006",
+    "semantic_hash": "8cd6fd0161df10b1e98f5e3fac205006"
+  },
+  ".agents/teamwork_preview_m1_challenger_2/BRIEFING.md": {
+    "mtime": 1787842894.4307282,
+    "seen": 1788002458.4572868,
+    "ast_hash": "142629d04a30b38969ea49ae911824cb",
+    "semantic_hash": "142629d04a30b38969ea49ae911824cb"
+  },
+  ".agents/teamwork_preview_m1_challenger_2/DISPATCH.md": {
+    "mtime": 1787842894.4308844,
+    "seen": 1788002458.4572868,
+    "ast_hash": "bf8f4c9b3fe16aafaa74dcad5d226721",
+    "semantic_hash": "bf8f4c9b3fe16aafaa74dcad5d226721"
+  },
+  ".agents/teamwork_preview_m1_challenger_2/handoff.md": {
+    "mtime": 1787842894.431133,
+    "seen": 1788002458.457288,
+    "ast_hash": "c589112172e2aeb596b855161da3345a",
+    "semantic_hash": "c589112172e2aeb596b855161da3345a"
+  },
+  ".agents/teamwork_preview_m1_challenger_2/progress.md": {
+    "mtime": 1787842894.4312828,
+    "seen": 1788002458.457288,
+    "ast_hash": "b5f47eb2a93e2981f6af66777756bda4",
+    "semantic_hash": "b5f47eb2a93e2981f6af66777756bda4"
+  },
+  ".agents/teamwork_preview_m1_challenger_3/BRIEFING.md": {
+    "mtime": 1787842894.431481,
+    "seen": 1788002458.457289,
+    "ast_hash": "8a9834a90f346e1c88a0e274aaf9d348",
+    "semantic_hash": "8a9834a90f346e1c88a0e274aaf9d348"
+  },
+  ".agents/teamwork_preview_m1_challenger_3/DISPATCH.md": {
+    "mtime": 1787842894.4316432,
+    "seen": 1788002458.457289,
+    "ast_hash": "cdc30147ed4dc7b8d3cadfb88d2547ee",
+    "semantic_hash": "cdc30147ed4dc7b8d3cadfb88d2547ee"
+  },
+  ".agents/teamwork_preview_m1_challenger_3/handoff.md": {
+    "mtime": 1787842894.4318924,
+    "seen": 1788002458.45729,
+    "ast_hash": "3bd04f30fbd12d865b00a24c1a5c27e4",
+    "semantic_hash": "3bd04f30fbd12d865b00a24c1a5c27e4"
+  },
+  ".agents/teamwork_preview_m1_challenger_3/progress.md": {
+    "mtime": 1787842894.432064,
+    "seen": 1788002458.45729,
+    "ast_hash": "78526ba0209d816bde59d6b26a0f06ae",
+    "semantic_hash": "78526ba0209d816bde59d6b26a0f06ae"
+  },
+  ".agents/teamwork_preview_m1_explorer_1/BRIEFING.md": {
+    "mtime": 1787842894.4322457,
+    "seen": 1788002458.4572911,
+    "ast_hash": "dd43aa2d3fb81a8ca4793fda0d3d749c",
+    "semantic_hash": "dd43aa2d3fb81a8ca4793fda0d3d749c"
+  },
+  ".agents/teamwork_preview_m1_explorer_1/DISPATCH.md": {
+    "mtime": 1787842894.4323814,
+    "seen": 1788002458.4572911,
+    "ast_hash": "d4f00c0ec4c42d29d5680bb7391e46ea",
+    "semantic_hash": "d4f00c0ec4c42d29d5680bb7391e46ea"
+  },
+  ".agents/teamwork_preview_m1_explorer_1/handoff.md": {
+    "mtime": 1787842894.432613,
+    "seen": 1788002458.457292,
+    "ast_hash": "91b111dc682ed397f0d7b9cc11a508e8",
+    "semantic_hash": "91b111dc682ed397f0d7b9cc11a508e8"
+  },
+  ".agents/teamwork_preview_m1_explorer_1/progress.md": {
+    "mtime": 1787842894.4327595,
+    "seen": 1788002458.457292,
+    "ast_hash": "3e8d2fbab2c4ef92a0c6bcb6df9ca407",
+    "semantic_hash": "3e8d2fbab2c4ef92a0c6bcb6df9ca407"
+  },
+  ".agents/teamwork_preview_m1_explorer_2/BRIEFING.md": {
+    "mtime": 1787842894.432948,
+    "seen": 1788002458.457293,
+    "ast_hash": "488b80d48754dfabaebbe547a98cabc9",
+    "semantic_hash": "488b80d48754dfabaebbe547a98cabc9"
+  },
+  ".agents/teamwork_preview_m1_explorer_2/DISPATCH.md": {
+    "mtime": 1787842894.4330893,
+    "seen": 1788002458.457293,
+    "ast_hash": "e56d7eba6d0d74dc10124809e5b9c3e9",
+    "semantic_hash": "e56d7eba6d0d74dc10124809e5b9c3e9"
+  },
+  ".agents/teamwork_preview_m1_explorer_2/handoff.md": {
+    "mtime": 1787842894.4332545,
+    "seen": 1788002458.457294,
+    "ast_hash": "ebc4bde3460603697a79856442c1172b",
+    "semantic_hash": "ebc4bde3460603697a79856442c1172b"
+  },
+  ".agents/teamwork_preview_m1_explorer_2/progress.md": {
+    "mtime": 1787842894.4334185,
+    "seen": 1788002458.457294,
+    "ast_hash": "0b2bcb304a0231d4c390701791d79fb5",
+    "semantic_hash": "0b2bcb304a0231d4c390701791d79fb5"
+  },
+  ".agents/teamwork_preview_m1_reviewer_1/BRIEFING.md": {
+    "mtime": 1787842894.4338806,
+    "seen": 1788002458.4572952,
+    "ast_hash": "5a46e3e9070bebb2e5f0bc4375b1f4fc",
+    "semantic_hash": "5a46e3e9070bebb2e5f0bc4375b1f4fc"
+  },
+  ".agents/teamwork_preview_m1_reviewer_1/DISPATCH.md": {
+    "mtime": 1787842894.4340243,
+    "seen": 1788002458.4572952,
+    "ast_hash": "1a8436940a2fc826d9e2e1ef90741f92",
+    "semantic_hash": "1a8436940a2fc826d9e2e1ef90741f92"
+  },
+  ".agents/teamwork_preview_m1_reviewer_1/handoff.md": {
+    "mtime": 1787842894.4342606,
+    "seen": 1788002458.457296,
+    "ast_hash": "5f0c0c362d5858a6c5e60a6db14df6ba",
+    "semantic_hash": "5f0c0c362d5858a6c5e60a6db14df6ba"
+  },
+  ".agents/teamwork_preview_m1_reviewer_1/progress.md": {
+    "mtime": 1787842894.4344018,
+    "seen": 1788002458.457296,
+    "ast_hash": "22aa2b28e7ba9fd90f1b54a3f022ce52",
+    "semantic_hash": "22aa2b28e7ba9fd90f1b54a3f022ce52"
+  },
+  ".agents/teamwork_preview_m1_reviewer_2/BRIEFING.md": {
+    "mtime": 1787842894.4347394,
+    "seen": 1788002458.4572968,
+    "ast_hash": "a9d7682e3e1bdd0f44470748c3e2a140",
+    "semantic_hash": "a9d7682e3e1bdd0f44470748c3e2a140"
+  },
+  ".agents/teamwork_preview_m1_reviewer_2/DISPATCH.md": {
+    "mtime": 1787842894.4348848,
+    "seen": 1788002458.4572968,
+    "ast_hash": "37616dc5cedd4d738419d2ddb50369bf",
+    "semantic_hash": "37616dc5cedd4d738419d2ddb50369bf"
+  },
+  ".agents/teamwork_preview_m1_reviewer_2/handoff.md": {
+    "mtime": 1787842894.4352474,
+    "seen": 1788002458.4572978,
+    "ast_hash": "1d33fb41a32a0defc3e858823c68d09a",
+    "semantic_hash": "1d33fb41a32a0defc3e858823c68d09a"
+  },
+  ".agents/teamwork_preview_m1_reviewer_2/progress.md": {
+    "mtime": 1787842894.4353914,
+    "seen": 1788002458.4572978,
+    "ast_hash": "6b909b00a7176a597aac2050a2560056",
+    "semantic_hash": "6b909b00a7176a597aac2050a2560056"
+  },
+  ".agents/teamwork_preview_m1_reviewer_3/BRIEFING.md": {
+    "mtime": 1787842894.4356227,
+    "seen": 1788002458.457299,
+    "ast_hash": "25d09f77b7b5c87f9c488fadd3c80f79",
+    "semantic_hash": "25d09f77b7b5c87f9c488fadd3c80f79"
+  },
+  ".agents/teamwork_preview_m1_reviewer_3/DISPATCH.md": {
+    "mtime": 1787842894.4358132,
+    "seen": 1788002458.457299,
+    "ast_hash": "e3b4f83713ef2c721e05d45735ad0596",
+    "semantic_hash": "e3b4f83713ef2c721e05d45735ad0596"
+  },
+  ".agents/teamwork_preview_m1_reviewer_3/handoff.md": {
+    "mtime": 1787842894.4360566,
+    "seen": 1788002458.4573,
+    "ast_hash": "4b1bdf7d144a1f6c7eb67df42c01a8fb",
+    "semantic_hash": "4b1bdf7d144a1f6c7eb67df42c01a8fb"
+  },
+  ".agents/teamwork_preview_m1_reviewer_3/progress.md": {
+    "mtime": 1787842894.4362178,
+    "seen": 1788002458.4573,
+    "ast_hash": "4d84071de1dc840cf23e30fa5ef6ef5c",
+    "semantic_hash": "4d84071de1dc840cf23e30fa5ef6ef5c"
+  },
+  ".agents/teamwork_preview_m1_spec_miner_3/BRIEFING.md": {
+    "mtime": 1787842894.4366472,
+    "seen": 1788002458.457301,
+    "ast_hash": "896519160c77c532f4d3351ac7a9451d",
+    "semantic_hash": "896519160c77c532f4d3351ac7a9451d"
+  },
+  ".agents/teamwork_preview_m1_spec_miner_3/DISPATCH.md": {
+    "mtime": 1787842894.4368653,
+    "seen": 1788002458.457301,
+    "ast_hash": "c11f353f41a3a14848b964a96ff18de0",
+    "semantic_hash": "c11f353f41a3a14848b964a96ff18de0"
+  },
+  ".agents/teamwork_preview_m1_spec_miner_3/handoff.md": {
+    "mtime": 1787842894.4370763,
+    "seen": 1788002458.457302,
+    "ast_hash": "ebfe2629b606caf70e55a9ad22867294",
+    "semantic_hash": "ebfe2629b606caf70e55a9ad22867294"
+  },
+  ".agents/teamwork_preview_m1_spec_miner_3/progress.md": {
+    "mtime": 1787842894.4372518,
+    "seen": 1788002458.457302,
+    "ast_hash": "5e1231f01b6a7e2c9edad4df6bd80146",
+    "semantic_hash": "5e1231f01b6a7e2c9edad4df6bd80146"
+  },
+  ".agents/teamwork_preview_m1_worker_1/BRIEFING.md": {
+    "mtime": 1787842894.4374585,
+    "seen": 1788002458.457303,
+    "ast_hash": "71b1472b8aa4176284f26efffd441661",
+    "semantic_hash": "71b1472b8aa4176284f26efffd441661"
+  },
+  ".agents/teamwork_preview_m1_worker_1/DISPATCH.md": {
+    "mtime": 1787842894.4376144,
+    "seen": 1788002458.457303,
+    "ast_hash": "4d5eef626049b1126182255940abdadb",
+    "semantic_hash": "4d5eef626049b1126182255940abdadb"
+  },
+  ".agents/teamwork_preview_m1_worker_1/handoff.md": {
+    "mtime": 1787842894.438045,
+    "seen": 1788002458.457304,
+    "ast_hash": "5439e368a2695b85fd0e1626e87de001",
+    "semantic_hash": "5439e368a2695b85fd0e1626e87de001"
+  },
+  ".agents/teamwork_preview_m1_worker_1/progress.md": {
+    "mtime": 1787842894.4383202,
+    "seen": 1788002458.457304,
+    "ast_hash": "5267b1bef6f97285a663e610bf87ac52",
+    "semantic_hash": "5267b1bef6f97285a663e610bf87ac52"
+  },
+  ".agents/teamwork_preview_m1_worker_2/BRIEFING.md": {
+    "mtime": 1787842894.438537,
+    "seen": 1788002458.4573052,
+    "ast_hash": "2c829cc9c33131942601775aa4d0f298",
+    "semantic_hash": "2c829cc9c33131942601775aa4d0f298"
+  },
+  ".agents/teamwork_preview_m1_worker_2/DISPATCH.md": {
+    "mtime": 1787842894.4386911,
+    "seen": 1788002458.4573052,
+    "ast_hash": "c65d72176c7665c65a53a4ee183d96aa",
+    "semantic_hash": "c65d72176c7665c65a53a4ee183d96aa"
+  },
+  ".agents/teamwork_preview_m1_worker_2/handoff.md": {
+    "mtime": 1787842894.4389386,
+    "seen": 1788002458.4573061,
+    "ast_hash": "540d75290f441e802a115abfbab78237",
+    "semantic_hash": "540d75290f441e802a115abfbab78237"
+  },
+  ".agents/teamwork_preview_m1_worker_2/progress.md": {
+    "mtime": 1787842894.439091,
+    "seen": 1788002458.4573061,
+    "ast_hash": "5ae9dfc5b65159119d241ebcf76ec68d",
+    "semantic_hash": "5ae9dfc5b65159119d241ebcf76ec68d"
+  },
+  ".agents/teamwork_preview_m2_auditor_1/BRIEFING.md": {
+    "mtime": 1787842894.4392934,
+    "seen": 1788002458.4573069,
+    "ast_hash": "b0acd761a8f7061cef1f5803b71675ea",
+    "semantic_hash": "b0acd761a8f7061cef1f5803b71675ea"
+  },
+  ".agents/teamwork_preview_m2_auditor_1/DISPATCH.md": {
+    "mtime": 1787842894.4394436,
+    "seen": 1788002458.4573069,
+    "ast_hash": "78e9d0e6204bd412012a7504a4712b5d",
+    "semantic_hash": "78e9d0e6204bd412012a7504a4712b5d"
+  },
+  ".agents/teamwork_preview_m2_auditor_1/handoff.md": {
+    "mtime": 1787842894.4396532,
+    "seen": 1788002458.4573078,
+    "ast_hash": "d2a502c4991aa9efb1a628ca551d4693",
+    "semantic_hash": "d2a502c4991aa9efb1a628ca551d4693"
+  },
+  ".agents/teamwork_preview_m2_auditor_1/progress.md": {
+    "mtime": 1787842894.4398186,
+    "seen": 1788002458.4573078,
+    "ast_hash": "a38ca519aecb18dd1937140098e98333",
+    "semantic_hash": "a38ca519aecb18dd1937140098e98333"
+  },
+  ".agents/teamwork_preview_m2_auditor_2/BRIEFING.md": {
+    "mtime": 1787842894.4400425,
+    "seen": 1788002458.457309,
+    "ast_hash": "30b6e63a68b53b67d8338207daa54b39",
+    "semantic_hash": "30b6e63a68b53b67d8338207daa54b39"
+  },
+  ".agents/teamwork_preview_m2_auditor_2/DISPATCH.md": {
+    "mtime": 1787842894.4401996,
+    "seen": 1788002458.457309,
+    "ast_hash": "771db4a4e84ebfdab2dee94e8141d70e",
+    "semantic_hash": "771db4a4e84ebfdab2dee94e8141d70e"
+  },
+  ".agents/teamwork_preview_m2_auditor_2/handoff.md": {
+    "mtime": 1787842894.4404678,
+    "seen": 1788002458.45731,
+    "ast_hash": "51c82055cbc3f5dc158a39b551aeb196",
+    "semantic_hash": "51c82055cbc3f5dc158a39b551aeb196"
+  },
+  ".agents/teamwork_preview_m2_auditor_2/progress.md": {
+    "mtime": 1787842894.4408123,
+    "seen": 1788002458.45731,
+    "ast_hash": "0fb2bd200c6f813cdc11398dfc377dec",
+    "semantic_hash": "0fb2bd200c6f813cdc11398dfc377dec"
+  },
+  ".agents/teamwork_preview_m2_challenger_1/BRIEFING.md": {
+    "mtime": 1787842894.4410107,
+    "seen": 1788002458.457311,
+    "ast_hash": "6521961a52d4775caefc7fd04d6e33d8",
+    "semantic_hash": "6521961a52d4775caefc7fd04d6e33d8"
+  },
+  ".agents/teamwork_preview_m2_challenger_1/DISPATCH.md": {
+    "mtime": 1787842894.4411743,
+    "seen": 1788002458.457311,
+    "ast_hash": "e3fe1e2daa6b0fc6823dbf1164648eeb",
+    "semantic_hash": "e3fe1e2daa6b0fc6823dbf1164648eeb"
+  },
+  ".agents/teamwork_preview_m2_challenger_1/handoff.md": {
+    "mtime": 1787842894.4414928,
+    "seen": 1788002458.457312,
+    "ast_hash": "de5482771388b84bb1e587cb3fb63dd7",
+    "semantic_hash": "de5482771388b84bb1e587cb3fb63dd7"
+  },
+  ".agents/teamwork_preview_m2_challenger_1/progress.md": {
+    "mtime": 1787842894.441628,
+    "seen": 1788002458.457312,
+    "ast_hash": "82bb112f113f78f6f32033eb586a5f6a",
+    "semantic_hash": "82bb112f113f78f6f32033eb586a5f6a"
+  },
+  ".agents/teamwork_preview_m2_challenger_2/BRIEFING.md": {
+    "mtime": 1787842894.4418073,
+    "seen": 1788002458.457313,
+    "ast_hash": "c76ba380af29dca532ea17e5b73cd1e3",
+    "semantic_hash": "c76ba380af29dca532ea17e5b73cd1e3"
+  },
+  ".agents/teamwork_preview_m2_challenger_2/DISPATCH.md": {
+    "mtime": 1787842894.4419386,
+    "seen": 1788002458.457313,
+    "ast_hash": "1e12fcfabdc1a0fb809bc6e186baeee2",
+    "semantic_hash": "1e12fcfabdc1a0fb809bc6e186baeee2"
+  },
+  ".agents/teamwork_preview_m2_challenger_2/handoff.md": {
+    "mtime": 1787842894.4423435,
+    "seen": 1788002458.457314,
+    "ast_hash": "f6b978127a2edbcec227dcff7e1b75d0",
+    "semantic_hash": "f6b978127a2edbcec227dcff7e1b75d0"
+  },
+  ".agents/teamwork_preview_m2_challenger_2/progress.md": {
+    "mtime": 1787842894.4424937,
+    "seen": 1788002458.457314,
+    "ast_hash": "36a5e037c4dded3927850feb071359cb",
+    "semantic_hash": "36a5e037c4dded3927850feb071359cb"
+  },
+  ".agents/teamwork_preview_m2_challenger_2_retest/BRIEFING.md": {
+    "mtime": 1787842894.4426796,
+    "seen": 1788002458.457315,
+    "ast_hash": "d2020d8faef28c2b266c6ebbdb8bfa65",
+    "semantic_hash": "d2020d8faef28c2b266c6ebbdb8bfa65"
+  },
+  ".agents/teamwork_preview_m2_challenger_2_retest/DISPATCH.md": {
+    "mtime": 1787842894.4429388,
+    "seen": 1788002458.457315,
+    "ast_hash": "a371ce3e020c4ccb8cc0572a548a0e21",
+    "semantic_hash": "a371ce3e020c4ccb8cc0572a548a0e21"
+  },
+  ".agents/teamwork_preview_m2_challenger_2_retest/handoff.md": {
+    "mtime": 1787842894.4432106,
+    "seen": 1788002458.4573162,
+    "ast_hash": "93be740225cdb4395dfd567fe178ed18",
+    "semantic_hash": "93be740225cdb4395dfd567fe178ed18"
+  },
+  ".agents/teamwork_preview_m2_challenger_2_retest/progress.md": {
+    "mtime": 1787842894.4433596,
+    "seen": 1788002458.4573162,
+    "ast_hash": "b248207d18ab9453436a79374275bf8b",
+    "semantic_hash": "b248207d18ab9453436a79374275bf8b"
+  },
+  ".agents/teamwork_preview_m2_challenger_3/BRIEFING.md": {
+    "mtime": 1787842894.4435723,
+    "seen": 1788002458.457317,
+    "ast_hash": "a946c80e15a5f66f510434f62b10dd71",
+    "semantic_hash": "a946c80e15a5f66f510434f62b10dd71"
+  },
+  ".agents/teamwork_preview_m2_challenger_3/DISPATCH.md": {
+    "mtime": 1787842894.4437196,
+    "seen": 1788002458.457317,
+    "ast_hash": "c12cfe25c62d2a28215ffaa0ce64c6e3",
+    "semantic_hash": "c12cfe25c62d2a28215ffaa0ce64c6e3"
+  },
+  ".agents/teamwork_preview_m2_challenger_3/handoff.md": {
+    "mtime": 1787842894.44389,
+    "seen": 1788002458.4573178,
+    "ast_hash": "cfff62cc94588d084881d199cf645a40",
+    "semantic_hash": "cfff62cc94588d084881d199cf645a40"
+  },
+  ".agents/teamwork_preview_m2_challenger_3/progress.md": {
+    "mtime": 1787842894.4441535,
+    "seen": 1788002458.4573178,
+    "ast_hash": "577056d955fa37ec80e72497a4a6cfca",
+    "semantic_hash": "577056d955fa37ec80e72497a4a6cfca"
+  },
+  ".agents/teamwork_preview_m2_explorer_1/BRIEFING.md": {
+    "mtime": 1787842894.4443536,
+    "seen": 1788002458.457319,
+    "ast_hash": "fb58bbbd4d7273c3d1be7bace0ba8331",
+    "semantic_hash": "fb58bbbd4d7273c3d1be7bace0ba8331"
+  },
+  ".agents/teamwork_preview_m2_explorer_1/DISPATCH.md": {
+    "mtime": 1787842894.444495,
+    "seen": 1788002458.457319,
+    "ast_hash": "fe56a277b58a0daef5a89a167220eec4",
+    "semantic_hash": "fe56a277b58a0daef5a89a167220eec4"
+  },
+  ".agents/teamwork_preview_m2_explorer_1/handoff.md": {
+    "mtime": 1787842894.4446828,
+    "seen": 1788002458.45732,
+    "ast_hash": "4c58d669d468c8e74f827d75cca01b42",
+    "semantic_hash": "4c58d669d468c8e74f827d75cca01b42"
+  },
+  ".agents/teamwork_preview_m2_explorer_1/progress.md": {
+    "mtime": 1787842894.444893,
+    "seen": 1788002458.45732,
+    "ast_hash": "734e474d520c6a718a97f659e8d7e2cf",
+    "semantic_hash": "734e474d520c6a718a97f659e8d7e2cf"
+  },
+  ".agents/teamwork_preview_m2_explorer_2/BRIEFING.md": {
+    "mtime": 1787842894.4450798,
+    "seen": 1788002458.457321,
+    "ast_hash": "2565d4616f7c9076565853dc74133f28",
+    "semantic_hash": "2565d4616f7c9076565853dc74133f28"
+  },
+  ".agents/teamwork_preview_m2_explorer_2/DISPATCH.md": {
+    "mtime": 1787842894.4452174,
+    "seen": 1788002458.457321,
+    "ast_hash": "bfef42b29c15c85a5ffc63bf76990113",
+    "semantic_hash": "bfef42b29c15c85a5ffc63bf76990113"
+  },
+  ".agents/teamwork_preview_m2_explorer_2/handoff.md": {
+    "mtime": 1787842894.445499,
+    "seen": 1788002458.457322,
+    "ast_hash": "f010242606c19d6bdfc9007070259267",
+    "semantic_hash": "f010242606c19d6bdfc9007070259267"
+  },
+  ".agents/teamwork_preview_m2_explorer_2/progress.md": {
+    "mtime": 1787842894.4457333,
+    "seen": 1788002458.457322,
+    "ast_hash": "34da33d1363ea977586a40070d980215",
+    "semantic_hash": "34da33d1363ea977586a40070d980215"
+  },
+  ".agents/teamwork_preview_m2_reviewer_1/BRIEFING.md": {
+    "mtime": 1787842894.4460292,
+    "seen": 1788002458.457323,
+    "ast_hash": "ddc0e28b94c7715843625cd899958176",
+    "semantic_hash": "ddc0e28b94c7715843625cd899958176"
+  },
+  ".agents/teamwork_preview_m2_reviewer_1/DISPATCH.md": {
+    "mtime": 1787842894.4461846,
+    "seen": 1788002458.457323,
+    "ast_hash": "42217edc9f5303bac8dc4692a4e7517d",
+    "semantic_hash": "42217edc9f5303bac8dc4692a4e7517d"
+  },
+  ".agents/teamwork_preview_m2_reviewer_1/handoff.md": {
+    "mtime": 1787842894.4464512,
+    "seen": 1788002458.457324,
+    "ast_hash": "6f209308de9360e6494bd6e13e4c7ba6",
+    "semantic_hash": "6f209308de9360e6494bd6e13e4c7ba6"
+  },
+  ".agents/teamwork_preview_m2_reviewer_1/progress.md": {
+    "mtime": 1787842894.4466054,
+    "seen": 1788002458.457324,
+    "ast_hash": "a95e63730c224527d9f0ad156fd0e568",
+    "semantic_hash": "a95e63730c224527d9f0ad156fd0e568"
+  },
+  ".agents/teamwork_preview_m2_reviewer_2/BRIEFING.md": {
+    "mtime": 1787842894.4468002,
+    "seen": 1788002458.457325,
+    "ast_hash": "b98e11b798499be0515634840ecda59c",
+    "semantic_hash": "b98e11b798499be0515634840ecda59c"
+  },
+  ".agents/teamwork_preview_m2_reviewer_2/DISPATCH.md": {
+    "mtime": 1787842894.446941,
+    "seen": 1788002458.457325,
+    "ast_hash": "a9733d4474618a86be4b4463213f0b83",
+    "semantic_hash": "a9733d4474618a86be4b4463213f0b83"
+  },
+  ".agents/teamwork_preview_m2_reviewer_2/handoff.md": {
+    "mtime": 1787842894.4473937,
+    "seen": 1788002458.4573262,
+    "ast_hash": "60cbe863335b8db99e898cce55a03b21",
+    "semantic_hash": "60cbe863335b8db99e898cce55a03b21"
+  },
+  ".agents/teamwork_preview_m2_reviewer_2/progress.md": {
+    "mtime": 1787842894.447604,
+    "seen": 1788002458.4573262,
+    "ast_hash": "83720151781e8d30403057e1f83ef9ee",
+    "semantic_hash": "83720151781e8d30403057e1f83ef9ee"
+  },
+  ".agents/teamwork_preview_m2_reviewer_3/BRIEFING.md": {
+    "mtime": 1787842894.4479585,
+    "seen": 1788002458.4573271,
+    "ast_hash": "79338ff911ad47ae43208d7904577d43",
+    "semantic_hash": "79338ff911ad47ae43208d7904577d43"
+  },
+  ".agents/teamwork_preview_m2_reviewer_3/DISPATCH.md": {
+    "mtime": 1787842894.4482408,
+    "seen": 1788002458.4573271,
+    "ast_hash": "6c802cd84728369b5d2ee8133d013c38",
+    "semantic_hash": "6c802cd84728369b5d2ee8133d013c38"
+  },
+  ".agents/teamwork_preview_m2_reviewer_3/handoff.md": {
+    "mtime": 1787842894.4484887,
+    "seen": 1788002458.457328,
+    "ast_hash": "43cfeabb360ed089fefea872684cae76",
+    "semantic_hash": "43cfeabb360ed089fefea872684cae76"
+  },
+  ".agents/teamwork_preview_m2_reviewer_3/progress.md": {
+    "mtime": 1787842894.4486399,
+    "seen": 1788002458.457328,
+    "ast_hash": "f4eeda3d5a213bc44d870bf19ba067b2",
+    "semantic_hash": "f4eeda3d5a213bc44d870bf19ba067b2"
+  },
+  ".agents/teamwork_preview_m2_spec_miner_3/BRIEFING.md": {
+    "mtime": 1787842894.448842,
+    "seen": 1788002458.4573288,
+    "ast_hash": "cc545e0490ba026751ad1c7d236e8eb3",
+    "semantic_hash": "cc545e0490ba026751ad1c7d236e8eb3"
+  },
+  ".agents/teamwork_preview_m2_spec_miner_3/DISPATCH.md": {
+    "mtime": 1787842894.448994,
+    "seen": 1788002458.4573288,
+    "ast_hash": "0e1f72562f6b04f3cee7bffc45d7573b",
+    "semantic_hash": "0e1f72562f6b04f3cee7bffc45d7573b"
+  },
+  ".agents/teamwork_preview_m2_spec_miner_3/handoff.md": {
+    "mtime": 1787842894.449206,
+    "seen": 1788002458.45733,
+    "ast_hash": "4b7d3804d8526adeb38eae6db5393e9e",
+    "semantic_hash": "4b7d3804d8526adeb38eae6db5393e9e"
+  },
+  ".agents/teamwork_preview_m2_spec_miner_3/progress.md": {
+    "mtime": 1787842894.4495223,
+    "seen": 1788002458.45733,
+    "ast_hash": "84988ec241359008367295e07022afa2",
+    "semantic_hash": "84988ec241359008367295e07022afa2"
+  },
+  ".agents/teamwork_preview_m2_worker_1/BRIEFING.md": {
+    "mtime": 1787842894.4499156,
+    "seen": 1788002458.457331,
+    "ast_hash": "ef2df38ada88f41edca51c17aff44774",
+    "semantic_hash": "ef2df38ada88f41edca51c17aff44774"
+  },
+  ".agents/teamwork_preview_m2_worker_1/DISPATCH.md": {
+    "mtime": 1787842894.450056,
+    "seen": 1788002458.457331,
+    "ast_hash": "69e612fb449fce1071137c473e67e1f8",
+    "semantic_hash": "69e612fb449fce1071137c473e67e1f8"
+  },
+  ".agents/teamwork_preview_m2_worker_1/handoff.md": {
+    "mtime": 1787842894.450229,
+    "seen": 1788002458.457332,
+    "ast_hash": "74d15b85780c576aa0ecd016f802d25a",
+    "semantic_hash": "74d15b85780c576aa0ecd016f802d25a"
+  },
+  ".agents/teamwork_preview_m2_worker_1/progress.md": {
+    "mtime": 1787842894.4503708,
+    "seen": 1788002458.457332,
+    "ast_hash": "b1fc2fbabf9467ce5afb40c33403ad5a",
+    "semantic_hash": "b1fc2fbabf9467ce5afb40c33403ad5a"
+  },
+  ".agents/teamwork_preview_m2_worker_2/BRIEFING.md": {
+    "mtime": 1787842894.4505749,
+    "seen": 1788002458.457333,
+    "ast_hash": "28e717cece8dc5c0c80317156fe2568e",
+    "semantic_hash": "28e717cece8dc5c0c80317156fe2568e"
+  },
+  ".agents/teamwork_preview_m2_worker_2/DISPATCH.md": {
+    "mtime": 1787842894.4507415,
+    "seen": 1788002458.457333,
+    "ast_hash": "02666dc00ff5b3b7b291428daa478c37",
+    "semantic_hash": "02666dc00ff5b3b7b291428daa478c37"
+  },
+  ".agents/teamwork_preview_m2_worker_2/handoff.md": {
+    "mtime": 1787842894.451127,
+    "seen": 1788002458.457334,
+    "ast_hash": "478a396ee75ef485f9496188eef84d73",
+    "semantic_hash": "478a396ee75ef485f9496188eef84d73"
+  },
+  ".agents/teamwork_preview_m2_worker_2/progress.md": {
+    "mtime": 1787842894.451273,
+    "seen": 1788002458.457334,
+    "ast_hash": "b8d8e4faf9db060e8a6d692111646e43",
+    "semantic_hash": "b8d8e4faf9db060e8a6d692111646e43"
+  },
+  ".agents/teamwork_preview_m3_auditor_1/BRIEFING.md": {
+    "mtime": 1787842894.4514687,
+    "seen": 1788002458.457335,
+    "ast_hash": "269e73c54f4443702c06f78530dd81b9",
+    "semantic_hash": "269e73c54f4443702c06f78530dd81b9"
+  },
+  ".agents/teamwork_preview_m3_auditor_1/DISPATCH.md": {
+    "mtime": 1787842894.4516141,
+    "seen": 1788002458.457335,
+    "ast_hash": "434ca1c0994f964141a61b706a6badb0",
+    "semantic_hash": "434ca1c0994f964141a61b706a6badb0"
+  },
+  ".agents/teamwork_preview_m3_auditor_1/handoff.md": {
+    "mtime": 1787842894.4517865,
+    "seen": 1788002458.457336,
+    "ast_hash": "526907303f87c60d54d11412beae9ec0",
+    "semantic_hash": "526907303f87c60d54d11412beae9ec0"
+  },
+  ".agents/teamwork_preview_m3_auditor_1/progress.md": {
+    "mtime": 1787842894.4519284,
+    "seen": 1788002458.457336,
+    "ast_hash": "02eaefe883e335c14e918beb7fc64f40",
+    "semantic_hash": "02eaefe883e335c14e918beb7fc64f40"
+  },
+  ".agents/teamwork_preview_m3_challenger_1/BRIEFING.md": {
+    "mtime": 1787842894.4521172,
+    "seen": 1788002458.4573371,
+    "ast_hash": "85d195e79357316500f87d9c7bd858a1",
+    "semantic_hash": "85d195e79357316500f87d9c7bd858a1"
+  },
+  ".agents/teamwork_preview_m3_challenger_1/DISPATCH.md": {
+    "mtime": 1787842894.4522698,
+    "seen": 1788002458.457338,
+    "ast_hash": "32f95198700b69addc0f072cf17a065c",
+    "semantic_hash": "32f95198700b69addc0f072cf17a065c"
+  },
+  ".agents/teamwork_preview_m3_challenger_1/progress.md": {
+    "mtime": 1787842894.452416,
+    "seen": 1788002458.457338,
+    "ast_hash": "592ea38e6eedc858d0194336f1ad0e89",
+    "semantic_hash": "592ea38e6eedc858d0194336f1ad0e89"
+  },
+  ".agents/teamwork_preview_m3_challenger_2/BRIEFING.md": {
+    "mtime": 1787842894.452644,
+    "seen": 1788002458.4573388,
+    "ast_hash": "3aec72fc3f6de27e4040944ca1b4a11d",
+    "semantic_hash": "3aec72fc3f6de27e4040944ca1b4a11d"
+  },
+  ".agents/teamwork_preview_m3_challenger_2/DISPATCH.md": {
+    "mtime": 1787842894.4527917,
+    "seen": 1788002458.4573388,
+    "ast_hash": "59a5f01464c8980c3dba714f3d94da15",
+    "semantic_hash": "59a5f01464c8980c3dba714f3d94da15"
+  },
+  ".agents/teamwork_preview_m3_challenger_2/progress.md": {
+    "mtime": 1787842894.4529414,
+    "seen": 1788002458.45734,
+    "ast_hash": "ca363e5088e2f0c11fe30aa98e432745",
+    "semantic_hash": "ca363e5088e2f0c11fe30aa98e432745"
+  },
+  ".agents/teamwork_preview_m3_explorer_1/BRIEFING.md": {
+    "mtime": 1787842894.4531348,
+    "seen": 1788002458.45734,
+    "ast_hash": "ab9a144b7e3e4067975c9525c31df7b6",
+    "semantic_hash": "ab9a144b7e3e4067975c9525c31df7b6"
+  },
+  ".agents/teamwork_preview_m3_explorer_1/DISPATCH.md": {
+    "mtime": 1787842894.4532735,
+    "seen": 1788002458.457341,
+    "ast_hash": "fbaf020ea95420101d1c82635485ac57",
+    "semantic_hash": "fbaf020ea95420101d1c82635485ac57"
+  },
+  ".agents/teamwork_preview_m3_explorer_1/progress.md": {
+    "mtime": 1787842894.4534078,
+    "seen": 1788002458.457341,
+    "ast_hash": "d94d43384dc7de5f8e5b1bbef581de39",
+    "semantic_hash": "d94d43384dc7de5f8e5b1bbef581de39"
+  },
+  ".agents/teamwork_preview_m3_reviewer_1/BRIEFING.md": {
+    "mtime": 1787842894.4536026,
+    "seen": 1788002458.457342,
+    "ast_hash": "23ab2875ee28bc1e4e685f40a8028e87",
+    "semantic_hash": "23ab2875ee28bc1e4e685f40a8028e87"
+  },
+  ".agents/teamwork_preview_m3_reviewer_1/DISPATCH.md": {
+    "mtime": 1787842894.453816,
+    "seen": 1788002458.457342,
+    "ast_hash": "17f5414fb87965c01e8a7d8ce1774c6a",
+    "semantic_hash": "17f5414fb87965c01e8a7d8ce1774c6a"
+  },
+  ".agents/teamwork_preview_m3_reviewer_1/handoff.md": {
+    "mtime": 1787842894.454165,
+    "seen": 1788002458.4573429,
+    "ast_hash": "a9ec861dc5fbcf90778364ef4da51763",
+    "semantic_hash": "a9ec861dc5fbcf90778364ef4da51763"
+  },
+  ".agents/teamwork_preview_m3_reviewer_1/progress.md": {
+    "mtime": 1787842894.4543853,
+    "seen": 1788002458.4573429,
+    "ast_hash": "a08714ff4029b7e884fb04e2bd335a07",
+    "semantic_hash": "a08714ff4029b7e884fb04e2bd335a07"
+  },
+  ".agents/teamwork_preview_m3_reviewer_2/BRIEFING.md": {
+    "mtime": 1787842894.4547443,
+    "seen": 1788002458.457344,
+    "ast_hash": "e3f8a9b3b698aec11ba375f8b6b5ccaf",
+    "semantic_hash": "e3f8a9b3b698aec11ba375f8b6b5ccaf"
+  },
+  ".agents/teamwork_preview_m3_reviewer_2/DISPATCH.md": {
+    "mtime": 1787842894.4549632,
+    "seen": 1788002458.457344,
+    "ast_hash": "8572958c8eef060d0ffa6d9fcf2e9627",
+    "semantic_hash": "8572958c8eef060d0ffa6d9fcf2e9627"
+  },
+  ".agents/teamwork_preview_m3_reviewer_2/progress.md": {
+    "mtime": 1787842894.455129,
+    "seen": 1788002458.457345,
+    "ast_hash": "4e40c1e7e0ef806306cf2a6f37e004e3",
+    "semantic_hash": "4e40c1e7e0ef806306cf2a6f37e004e3"
+  },
+  ".agents/teamwork_preview_m3_spec_miner_2/BRIEFING.md": {
+    "mtime": 1787842894.4553344,
+    "seen": 1788002458.457345,
+    "ast_hash": "669ae2b6219d308bd416e1f4625bf28d",
+    "semantic_hash": "669ae2b6219d308bd416e1f4625bf28d"
+  },
+  ".agents/teamwork_preview_m3_spec_miner_2/DISPATCH.md": {
+    "mtime": 1787842894.4554799,
+    "seen": 1788002458.457346,
+    "ast_hash": "1d1fff2c4aa4ba9260998a73370bd2ff",
+    "semantic_hash": "1d1fff2c4aa4ba9260998a73370bd2ff"
+  },
+  ".agents/teamwork_preview_m3_spec_miner_2/handoff.md": {
+    "mtime": 1787842894.4557335,
+    "seen": 1788002458.457346,
+    "ast_hash": "d570677bfd6e7d889833eb92a14661d0",
+    "semantic_hash": "d570677bfd6e7d889833eb92a14661d0"
+  },
+  ".agents/teamwork_preview_m3_spec_miner_2/progress.md": {
+    "mtime": 1787842894.4559383,
+    "seen": 1788002458.4573472,
+    "ast_hash": "9e637cbff9082f982b7ec7d02297c995",
+    "semantic_hash": "9e637cbff9082f982b7ec7d02297c995"
+  },
+  ".agents/teamwork_preview_m3_test_writer_3/BRIEFING.md": {
+    "mtime": 1787842894.4561348,
+    "seen": 1788002458.4573472,
+    "ast_hash": "e5586b47c9a73855ebb4861cee65e9c0",
+    "semantic_hash": "e5586b47c9a73855ebb4861cee65e9c0"
+  },
+  ".agents/teamwork_preview_m3_test_writer_3/DISPATCH.md": {
+    "mtime": 1787842894.4562821,
+    "seen": 1788002458.457348,
+    "ast_hash": "380e33d582ff30efdafefec70845170d",
+    "semantic_hash": "380e33d582ff30efdafefec70845170d"
+  },
+  ".agents/teamwork_preview_m3_test_writer_3/progress.md": {
+    "mtime": 1787842894.4564269,
+    "seen": 1788002458.457349,
+    "ast_hash": "55dd9ea5970e9270a694793bf75ba3d6",
+    "semantic_hash": "55dd9ea5970e9270a694793bf75ba3d6"
+  },
+  ".agents/teamwork_preview_m3_worker_1/BRIEFING.md": {
+    "mtime": 1787842894.4567106,
+    "seen": 1788002458.457349,
+    "ast_hash": "9693d5d34733d26a46474d8ddc0e89f4",
+    "semantic_hash": "9693d5d34733d26a46474d8ddc0e89f4"
+  },
+  ".agents/teamwork_preview_m3_worker_1/DISPATCH.md": {
+    "mtime": 1787842894.4568632,
+    "seen": 1788002458.4573498,
+    "ast_hash": "833ce5f99efe154fe13df54a8896c2c5",
+    "semantic_hash": "833ce5f99efe154fe13df54a8896c2c5"
+  },
+  ".agents/teamwork_preview_m3_worker_1/handoff.md": {
+    "mtime": 1787842894.4571028,
+    "seen": 1788002458.4573498,
+    "ast_hash": "f5bdaecbcd0f8ce6e1775deb2f93a863",
+    "semantic_hash": "f5bdaecbcd0f8ce6e1775deb2f93a863"
+  },
+  ".agents/teamwork_preview_m3_worker_1/progress.md": {
+    "mtime": 1787842894.457248,
+    "seen": 1788002458.457351,
+    "ast_hash": "d92882faeebfe75eb3ab8e2a6c806e77",
+    "semantic_hash": "d92882faeebfe75eb3ab8e2a6c806e77"
+  },
+  ".agents/teamwork_preview_m4_worker_1/BRIEFING.md": {
+    "mtime": 1787842894.4574366,
+    "seen": 1788002458.457351,
+    "ast_hash": "a2996a9e5293cfb94356723be8652973",
+    "semantic_hash": "a2996a9e5293cfb94356723be8652973"
+  },
+  ".agents/teamwork_preview_m4_worker_1/DISPATCH.md": {
+    "mtime": 1787842894.4575813,
+    "seen": 1788002458.457352,
+    "ast_hash": "171527ac4f11a10e89735ea84a8fa05b",
+    "semantic_hash": "171527ac4f11a10e89735ea84a8fa05b"
+  },
+  ".agents/teamwork_preview_m4_worker_1/progress.md": {
+    "mtime": 1787842894.4577136,
+    "seen": 1788002458.457352,
+    "ast_hash": "be89e08b5f9911b559d99084e3c60d89",
+    "semantic_hash": "be89e08b5f9911b559d99084e3c60d89"
+  },
+  ".agents/teamwork_preview_m4_worker_2/BRIEFING.md": {
+    "mtime": 1787842894.458047,
+    "seen": 1788002458.4573529,
+    "ast_hash": "c03c99ec8b91d3af89ffdf35a9de97d6",
+    "semantic_hash": "c03c99ec8b91d3af89ffdf35a9de97d6"
+  },
+  ".agents/teamwork_preview_m4_worker_2/DISPATCH.md": {
+    "mtime": 1787842894.4586086,
+    "seen": 1788002458.4573529,
+    "ast_hash": "059c990545388785aa5271e8c74730d3",
+    "semantic_hash": "059c990545388785aa5271e8c74730d3"
+  },
+  ".agents/teamwork_preview_m4_worker_2/handoff.md": {
+    "mtime": 1787842894.458914,
+    "seen": 1788002458.457354,
+    "ast_hash": "642cfade21886f7250d5fb127362788b",
+    "semantic_hash": "642cfade21886f7250d5fb127362788b"
+  },
+  ".agents/teamwork_preview_m4_worker_2/progress.md": {
+    "mtime": 1787842894.459242,
+    "seen": 1788002458.457354,
+    "ast_hash": "67496e8969782492b78b4bffb497d101",
+    "semantic_hash": "67496e8969782492b78b4bffb497d101"
+  },
+  ".agents/teamwork_preview_orchestrator/BRIEFING.md": {
+    "mtime": 1787842894.459575,
+    "seen": 1788002458.457355,
+    "ast_hash": "cda795acc82de0a1aec3ed44ffc9f423",
+    "semantic_hash": "cda795acc82de0a1aec3ed44ffc9f423"
+  },
+  ".agents/teamwork_preview_orchestrator/DISPATCH.md": {
+    "mtime": 1787842894.4598944,
+    "seen": 1788002458.457355,
+    "ast_hash": "b6079c515d8a4690f265c76762857187",
+    "semantic_hash": "b6079c515d8a4690f265c76762857187"
+  },
+  ".agents/teamwork_preview_orchestrator/GATE_STATUS.md": {
+    "mtime": 1787842894.4602318,
+    "seen": 1788002458.457356,
+    "ast_hash": "d2d6cb2336eed37967edb49e887d954b",
+    "semantic_hash": "d2d6cb2336eed37967edb49e887d954b"
+  },
+  ".agents/teamwork_preview_orchestrator/handoff.md": {
+    "mtime": 1787842894.4604769,
+    "seen": 1788002458.457356,
+    "ast_hash": "6c0f5e80ef37e96c303fe44b82bdd822",
+    "semantic_hash": "6c0f5e80ef37e96c303fe44b82bdd822"
+  },
+  ".agents/teamwork_preview_orchestrator/progress.md": {
+    "mtime": 1787842894.460758,
+    "seen": 1788002458.4573572,
+    "ast_hash": "3ebf49dd20fb7e2a67df9dc09a17d817",
+    "semantic_hash": "3ebf49dd20fb7e2a67df9dc09a17d817"
+  },
+  ".agents/teamwork_preview_orchestrator_gen2/BRIEFING.md": {
+    "mtime": 1787842894.4610724,
+    "seen": 1788002458.4573572,
+    "ast_hash": "0b2493334b983b7d85b3ba264e118edc",
+    "semantic_hash": "0b2493334b983b7d85b3ba264e118edc"
+  },
+  ".agents/teamwork_preview_orchestrator_gen2/DISPATCH.md": {
+    "mtime": 1787842894.4612253,
+    "seen": 1788002458.4573581,
+    "ast_hash": "dcf8f224af98a9717c2d083d5f89496e",
+    "semantic_hash": "dcf8f224af98a9717c2d083d5f89496e"
+  },
+  ".agents/teamwork_preview_orchestrator_gen2/GATE_STATUS.md": {
+    "mtime": 1787842894.4615698,
+    "seen": 1788002458.4573581,
+    "ast_hash": "d8aa91013c79f61470fec95ab0102e98",
+    "semantic_hash": "d8aa91013c79f61470fec95ab0102e98"
+  },
+  ".agents/teamwork_preview_orchestrator_gen2/progress.md": {
+    "mtime": 1787842894.461801,
+    "seen": 1788002458.457359,
+    "ast_hash": "dc3736c6a0a10d3113cc64a3c5a40453",
+    "semantic_hash": "dc3736c6a0a10d3113cc64a3c5a40453"
+  },
+  ".agents/teamwork_preview_orchestrator_gen3/BRIEFING.md": {
+    "mtime": 1787842894.46214,
+    "seen": 1788002458.4573598,
+    "ast_hash": "a33a1f9cb9cab80fe76c96581b008d3e",
+    "semantic_hash": "a33a1f9cb9cab80fe76c96581b008d3e"
+  },
+  ".agents/teamwork_preview_orchestrator_gen3/DISPATCH.md": {
+    "mtime": 1787842894.4622924,
+    "seen": 1788002458.4573598,
+    "ast_hash": "690d4d50968cbaf06222728744629687",
+    "semantic_hash": "690d4d50968cbaf06222728744629687"
+  },
+  ".agents/teamwork_preview_orchestrator_gen3/GATE_STATUS.md": {
+    "mtime": 1787842894.462589,
+    "seen": 1788002458.457361,
+    "ast_hash": "aa0324bd5ddd0cf9d9d1d45c2d8269c1",
+    "semantic_hash": "aa0324bd5ddd0cf9d9d1d45c2d8269c1"
+  },
+  ".agents/teamwork_preview_orchestrator_gen3/handoff.md": {
+    "mtime": 1787842894.46289,
+    "seen": 1788002458.457361,
+    "ast_hash": "030bedeb50a9a2ec13eadccbf0e2cb01",
+    "semantic_hash": "030bedeb50a9a2ec13eadccbf0e2cb01"
+  },
+  ".agents/teamwork_preview_orchestrator_gen3/progress.md": {
+    "mtime": 1787842894.4632125,
+    "seen": 1788002458.457362,
+    "ast_hash": "f0c7abcdaeaf24bf8012e9357419ad33",
+    "semantic_hash": "f0c7abcdaeaf24bf8012e9357419ad33"
+  },
+  ".agents/teamwork_preview_orchestrator_gen4/BRIEFING.md": {
+    "mtime": 1787842894.4634676,
+    "seen": 1788002458.457362,
+    "ast_hash": "416de7796f32377d2d31c20c3badb063",
+    "semantic_hash": "416de7796f32377d2d31c20c3badb063"
+  },
+  ".agents/teamwork_preview_orchestrator_gen4/DISPATCH.md": {
+    "mtime": 1787842894.4636538,
+    "seen": 1788002458.457363,
+    "ast_hash": "2bd87ca7a098b13360ab027d17fc39de",
+    "semantic_hash": "2bd87ca7a098b13360ab027d17fc39de"
+  },
+  ".agents/teamwork_preview_orchestrator_gen4/progress.md": {
+    "mtime": 1787842894.4638274,
+    "seen": 1788002458.457363,
+    "ast_hash": "45fcc6cc2a52dd4d1fef9e9649594ce2",
+    "semantic_hash": "45fcc6cc2a52dd4d1fef9e9649594ce2"
+  },
+  ".agents/teamwork_preview_spec_miner_survey_3/BRIEFING.md": {
+    "mtime": 1787842894.4640367,
+    "seen": 1788002458.457364,
+    "ast_hash": "7f98c1739ac33b9ddd23a514b02b185a",
+    "semantic_hash": "7f98c1739ac33b9ddd23a514b02b185a"
+  },
+  ".agents/teamwork_preview_spec_miner_survey_3/DISPATCH.md": {
+    "mtime": 1787842894.464188,
+    "seen": 1788002458.457364,
+    "ast_hash": "99999006da29f581f9e8a65623f70164",
+    "semantic_hash": "99999006da29f581f9e8a65623f70164"
+  },
+  ".agents/teamwork_preview_spec_miner_survey_3/handoff.md": {
+    "mtime": 1787842894.464427,
+    "seen": 1788002458.457365,
+    "ast_hash": "948c457334f6b6ab60156f632f11fb51",
+    "semantic_hash": "948c457334f6b6ab60156f632f11fb51"
+  },
+  ".agents/teamwork_preview_spec_miner_survey_3/progress.md": {
+    "mtime": 1787842894.4648347,
+    "seen": 1788002458.457365,
+    "ast_hash": "d51fde9a96909f72fdd38e67abe3c73d",
+    "semantic_hash": "d51fde9a96909f72fdd38e67abe3c73d"
+  },
+  ".agents/teamwork_preview_victory_auditor/BRIEFING.md": {
+    "mtime": 1787845933.3332005,
+    "seen": 1788002458.457366,
+    "ast_hash": "e5c857b25b3d4dc0b6ea2d4ce9cb9709",
+    "semantic_hash": "e5c857b25b3d4dc0b6ea2d4ce9cb9709"
+  },
+  ".agents/teamwork_preview_victory_auditor/DISPATCH.md": {
+    "mtime": 1787845933.3334064,
+    "seen": 1788002458.457366,
+    "ast_hash": "cc7883765ef9251efbbd5984515b5e16",
+    "semantic_hash": "cc7883765ef9251efbbd5984515b5e16"
+  },
+  ".agents/teamwork_preview_victory_auditor/handoff.md": {
+    "mtime": 1787845933.333736,
+    "seen": 1788002458.457367,
+    "ast_hash": "c8e2f130a2b27a77f794f2063743db5d",
+    "semantic_hash": "c8e2f130a2b27a77f794f2063743db5d"
+  },
+  ".agents/teamwork_preview_victory_auditor/progress.md": {
+    "mtime": 1787845933.3339324,
+    "seen": 1788002458.457371,
+    "ast_hash": "e9004a3a9c61e89a80213b910964e77d",
+    "semantic_hash": "e9004a3a9c61e89a80213b910964e77d"
+  },
+  ".agents/teamwork_preview_worker_m4_1/BRIEFING.md": {
+    "mtime": 1787842894.46587,
+    "seen": 1788002458.457372,
+    "ast_hash": "67b664e7074433e90be54724be8fe233",
+    "semantic_hash": "67b664e7074433e90be54724be8fe233"
+  },
+  ".agents/teamwork_preview_worker_m4_1/DISPATCH.md": {
+    "mtime": 1787842894.4660208,
+    "seen": 1788002458.457372,
+    "ast_hash": "f9276794eb80c24f71a504d25b776e6c",
+    "semantic_hash": "f9276794eb80c24f71a504d25b776e6c"
+  },
+  ".agents/teamwork_preview_worker_m4_1/progress.md": {
+    "mtime": 1787842894.4661617,
+    "seen": 1788002458.457373,
+    "ast_hash": "1432fd01d7809e0f1debc6664fdff2ed",
+    "semantic_hash": "1432fd01d7809e0f1debc6664fdff2ed"
+  },
+  ".github/workflows/checks.yml": {
+    "mtime": 1786581686.8794773,
+    "seen": 1788002458.457373,
+    "ast_hash": "f299ec781cb1fe6d5c4ea4c8d11609ef",
+    "semantic_hash": "f299ec781cb1fe6d5c4ea4c8d11609ef"
+  },
+  ".github/workflows/firebase-config-deploy.yml": {
+    "mtime": 1786581686.8795538,
+    "seen": 1788002458.4573739,
+    "ast_hash": "a9556e7ef75c40e1e16161193b7511d0",
+    "semantic_hash": "a9556e7ef75c40e1e16161193b7511d0"
+  },
+  ".github/workflows/firebase-drift-check.yml": {
+    "mtime": 1786581686.8796778,
+    "seen": 1788002458.4573739,
+    "ast_hash": "409b76615ce317e8e6dfbc8cc25a3759",
+    "semantic_hash": "409b76615ce317e8e6dfbc8cc25a3759"
+  },
+  ".github/workflows/firebase-hosting-merge.yml": {
+    "mtime": 1786581686.8797488,
+    "seen": 1788002458.457375,
+    "ast_hash": "bbfbad48ce90f5126a74f09aa726c24f",
+    "semantic_hash": "bbfbad48ce90f5126a74f09aa726c24f"
+  },
+  ".github/workflows/firebase-hosting-pull-request.yml": {
+    "mtime": 1786581686.8798156,
+    "seen": 1788002458.457375,
+    "ast_hash": "6e777b89b2605924a5cb3bb7ed4fa014",
+    "semantic_hash": "6e777b89b2605924a5cb3bb7ed4fa014"
+  },
+  ".github/workflows/weekly-sca-scan.yml": {
+    "mtime": 1786581686.8798833,
+    "seen": 1788002458.457375,
+    "ast_hash": "b56a0a5f05fdc6fffcdd13fbb9642de5",
+    "semantic_hash": "b56a0a5f05fdc6fffcdd13fbb9642de5"
+  },
+  "ACCESSIBILITY_AUDIT.md": {
+    "mtime": 1787842894.4664493,
+    "seen": 1788002458.457376,
+    "ast_hash": "9b4c8a4891ea3a0f6b3854ae3c44ed38",
+    "semantic_hash": "9b4c8a4891ea3a0f6b3854ae3c44ed38"
+  },
+  "CLINICAL_SOP.md": {
+    "mtime": 1786581686.8800802,
+    "seen": 1788002458.457377,
+    "ast_hash": "cb10b14c653f65148951bb60f317f1c2",
+    "semantic_hash": "cb10b14c653f65148951bb60f317f1c2"
+  },
+  "DEPLOYMENT_MANIFEST.md": {
+    "mtime": 1786581686.8801794,
+    "seen": 1788002458.457377,
+    "ast_hash": "dfd219cb17d67128aca6488ff31f41f8",
+    "semantic_hash": "dfd219cb17d67128aca6488ff31f41f8"
+  },
+  "DESIGN_AUDIT_2026.md": {
+    "mtime": 1787902775.7261467,
+    "seen": 1788002458.457377,
+    "ast_hash": "67349f5289270ce23479ccf5ccf7faee",
+    "semantic_hash": "67349f5289270ce23479ccf5ccf7faee"
+  },
+  "FINAL_VERIFICATION_REPORT.md": {
+    "mtime": 1787842894.466673,
+    "seen": 1788002458.4573781,
+    "ast_hash": "0e832be97e8c959b7184a19586660e91",
+    "semantic_hash": "0e832be97e8c959b7184a19586660e91"
+  },
+  "PROJECT.md": {
+    "mtime": 1787845933.3344567,
+    "seen": 1788002458.4573781,
+    "ast_hash": "8cce0803dba0136d40e73fe0c0d75c2c",
+    "semantic_hash": "8cce0803dba0136d40e73fe0c0d75c2c"
+  },
+  "SYNC.md": {
+    "mtime": 1786581686.8804016,
+    "seen": 1788002458.457379,
+    "ast_hash": "714cba7ae4f20805665068ca1ec3e4db",
+    "semantic_hash": "714cba7ae4f20805665068ca1ec3e4db"
+  },
+  "TEST_INFRA.md": {
+    "mtime": 1787842894.4672642,
+    "seen": 1788002458.457379,
+    "ast_hash": "ff46fa279250bfa824b98c8b4dbd5931",
+    "semantic_hash": "ff46fa279250bfa824b98c8b4dbd5931"
+  },
+  "archive-v1/LEGACY_ARCHIVE_MANIFEST.md": {
+    "mtime": 1787902716.1190085,
+    "seen": 1788002458.45738,
+    "ast_hash": "3ed667375c7f67e20732f6b40242c42e",
+    "semantic_hash": "3ed667375c7f67e20732f6b40242c42e"
+  },
+  "public/404.html": {
+    "mtime": 1786581686.8834336,
+    "seen": 1788002458.45738,
+    "ast_hash": "0a27a4163254fc8fce870c8cc3a3f94f",
+    "semantic_hash": "0a27a4163254fc8fce870c8cc3a3f94f"
+  },
+  "public/index.html": {
+    "mtime": 1787907323.072559,
+    "seen": 1788002458.457381,
+    "ast_hash": "95a589cc0e27477290016b562dd30f90",
+    "semantic_hash": "95a589cc0e27477290016b562dd30f90"
+  },
+  "redirect/index.html": {
+    "mtime": 1786581686.8852603,
+    "seen": 1788002458.457381,
+    "ast_hash": "6f6637c9b69fc1bd435782eefbc07977",
+    "semantic_hash": "6f6637c9b69fc1bd435782eefbc07977"
+  },
+  "run_log.txt": {
+    "mtime": 1786582083.7088306,
+    "seen": 1788002458.457382,
+    "ast_hash": "12d65d7bb76b3bf9517ef57b5d51879f",
+    "semantic_hash": "12d65d7bb76b3bf9517ef57b5d51879f"
+  }
+}
