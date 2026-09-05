@@ -95,20 +95,25 @@
         <h1 data-i="bT">ER Management</h1>
         <div id="user-info"></div>
       </div>
-      <div class="nav-actions">
-        <button class="btn btn-mini btn-outline btn-icon-only" id="btn-theme-toggle" aria-label="Toggle theme">🌓</button>
-        <button class="btn btn-mini btn-lang-toggle" id="btn-lang-toggle">عربي</button>
-        <button class="btn btn-mini btn-outline" id="btn-app-logout" data-i="oB">Logout</button>
+      <div class="nav-actions" style="position: relative;">
+        <!-- Primary Action -->
+        <button class="btn btn-outline" id="btn-app-logout" data-i="oB">Logout</button>
+        <!-- Secondary Settings Dropdown (Hick's Law) -->
+        <button class="btn btn-outline btn-icon-only" id="btn-settings-dropdown" aria-label="Settings" aria-expanded="false" style="padding: 0 12px;">⚙️</button>
+        <div id="settings-menu" class="hidden glass-panel" style="position: absolute; right: 0; top: 110%; display: flex; flex-direction: column; gap: 8px; padding: 12px; z-index: 100; min-width: 180px;">
+          <button class="btn btn-mini btn-outline" id="btn-theme-toggle" aria-label="Toggle theme" style="width: 100%; justify-content: flex-start;">🌓 Toggle Theme</button>
+          <button class="btn btn-mini btn-outline" id="btn-lang-toggle" style="width: 100%; justify-content: flex-start;">🌐 عربي</button>
+          <button class="btn btn-mini btn-outline hidden" id="tab-owner" style="width: 100%; justify-content: flex-start;">
+            <span data-i="tO">Owner Admin</span>
+            <span id="badge-pending-users" class="badge-pulse pending-count-badge"></span>
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="tabs-bar">
       <button class="tab-btn active" id="tab-live-board" data-i="tE">Live Board</button>
-      <button class="tab-btn hidden" id="tab-owner">
-        <span data-i="tO">Owner</span>
-        <span id="badge-pending-users" class="badge-pulse pending-count-badge"></span>
-      </button>
     </div>
 
     <!-- Live Board View -->

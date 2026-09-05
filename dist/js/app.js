@@ -671,7 +671,27 @@ export function setupEventListeners() {
   if ($('btn-gate-logout')) $('btn-gate-logout').onclick = () => logout();
   if ($('btn-gate-retry')) $('btn-gate-retry').onclick = retryAccessRequest;
   
-  // Navigation & Theme & Language
+  // Navigation & Theme & Language & Settings (Hick's Law)
+  const settingsBtn = $('btn-settings-dropdown');
+  if (settingsBtn) {
+    settingsBtn.onclick = (e) => {
+      const menu = $('settings-menu');
+      if (menu) {
+        menu.classList.toggle('hidden');
+        settingsBtn.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
+      }
+      e.stopPropagation();
+    };
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const menu = $('settings-menu');
+      if (menu && !menu.classList.contains('hidden') && !e.target.closest('#settings-menu') && !e.target.closest('#btn-settings-dropdown')) {
+        menu.classList.add('hidden');
+        settingsBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   const themeBtn = $('btn-theme-toggle');
   if (themeBtn) themeBtn.onclick = toggleTheme;
 
@@ -1456,15 +1476,17 @@ function renderActivePatientList() {
     const regDateFormatted = p.registrationTime ? new Date(p.registrationTime).toLocaleString(currentLang === 'en' ? 'en-GB' : 'ar-EG', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
     const safeName = esc(p.name || '');
     const isExpanded = expandedPatientCardIds.has(p.id);
-    
+    const isTriageIncomplete = !p.diagnosis || !p.supportiveTx;
+    const triageBadge = isTriageIncomplete ? `<div class="triage-incomplete-banner" style="background:var(--danger);color:#fff;padding:8px 12px;font-weight:700;font-size:12px;border-radius:8px;margin-bottom:12px;text-align:center;animation: pulse 2s infinite;">⚠️ Triage Incomplete: Missing Diagnosis or Medications</div>` : '';
+
     return `
-      <div class="patient-card" data-triage="${getTriageCategory(p)}" data-status="${esc(p.status || '')}">
+      <div class="patient-card" data-triage="${getTriageCategory(p)}" data-status="${esc(p.status || '')}" style="border: ${isTriageIncomplete ? '2px solid var(--danger)' : '1px solid var(--border)'};">
         <div class="card-header" data-id="${esc(p.id)}">
           <div class="card-summary-left">
             <div class="patient-name" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}">${safeName}</div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:2px;">
-              <span class="hospital-id">#${esc(p.patientId || '--')}</span>
-              <span id="header_age_${esc(p.id)}" class="age-badge" style="margin:0;padding:2px 8px;font-size:11px;">${calculateAgeAndGender(p.nationalId || '')}</span>
+              <span class="hospital-id">🏥 #${esc(p.patientId || '--')}</span>
+              <span id="header_age_${esc(p.id)}" class="age-badge" style="margin:0;padding:2px 8px;font-size:11px;">👤 ${calculateAgeAndGender(p.nationalId || '')}</span>
               <span class="duration-badge" style="margin:0;padding:2px 8px;font-size:11px;">⏱ ${formatDurationString(p.registrationTime)}</span>
               <span style="font-size:12px;color:var(--text-muted);font-weight:600;">📅 ${regDateFormatted}</span>
             </div>
@@ -1472,11 +1494,11 @@ function renderActivePatientList() {
           
           <div class="card-summary-right">
             <div class="card-summary-tags" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px;">
-              <select id="loc_${esc(p.id)}" class="btn-mini location-tag quick-loc-select" data-id="${esc(p.id)}" title="${currentLang === 'en' ? 'Room Location' : 'الغرفة'}" style="font-size:12px;padding:3px 8px;border-radius:6px;max-width:170px;margin:0;">
+              <select id="loc_${esc(p.id)}" class="btn-mini location-tag quick-loc-select" data-id="${esc(p.id)}" title="${currentLang === 'en' ? 'Room Location' : 'الغرفة'}" style="font-size:12px;padding:6px 10px;border-radius:6px;max-width:170px;margin:0;cursor:pointer;">
                 ${ROOMS.map(r => `<option value="${r}" ${p.location === r ? 'selected' : ''}>📍 ${r}</option>`).join('')}
               </select>
               <div style="display:inline-flex;gap:4px;align-items:center;margin:0;" onclick="event.stopPropagation();">
-                <select id="dept_sel_${esc(p.id)}" class="btn-mini location-tag quick-dept-select ${isCustomDept ? 'hidden' : ''}" data-id="${esc(p.id)}" style="font-size:12px;padding:3px 8px;border-radius:6px;max-width:190px;margin:0;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" title="${currentLang === 'en' ? 'Primary Department' : 'القسم الأساسي'}">
+                <select id="dept_sel_${esc(p.id)}" class="btn-mini location-tag quick-dept-select ${isCustomDept ? 'hidden' : ''}" data-id="${esc(p.id)}" style="font-size:12px;padding:6px 10px;border-radius:6px;max-width:190px;margin:0;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;cursor:pointer;" title="${currentLang === 'en' ? 'Primary Department' : 'القسم الأساسي'}">
                   <option value="">🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}</option>
                   ${PRIMARY_DEPARTMENTS.map(d => {
                     const isSel = (cleanDept === d.en || cleanDept === d.ar);
@@ -1484,20 +1506,22 @@ function renderActivePatientList() {
                   }).join('')}
                   <option value="Other..." ${isCustomDept ? 'selected' : ''}>✏️ ${currentLang === 'en' ? 'Other...' : 'أخرى...'}</option>
                 </select>
-                <input type="text" id="custom_dept_${esc(p.id)}" class="btn-mini location-tag ${isCustomDept ? '' : 'hidden'}" style="font-size:12px;padding:3px 8px;border-radius:6px;margin:0;width:130px;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" placeholder="🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}" value="${esc(isCustomDept ? cleanDept : '')}" data-id="${esc(p.id)}">
-                <button type="button" class="btn btn-mini btn-outline ${isCustomDept ? '' : 'hidden'}" id="btn_reset_dept_${esc(p.id)}" data-id="${esc(p.id)}" title="Back to presets" style="padding:2px 6px;margin:0;font-size:11px;">📋</button>
+                <input type="text" id="custom_dept_${esc(p.id)}" class="btn-mini location-tag ${isCustomDept ? '' : 'hidden'}" style="font-size:12px;padding:6px 10px;border-radius:6px;margin:0;width:130px;background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:700;" placeholder="🏥 ${currentLang === 'en' ? 'Dept...' : 'القسم...'}" value="${esc(isCustomDept ? cleanDept : '')}" data-id="${esc(p.id)}">
+                <button type="button" class="btn btn-mini btn-outline ${isCustomDept ? '' : 'hidden'}" id="btn_reset_dept_${esc(p.id)}" data-id="${esc(p.id)}" title="Back to presets" style="padding:4px 8px;margin:0;font-size:11px;">📋</button>
               </div>
             </div>
-            <div class="pending-action-badge">${esc(translatePendingAction(p.pendingAction))}</div>
+            <div class="pending-action-badge" style="font-size:14px;padding:6px 12px;">${esc(translatePendingAction(p.pendingAction))}</div>
           </div>
         </div>
         
-        <div id="details_${esc(p.id)}" class="card-details ${isExpanded ? '' : 'hidden'}">
-          <details class="edit-reg-details" style="margin-bottom:16px;border:1px dashed var(--border-color);border-radius:12px;padding:10px 14px;background:var(--tint-light);">
-            <summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--primary);outline:none;user-select:none;">
-              ✏️ ${currentLang === 'en' ? 'Edit Registration Demographics (Name, ID, Time)' : 'تعديل بيانات التسجيل الأساسية (الاسم، الهوية، الوقت)'}
+        <div id="details_${esc(p.id)}" class="card-details ${isExpanded ? '' : 'hidden'}" style="padding-top:16px;">
+          ${triageBadge}
+          
+          <details class="edit-reg-details chunk-card" style="margin-bottom:16px;border:1px solid var(--border-color);border-radius:12px;padding:16px;background:var(--card-bg);">
+            <summary style="cursor:pointer;font-size:14px;font-weight:700;color:var(--primary);outline:none;user-select:none;">
+              📋 ${currentLang === 'en' ? 'Patient Demographics' : 'بيانات المريض'}
             </summary>
-            <div class="details-grid-top" style="margin-top:14px;margin-bottom:0;">
+            <div class="details-grid-top" style="margin-top:14px;margin-bottom:0;display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:12px;">
               <div>
                 <label class="field-label" style="margin-top:0;">${tr('lN') || 'Name'}</label>
                 <input type="text" id="name_${esc(p.id)}" value="${safeName}" dir="${currentLang === 'en' ? 'ltr' : 'rtl'}" class="input-field" style="margin:0;" data-id="${esc(p.id)}" data-field="name" placeholder="${tr('nm') || 'e.g. John Doe'}" maxlength="100">
@@ -1517,70 +1541,76 @@ function renderActivePatientList() {
             </div>
           </details>
           
-          <div class="details-grid-mid">
-            <div>
-              <label class="field-label">${tr('dg')}</label>
-              <input type="text" id="diag_${esc(p.id)}" value="${esc(p.diagnosis || '')}" class="input-field" data-id="${esc(p.id)}" data-field="diagnosis" placeholder="${currentLang === 'en' ? 'e.g. STEMI, Appendicitis...' : 'مثال: جلطة قلبية، التهاب زائدة...'}" maxlength="1000">
-            </div>
-            <div>
-              <label class="field-label">${tr('sX')}</label>
-              <input type="text" id="supp_${esc(p.id)}" value="${esc(p.supportiveTx || '')}" class="input-field" data-id="${esc(p.id)}" data-field="supportiveTx" placeholder="${currentLang === 'en' ? 'e.g. Aspirin, Oxygen 2L...' : 'مثال: أسبرين، أكسجين...'}" maxlength="1000">
+          <div class="chunk-card" style="margin-bottom:16px;border:1px solid var(--border-color);border-radius:12px;padding:16px;background:var(--card-bg);">
+            <h4 style="margin:0 0 12px 0;font-size:14px;color:var(--text-main);">🩺 Clinical Data</h4>
+            <div class="details-grid-mid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label class="field-label">🔬 ${tr('dg') || 'Diagnosis / Recent Labs'}</label>
+                <textarea id="diag_${esc(p.id)}" class="input-field" data-id="${esc(p.id)}" data-field="diagnosis" placeholder="${currentLang === 'en' ? 'e.g. STEMI, Appendicitis...' : 'مثال: جلطة قلبية، التهاب زائدة...'}" maxlength="1000" rows="3" style="resize:vertical;">${esc(p.diagnosis || '')}</textarea>
+              </div>
+              <div>
+                <label class="field-label">💊 ${tr('sX') || 'Medications / Vitals'}</label>
+                <textarea id="supp_${esc(p.id)}" class="input-field" data-id="${esc(p.id)}" data-field="supportiveTx" placeholder="${currentLang === 'en' ? 'e.g. Aspirin, Oxygen 2L...' : 'مثال: أسبرين، أكسجين...'}" maxlength="1000" rows="3" style="resize:vertical;">${esc(p.supportiveTx || '')}</textarea>
+              </div>
             </div>
           </div>
           
-          <div class="details-grid-bottom">
-            <div>
-              <label class="field-label">${tr('aC')}</label>
-              <div style="display:flex;gap:6px;align-items:center;">
-                <select id="action_${esc(p.id)}" class="select-action ${isCustomAction ? 'hidden' : ''}" data-id="${esc(p.id)}" data-field="pendingAction" style="flex:1;width:100%;">
-                  ${PENDING_ACTIONS.map(a => `<option value="${a}" ${p.pendingAction === a ? 'selected' : ''}>${translatePendingAction(a)}</option>`).join('')}
-                  <option value="Custom..." ${isCustomAction ? 'selected' : ''}>✏️ ${tr('pS')}...</option>
-                </select>
-                <input type="text" id="custom_action_${esc(p.id)}" class="input-custom-action ${isCustomAction ? '' : 'hidden'}" style="flex:1;margin:0;width:100%;" placeholder="${tr('pS')}" value="${esc(isCustomAction ? p.pendingAction : '')}" data-id="${esc(p.id)}" data-field="customAction">
-                <button type="button" class="btn btn-mini btn-outline ${isCustomAction ? '' : 'hidden'}" id="btn_reset_action_${esc(p.id)}" data-id="${esc(p.id)}" title="Back to presets" style="padding:10px 12px;margin:0;">📋</button>
-              </div>
-            </div>
-            
-            <div class="workup-boxes">
-              <div id="referral_box_${esc(p.id)}" class="alert-box alert-warning alert-box-referral ${isWaitlistAction ? '' : 'hidden'}">
-                <label class="alert-label alert-label-referral">${tr('rL')}</label>
-                <select id="ref_${esc(p.id)}" class="select-alert select-alert-inline select-alert-referral" data-id="${esc(p.id)}" data-field="hasReferral">
-                  <option value="" ${!p.hasReferral ? 'selected' : ''}>${currentLang === 'en' ? '-- No Referral --' : '-- بدون تحويل --'}</option>
-                  <option value="Yes" ${p.hasReferral === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Referral Sent)' : 'نعم (تم إرسال التحويل)'}</option>
-                  <option value="No" ${p.hasReferral === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                </select>
+          <div class="chunk-card" style="margin-bottom:16px;border:1px solid var(--border-color);border-radius:12px;padding:16px;background:var(--card-bg);">
+            <h4 style="margin:0 0 12px 0;font-size:14px;color:var(--text-main);">⚡ Critical Actions & Workup</h4>
+            <div class="details-grid-bottom" style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <label class="field-label">🎯 ${tr('aC') || 'Primary Action / Status'}</label>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <select id="action_${esc(p.id)}" class="select-action ${isCustomAction ? 'hidden' : ''}" data-id="${esc(p.id)}" data-field="pendingAction" style="flex:1;width:100%;height:48px;font-size:16px;font-weight:600;border:2px solid var(--primary);border-radius:8px;padding:0 12px;background:var(--card-bg);">
+                    ${PENDING_ACTIONS.map(a => `<option value="${a}" ${p.pendingAction === a ? 'selected' : ''}>${translatePendingAction(a)}</option>`).join('')}
+                    <option value="Custom..." ${isCustomAction ? 'selected' : ''}>✏️ ${tr('pS')}...</option>
+                  </select>
+                  <input type="text" id="custom_action_${esc(p.id)}" class="input-custom-action ${isCustomAction ? '' : 'hidden'}" style="flex:1;margin:0;width:100%;height:48px;font-size:16px;" placeholder="${tr('pS')}" value="${esc(isCustomAction ? p.pendingAction : '')}" data-id="${esc(p.id)}" data-field="customAction">
+                  <button type="button" class="btn btn-mini btn-outline ${isCustomAction ? '' : 'hidden'}" id="btn_reset_action_${esc(p.id)}" data-id="${esc(p.id)}" title="Back to presets" style="padding:10px 12px;margin:0;height:48px;">📋</button>
+                </div>
               </div>
               
-              <div id="sepsis_box_${esc(p.id)}" class="alert-box alert-danger alert-box-sepsis ${isSepsisSuspected ? '' : 'hidden'}">
-                <label class="alert-label alert-label-sepsis">${tr('sepW')}</label>
-                <select id="sepsis_${esc(p.id)}" class="select-alert select-alert-inline select-alert-sepsis" data-id="${esc(p.id)}" data-field="sepsisWorkup">
-                  <option value="" ${!p.sepsisWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending Workup --' : '-- في انتظار التحاليل --'}</option>
-                  <option value="Yes" ${p.sepsisWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Protocol Initiated)' : 'نعم (تم تفعيل البروتوكول)'}</option>
-                  <option value="No" ${p.sepsisWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                </select>
-              </div>
-
-              <div id="mi_box_${esc(p.id)}" class="alert-box alert-danger alert-box-mi ${isMiSuspected ? '' : 'hidden'}">
-                <label class="alert-label alert-label-mi">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
-                <select id="mi_${esc(p.id)}" class="select-alert select-alert-inline select-alert-mi" data-id="${esc(p.id)}" data-field="miCodeWorkup">
-                  <option value="" ${!p.miCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending ECG/Trop --' : '-- في انتظار رسم القلب والإنزيمات --'}</option>
-                  <option value="Yes" ${p.miCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Cath Alerted)' : 'نعم (تم إبلاغ القسطرة)'}</option>
-                  <option value="No" ${p.miCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                </select>
-              </div>
-
-              <div id="stroke_box_${esc(p.id)}" class="alert-box alert-warning alert-box-stroke ${isStrokeSuspected ? '' : 'hidden'}">
-                <label class="alert-label alert-label-stroke">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
-                <select id="stroke_${esc(p.id)}" class="select-alert select-alert-inline select-alert-stroke" data-id="${esc(p.id)}" data-field="strokeCodeWorkup">
-                  <option value="" ${!p.strokeCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending CT Brain --' : '-- في انتظار الأشعة المقطعية --'}</option>
-                  <option value="Yes" ${p.strokeCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Neuro Alerted)' : 'نعم (تم إبلاغ المخ والأعصاب)'}</option>
-                  <option value="No" ${p.strokeCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                </select>
+              <div class="workup-boxes" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:8px;margin-top:8px;">
+                <div id="referral_box_${esc(p.id)}" class="alert-box alert-warning alert-box-referral ${isWaitlistAction ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
+                  <label class="alert-label alert-label-referral">🔄 ${tr('rL')}</label>
+                  <select id="ref_${esc(p.id)}" class="select-alert select-alert-inline select-alert-referral" data-id="${esc(p.id)}" data-field="hasReferral" style="width:100%;margin-top:8px;padding:8px;">
+                    <option value="" ${!p.hasReferral ? 'selected' : ''}>${currentLang === 'en' ? '-- No Referral --' : '-- بدون تحويل --'}</option>
+                    <option value="Yes" ${p.hasReferral === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Referral Sent)' : 'نعم (تم إرسال التحويل)'}</option>
+                    <option value="No" ${p.hasReferral === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
+                  </select>
+                </div>
+                
+                <div id="sepsis_box_${esc(p.id)}" class="alert-box alert-danger alert-box-sepsis ${isSepsisSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
+                  <label class="alert-label alert-label-sepsis">🦠 ${tr('sepW')}</label>
+                  <select id="sepsis_${esc(p.id)}" class="select-alert select-alert-inline select-alert-sepsis" data-id="${esc(p.id)}" data-field="sepsisWorkup" style="width:100%;margin-top:8px;padding:8px;">
+                    <option value="" ${!p.sepsisWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending Workup --' : '-- في انتظار التحاليل --'}</option>
+                    <option value="Yes" ${p.sepsisWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Protocol Initiated)' : 'نعم (تم تفعيل البروتوكول)'}</option>
+                    <option value="No" ${p.sepsisWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
+                  </select>
+                </div>
+  
+                <div id="mi_box_${esc(p.id)}" class="alert-box alert-danger alert-box-mi ${isMiSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
+                  <label class="alert-label alert-label-mi">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
+                  <select id="mi_${esc(p.id)}" class="select-alert select-alert-inline select-alert-mi" data-id="${esc(p.id)}" data-field="miCodeWorkup" style="width:100%;margin-top:8px;padding:8px;">
+                    <option value="" ${!p.miCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending ECG/Trop --' : '-- في انتظار رسم القلب والإنزيمات --'}</option>
+                    <option value="Yes" ${p.miCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Cath Alerted)' : 'نعم (تم إبلاغ القسطرة)'}</option>
+                    <option value="No" ${p.miCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
+                  </select>
+                </div>
+  
+                <div id="stroke_box_${esc(p.id)}" class="alert-box alert-warning alert-box-stroke ${isStrokeSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
+                  <label class="alert-label alert-label-stroke">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
+                  <select id="stroke_${esc(p.id)}" class="select-alert select-alert-inline select-alert-stroke" data-id="${esc(p.id)}" data-field="strokeCodeWorkup" style="width:100%;margin-top:8px;padding:8px;">
+                    <option value="" ${!p.strokeCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending CT Brain --' : '-- في انتظار الأشعة المقطعية --'}</option>
+                    <option value="Yes" ${p.strokeCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Neuro Alerted)' : 'نعم (تم إبلاغ المخ والأعصاب)'}</option>
+                    <option value="No" ${p.strokeCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
           
-          <button class="btn btn-danger btn-discharge-trigger" data-id="${esc(p.id)}" data-name="${safeName}">${tr('dB')}</button>
+          <button class="btn btn-danger btn-discharge-trigger" data-id="${esc(p.id)}" data-name="${safeName}" style="width:100%;padding:16px;font-size:18px;font-weight:700;border-radius:8px;display:flex;justify-content:center;align-items:center;gap:8px;box-shadow:0 4px 12px var(--danger-glow);">🚪 ${tr('dB')} / Finalize</button>
         </div>
       </div>
     `;
