@@ -1852,7 +1852,7 @@ function attachPatientListHandlers() {
   // Department dropdown toggle custom input
   document.querySelectorAll('[id^="dept_sel_"]').forEach(select => {
     select.addEventListener('click', (e) => e.stopPropagation());
-    select.addEventListener('change', (e) => {
+    select.addEventListener('change', async (e) => {
       e.stopPropagation();
       const id = e.target.dataset.id;
       const customInput = $(`custom_dept_${id}`);
@@ -1862,7 +1862,11 @@ function attachPatientListHandlers() {
         select.classList.toggle('hidden', isCustom);
         customInput.classList.toggle('hidden', !isCustom);
         resetBtn.classList.toggle('hidden', !isCustom);
-        if (isCustom) customInput.focus();
+        if (isCustom) {
+          customInput.focus();
+        } else {
+          await savePatientCardFields(id, e.target);
+        }
       }
     });
   });
@@ -1944,14 +1948,14 @@ function attachPatientListHandlers() {
   });
 
   // Save changes on change
-  document.querySelectorAll('.card-details input, .card-details select, [id^="custom_dept_"], [id^="dept_sel_"], [id^="loc_"]').forEach(el => {
+  document.querySelectorAll('.card-details input, .card-details select, .card-details textarea, [id^="custom_dept_"], [id^="dept_sel_"], [id^="loc_"]').forEach(el => {
     el.addEventListener('change', async (e) => {
       const id = e.target.dataset.id;
       if (!id) return;
-      if (e.target.id.startsWith('dept_sel_') || e.target.id.startsWith('custom_dept_')) {
+      if (e.target.id && (e.target.id.startsWith('dept_sel_') || e.target.id.startsWith('custom_dept_'))) {
         return; // Handled explicitly by dedicated department change/keydown/click handlers!
       }
-      if (e.target.id.startsWith('action_') && e.target.value === 'Custom...') {
+      if (e.target.id && e.target.id.startsWith('action_') && e.target.value === 'Custom...') {
         return; // Don't trigger auto-save or re-render when revealing the custom action input!
       }
       
