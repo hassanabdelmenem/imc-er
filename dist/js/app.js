@@ -1476,8 +1476,8 @@ function renderActivePatientList() {
     const regDateFormatted = p.registrationTime ? new Date(p.registrationTime).toLocaleString(currentLang === 'en' ? 'en-GB' : 'ar-EG', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
     const safeName = esc(p.name || '');
     const isExpanded = expandedPatientCardIds.has(p.id);
-    const isTriageIncomplete = !p.diagnosis || !p.supportiveTx;
-    const triageBadge = isTriageIncomplete ? `<div class="triage-incomplete-banner" style="background:var(--danger);color:#fff;padding:8px 12px;font-weight:700;font-size:12px;border-radius:8px;margin-bottom:12px;text-align:center;animation: pulse 2s infinite;">⚠️ Triage Incomplete: Missing Diagnosis or Medications</div>` : '';
+    const isTriageIncomplete = !p.diagnosis;
+    const triageBadge = isTriageIncomplete ? `<div class="triage-incomplete-banner" style="background:var(--danger);color:#fff;padding:8px 12px;font-weight:700;font-size:12px;border-radius:8px;margin-bottom:12px;text-align:center;animation: pulse 2s infinite;">⚠️ Triage Incomplete: Missing Diagnosis</div>` : '';
 
     return `
       <div class="patient-card" data-triage="${getTriageCategory(p)}" data-status="${esc(p.status || '')}" style="border: ${isTriageIncomplete ? '2px solid var(--danger)' : '1px solid var(--border)'};">
