@@ -1,7 +1,7 @@
 # Graph Report - imc-er  (2026-09-05)
 
 ## Corpus Check
-- 356 files · ~240,035 words
+- 356 files · ~240,147 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d8581be2`
+- Built from commit: `fbe1a0dd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -158,13 +158,13 @@
 ## Surprising Connections (you probably didn't know these)
 - `Correction: ui-components.js Not Dead (Test-Covered)` --semantically_similar_to--> `Correction of Prior False SOP Claims`  [INFERRED] [semantically similar]
   DESIGN_AUDIT_2026.md → CLINICAL_SOP.md
+- `Reviewer 2 Independent Review Report` --references--> `captureActiveFieldState()`  [EXTRACTED]
+  .agents/teamwork_preview_m2_reviewer_2/handoff.md → public/js/app.js
+- `Explorer 1 Offline Chaos Test Design Report` --references--> `diffPatientFields()`  [EXTRACTED]
+  .agents/teamwork_preview_m2_explorer_1/handoff.md → public/js/app.js
+- `Reviewer 2 Independent Review Report` --references--> `diffPatientFields()`  [EXTRACTED]
+  .agents/teamwork_preview_m2_reviewer_2/handoff.md → public/js/app.js
 - `Reviewer 1 Independent Review Report` --references--> `EdgeAIClinicalEngine`  [EXTRACTED]
-  .agents/teamwork_preview_m2_reviewer_1/handoff.md → public/js/edge-ai-service.js
-- `Challenger 2 Retest Handoff Report` --references--> `NetworkIsolationGatekeeper`  [EXTRACTED]
-  .agents/teamwork_preview_m2_challenger_2_retest/handoff.md → public/js/edge-ai-service.js
-- `Challenger 3 Verdict Report` --references--> `NetworkIsolationGatekeeper`  [EXTRACTED]
-  .agents/teamwork_preview_m2_challenger_3/handoff.md → public/js/edge-ai-service.js
-- `Reviewer 1 Independent Review Report` --references--> `NetworkIsolationGatekeeper`  [EXTRACTED]
   .agents/teamwork_preview_m2_reviewer_1/handoff.md → public/js/edge-ai-service.js
 
 ## Import Cycles
@@ -547,13 +547,13 @@ Nodes (3): Six Chief Nurse Clinical Workflows, Explorer 1 (Milestone 3 Frontend 
 ## Ambiguous Edges - Review These
 - `Milestone 4: Final Verification Summary & Project Wrap-up` → `VICTORY CONFIRMED Audit Verdict`  [AMBIGUOUS]
   .agents/teamwork_preview_victory_auditor/handoff.md · relation: conceptually_related_to
-- `Reviewer 2 Independent Review Report` → `Reviewer 1 Independent Review Report`  [AMBIGUOUS]
-  .agents/teamwork_preview_m2_reviewer_1/handoff.md · relation: conceptually_related_to
 - `@refresh Directive` → `Subscriptions (Web)`  [AMBIGUOUS]
   .agents/skills/firebase-data-connect/reference/realtime.md · relation: references
+- `Reviewer 1 Independent Review Report` → `Reviewer 2 Independent Review Report`  [AMBIGUOUS]
+  .agents/teamwork_preview_m2_reviewer_1/handoff.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **434 isolated node(s):** `I. The Core UX Laws:`, `II. The 20 Execution Rules:`, `mockFirestoreState`, `ROOT`, `mockFirestoreState` (+429 more)
+- **434 isolated node(s):** `patientsList`, `usersList`, `activeFilter`, `expandedPatientCardIds`, `modalDialogState` (+429 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **45 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -562,15 +562,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Milestone 4: Final Verification Summary & Project Wrap-up` and `VICTORY CONFIRMED Audit Verdict`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **What is the exact relationship between `Reviewer 2 Independent Review Report` and `Reviewer 1 Independent Review Report`?**
-  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **What is the exact relationship between `@refresh Directive` and `Subscriptions (Web)`?**
   _Edge tagged AMBIGUOUS (relation: references) - confidence is low._
+- **What is the exact relationship between `Reviewer 1 Independent Review Report` and `Reviewer 2 Independent Review Report`?**
+  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **Why does `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` connect `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` to `RBAC Test Config & Roles`, `M4 Worker 1 Dispatch Instructions`?**
-  _High betweenness centrality (0.085) - this node is a cross-community bridge._
-- **Why does `firestore.rules (Security Rules & Access Model)` connect `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` to `M4 Worker 1 Dispatch Instructions`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Why does `Firebase Auth Basics Skill` connect `Firebase Auth Basics Skill` to `Original User Request: IMC ER Multi-Role Testing & RBAC Verification`, `App Hosting CLI Config`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **What connects `I. The Core UX Laws:`, `II. The 20 Execution Rules:`, `mockFirestoreState` to the rest of the system?**
+  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Why does `Sentinel Briefing` connect `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` to `Orchestrator Handoffs & Gates`, `M4 Worker & Gate Status`?**
+  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+- **Why does `TEST_INFRA.md (Test Infrastructure Documentation)` connect `Orchestrator Handoffs & Gates` to `Original User Request: IMC ER Multi-Role Testing & RBAC Verification`?**
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+- **What connects `patientsList`, `usersList`, `activeFilter` to the rest of the system?**
   _434 weakly-connected nodes found - possible documentation gaps or missing edges._

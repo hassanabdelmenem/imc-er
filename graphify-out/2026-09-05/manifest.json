@@ -42,9 +42,9 @@
     "semantic_hash": "5bd80ee150641e8b45843ca19d7a972a"
   },
   "public/js/app.js": {
-    "mtime": 1788627668.9962327,
-    "seen": 1788627673.9000719,
-    "ast_hash": "fe24d0dea0e9a06f2b0bcd61087d2f93",
+    "mtime": 1788632752.7542732,
+    "seen": 1788632753.825609,
+    "ast_hash": "0007fe6245f860452657b4463abc5307",
     "semantic_hash": ""
   },
   "public/js/components/ui-components.js": {
@@ -2172,9 +2172,9 @@
     "semantic_hash": "0a27a4163254fc8fce870c8cc3a3f94f"
   },
   "public/index.html": {
-    "mtime": 1788626796.3239138,
-    "seen": 1788627673.900324,
-    "ast_hash": "4ee0ca1eee04ac970bd1282c50068377",
+    "mtime": 1788632752.752074,
+    "seen": 1788632753.82586,
+    "ast_hash": "4e9d08fcd5c78dd747e6a5babb98acd9",
     "semantic_hash": ""
   },
   "redirect/index.html": {
@@ -2205,6 +2205,12 @@
     "mtime": 1788629603.9800143,
     "seen": 1788629605.048725,
     "ast_hash": "b5509b89c467eeeaae3808348e80195a",
+    "semantic_hash": ""
+  },
+  "scratch/test-radio.html": {
+    "mtime": 1788632465.450467,
+    "seen": 1788632753.825863,
+    "ast_hash": "9fd3e42af1487449f91cc5fcbe6898b9",
     "semantic_hash": ""
   }
 }
