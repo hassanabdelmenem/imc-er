@@ -1,16 +1,16 @@
 # Graph Report - imc-er  (2026-09-05)
 
 ## Corpus Check
-- 356 files · ~240,256 words
+- 358 files · ~240,652 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1369 nodes · 2091 edges · 129 communities (84 shown, 45 thin omitted)
-- Extraction: 93% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 133 edges (avg confidence: 0.82)
+- 1383 nodes · 2107 edges · 127 communities (81 shown, 46 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 133 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `aa29d5b8`
+- Built from commit: `4c46ba7f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -25,7 +25,7 @@
 - Empirical Stress Test Harness
 - Data Connect Schema Examples
 - Data Connect Deployment & SDKs
-- adversarialChaos.test.js
+- test-app.cjs
 - Legacy Archive & Migration
 - RBAC Adversarial Boundary Tests
 - RBAC Security Test Proposal
@@ -35,7 +35,7 @@
 - UX/UI Guidelines for Clinical Management Applications
 - M1 Reviewer Team Cycle
 - edge-ai-service.js
-- m2-adversarial-challenge.test.js
+- Explorer 2 Edge AI & Attestation Test Design Report
 - Nanostores State Store
 - M1 Explorer/Reviewer Handoffs
 - M4 Worker & Gate Status
@@ -51,7 +51,7 @@
 - Accessibility & Contrast Fixes
 - AI Logic Flutter/Web Chat
 - M1 Challenger 2/3 Remediation
-- offlineChaos.test.js
+- Reviewer 2 Independent Review Report
 - App Hosting CLI Config
 - Firebase Auth Basics Skill
 - M3 Access Gate Spec Design
@@ -61,17 +61,16 @@
 - IMC ER Feature Inventory
 - Flutter Firebase Setup Guide
 - Edge AI Discharge Sign-Off
-- setupEventListeners
+- m2-adversarial-challenge.test.js
 - Role Simulation Test Suite
 - Chief Nurse Workflow Analysis
-- telemetry-rum.js
-- Reviewer 1 Independent Review Report
+- patch.cjs
+- M2 Challenger 2 Retest Dispatch
 - Xcode SPM Setup Script
 - M4 Worker 1 Dispatch Instructions
-- renderActivePatientList
 - M3 E2E Mock Firebase Layer
 - AI Logic iOS/Android Setup
-- Reviewer 2 Independent Review Report
+- NetworkIsolationGatekeeper
 - Production Build Script
 - M2 Path/Query Attack Harness
 - Codebase Survey & Audit Briefings
@@ -90,7 +89,6 @@
 - Survey Explorer Test Readiness
 - M1 Forensic Integrity Audit
 - M2 Spec Miner & Worker
-- Patient List Event Handlers
 - Firestore Auth Rule Variables
 - Data Connect Transaction Directives
 - m2-adversarial-challenger.test.js
@@ -164,8 +162,8 @@
   .agents/teamwork_preview_m2_explorer_1/handoff.md → public/js/app.js
 - `Reviewer 2 Independent Review Report` --references--> `diffPatientFields()`  [EXTRACTED]
   .agents/teamwork_preview_m2_reviewer_2/handoff.md → public/js/app.js
-- `Reviewer 1 Independent Review Report` --references--> `EdgeAIClinicalEngine`  [EXTRACTED]
-  .agents/teamwork_preview_m2_reviewer_1/handoff.md → public/js/edge-ai-service.js
+- `Explorer 2 Edge AI & Attestation Test Design Report` --references--> `EdgeAIClinicalEngine`  [EXTRACTED]
+  .agents/teamwork_preview_m2_explorer_2/handoff.md → public/js/edge-ai-service.js
 
 ## Import Cycles
 - None detected.
@@ -214,7 +212,7 @@
 - **Build and Deploy Pipeline Verification Chain** — deployment_manifest_build_process, sync_public_dist_trees, run_log_build_and_deploy_job [INFERRED 0.95]
 - **Milestone 4 Final Verification Report Authoring (Duplicate Worker Dispatch)** — agents_teamwork_preview_m4_worker_1_dispatch, agents_teamwork_preview_m4_worker_2_dispatch, agents_teamwork_preview_m4_worker_2_handoff [INFERRED 0.95]
 
-## Communities (129 total, 45 thin omitted)
+## Communities (127 total, 46 thin omitted)
 
 ### Community 0 - "Orchestrator Handoffs & Gates"
 Cohesion: 0.06
@@ -256,17 +254,17 @@ Nodes (30): firebase.json, .firebaserc, Firebase Service Initialization Guide, n
 Cohesion: 0.07
 Nodes (30): Deployment Workflow & Schema Migrations, SQL Connect Emulator, Firebase CLI Commands, Resilient Enum Handling (Flutter), Firebase Init Commands, SDK Initialization (Web), Full-Text Search Pipeline (.search()), Mandatory Pipeline Architecture (Zero Tolerance) (+22 more)
 
-### Community 10 - "adversarialChaos.test.js"
-Cohesion: 0.24
-Nodes (6): updatePatientRecord(), dispatchPatientMutation(), mockFirestoreState, ROOT, tryFlushQueue(), mockFirestoreState
+### Community 10 - "test-app.cjs"
+Cohesion: 0.25
+Nodes (10): diag, diffPatientFields(), dom, getVal(), { JSDOM }, patientsList, radio, savePatientCardFields() (+2 more)
 
 ### Community 11 - "Legacy Archive & Migration"
 Cohesion: 0.13
 Nodes (22): Build Process (build-prod.js, dist/ parity), CI Workflows (hosting/config deploy/drift check), IMC ER Deployment & Architecture Manifest, imc-er-manager Firebase Project Binding, Firebase Hosting/Firestore Rules/Remote Config Surfaces, Known Inconsistencies (trafficSplit, unwired tests, unaudited crypto), OAUTH_REGISTERED_HOSTS / Auth Handler Origin, PWA Service Worker (sw.js) (+14 more)
 
 ### Community 14 - "app.js"
-Cohesion: 0.09
-Nodes (26): M1 Worker 2 Handoff Report, M1 Worker 2 Progress Log, DOM Residue Elimination on Sign-out/Quarantine, patientsUnsubscribe Lifecycle Cleanup, usersUnsubscribe Lifecycle Cleanup, dist/js/app.js, activeFilter, applyRemoteConfigUI() (+18 more)
+Cohesion: 0.05
+Nodes (73): M1 Worker 2 Handoff Report, M1 Worker 2 Progress Log, M2 Challenger 1 Adversarial Verification Report, M2 Challenger 1 Progress Log, Reviewer 1 Briefing, Reviewer 1 Independent Review Report, Reviewer 1 Progress Log, M2 Challenger 1 Verdict: APPROVE (Concurrency/Keystroke/Collision) (+65 more)
 
 ### Community 16 - "RBAC Test Config & Roles"
 Cohesion: 0.13
@@ -281,12 +279,12 @@ Cohesion: 0.12
 Nodes (21): Reviewer 1 Briefing, Reviewer 1 Dispatch, Reviewer 1 Progress, Reviewer 2 Briefing, Reviewer 2 Dispatch, Reviewer 2 Handoff: Role Simulation & Adversarial Review, Reviewer 2 Progress, Reviewer 3 Briefing (+13 more)
 
 ### Community 19 - "edge-ai-service.js"
-Cohesion: 0.16
-Nodes (12): M2 Auditor 1 Briefing, M2 Auditor 1 Dispatch, M2 Auditor 1 Forensic Audit Report, M2 Auditor 1 Progress Log, Reviewer 1 Dispatch, diffPatientFields Delta Diffing Algorithm, EdgeAIClinicalEngine Subsystem (ESI Triage & Discharge Synthesis), M2 Auditor 1 Verdict: CLEAN (+4 more)
+Cohesion: 0.15
+Nodes (13): M2 Auditor 1 Briefing, M2 Auditor 1 Dispatch, M2 Auditor 1 Forensic Audit Report, M2 Auditor 1 Progress Log, Reviewer 1 Dispatch, diffPatientFields Delta Diffing Algorithm, EdgeAIClinicalEngine Subsystem (ESI Triage & Discharge Synthesis), Active Field Caret/Keystroke Preservation (captureActiveFieldState/restoreActiveFieldState) (+5 more)
 
-### Community 20 - "m2-adversarial-challenge.test.js"
-Cohesion: 0.11
-Nodes (18): Challenger 2 Retest Agent (Empirical Challenger), Challenger 2 Retest Handoff Report, Challenger 2 Retest Progress Log, Challenger 3 Agent (Empirical Challenger/Critic/Specialist), Challenger 3 Briefing, Challenger 3 Verdict Report, Challenger 3 Progress Log, Explorer 2 Agent (Investigation/Synthesis) (+10 more)
+### Community 20 - "Explorer 2 Edge AI & Attestation Test Design Report"
+Cohesion: 0.16
+Nodes (15): Challenger 2 Retest Agent (Empirical Challenger), Challenger 2 Retest Handoff Report, Challenger 2 Retest Progress Log, Challenger 3 Agent (Empirical Challenger/Critic/Specialist), Challenger 3 Briefing, Challenger 3 Verdict Report, Challenger 3 Progress Log, Explorer 2 Agent (Investigation/Synthesis) (+7 more)
 
 ### Community 21 - "Nanostores State Store"
 Cohesion: 0.12
@@ -322,7 +320,7 @@ Nodes (16): Raw SQL Schema Modification Constraint, PostgreSQL Extensions via Na
 
 ### Community 29 - "M2 Challenger 2 Adversarial Penetration Report"
 Cohesion: 0.17
-Nodes (17): M2 Auditor 2 Forensic Audit Report (Iteration 2), M2 Auditor 2 Progress Log, M2 Challenger 1 Dispatch, M2 Challenger 2 Adversarial Penetration Report, M2 Challenger 2 Progress Log, M2 Challenger 2 Retest Briefing, M2 Challenger 2 Retest Dispatch, Orchestrator Gen3 Dispatch Log (+9 more)
+Nodes (14): M2 Auditor 2 Forensic Audit Report (Iteration 2), M2 Auditor 2 Progress Log, M2 Challenger 2 Adversarial Penetration Report, M2 Challenger 2 Progress Log, M2 Challenger 2 Retest Briefing, Orchestrator Gen3 Dispatch Log, M2 Challenger 2 Retest: Sandbox Perimeter Re-verification, NetworkIsolationGatekeeper Sandbox Escape Vulnerability (+6 more)
 
 ### Community 30 - "Clinical SOP & RBAC Roles"
 Cohesion: 0.22
@@ -348,9 +346,9 @@ Nodes (15): Flutter Chat Session (startChat multi-turn), Flutter Setup for Fireb
 Cohesion: 0.17
 Nodes (15): Challenger 2 Briefing (Client-Side Role Simulation Stress Test), Challenger 2 Dispatch Message, Challenger 2 Handoff Report (Verdict: CHALLENGE_FAILED), Challenger 2 Progress Log, Challenger 3 Briefing (Remediation Verification Stress Test), Challenger 3 Dispatch Message, Challenger 3 Handoff Report (Verdict: APPROVE, remediation verified), Challenger 3 Progress Log (+7 more)
 
-### Community 36 - "offlineChaos.test.js"
-Cohesion: 0.19
-Nodes (11): Explorer 1 Agent (Investigation/Synthesis), Explorer 1 Briefing, Explorer 1 Dispatch, Explorer 1 Offline Chaos Test Design Report, Explorer 1 Progress Log, Reviewer 2 Dispatch, Post-Quantum Hybrid Crypto Engine (AES-256-GCM + ML-KEM-768), offlineStatusStore (+3 more)
+### Community 36 - "Reviewer 2 Independent Review Report"
+Cohesion: 0.15
+Nodes (15): Explorer 1 Agent (Investigation/Synthesis), Explorer 1 Briefing, Explorer 1 Dispatch, Explorer 1 Offline Chaos Test Design Report, Explorer 1 Progress Log, Reviewer 2 Briefing, Reviewer 2 Dispatch, Reviewer 2 Independent Review Report (+7 more)
 
 ### Community 37 - "App Hosting CLI Config"
 Cohesion: 0.25
@@ -388,9 +386,9 @@ Nodes (13): cloud_firestore Package, Firebase CLI (firebase-tools), firebase_cor
 Cohesion: 0.19
 Nodes (14): Mandatory Clinical Sign-Off Protocol, Edge AI Discharge Summary Synthesis, NetworkIsolationGatekeeper (Zero-PHI Sandbox), Edge AI Network Isolation, Correction of Prior Multi-App-Suite Framing, Correction: ui-components.js Not Dead (Test-Covered), Detailed Bug Remediation Log (BUG-001..006), DOM Caret & Focus Preservation (+6 more)
 
-### Community 46 - "setupEventListeners"
-Cohesion: 0.36
-Nodes (8): closeModalDialog(), getFocusableEls(), openModalDialog(), populateDeptSelects(), populateRoomSelects(), renderDeptPickerList(), setupEventListeners(), showAuthError()
+### Community 46 - "m2-adversarial-challenge.test.js"
+Cohesion: 0.25
+Nodes (6): indexHtml, mockDLQAdds, mockFirestoreBatches, mockFirestoreUpdates, mockTelemetryAdds, ROOT
 
 ### Community 47 - "Role Simulation Test Suite"
 Cohesion: 0.19
@@ -400,9 +398,9 @@ Nodes (12): authMocks, batchOperations, emitPatients(), emitRemoteConfig(), emit
 Cohesion: 0.42
 Nodes (12): calculateAgeAndGender (Egyptian NID Parser), Chief Nurse RBAC Boundary, chiefNurseWorkflow.spec.js (Proposed Playwright Suite), Mandatory Clinical Attestation Gating, diffPatientFields (Concurrency-Safe Field Diffing), Chief Nurse Clinical Workflow Analysis, EdgeAIClinicalEngine, NetworkIsolationGatekeeper (+4 more)
 
-### Community 50 - "Reviewer 1 Independent Review Report"
-Cohesion: 0.13
-Nodes (17): M2 Challenger 1 Briefing, M2 Challenger 1 Adversarial Verification Report, M2 Challenger 1 Progress Log, Reviewer 1 Briefing, Reviewer 1 Independent Review Report, Reviewer 1 Progress Log, M2 Challenger 1 Verdict: APPROVE (Concurrency/Keystroke/Collision), Active Field Caret/Keystroke Preservation (captureActiveFieldState/restoreActiveFieldState) (+9 more)
+### Community 50 - "M2 Challenger 2 Retest Dispatch"
+Cohesion: 0.32
+Nodes (8): M2 Challenger 1 Briefing, M2 Challenger 1 Dispatch, M2 Challenger 2 Retest Dispatch, Explorer 2 Dispatch, CLINICAL_SOP.md, PROJECT.md, Clinical Attestation Gating (saveAISummaryInModal / btn-submit-discharge), TEST_INFRA.md
 
 ### Community 51 - "Xcode SPM Setup Script"
 Cohesion: 0.33
@@ -412,10 +410,6 @@ Nodes (10): addCrashlyticsRunScriptBuildPhase(), hasCrashlyticsRunScriptBuildPha
 Cohesion: 0.14
 Nodes (16): Auditor 1 Briefing (M3 Forensic Integrity Audit), Auditor 1 Dispatch (M3 Forensic Integrity Audit), Auditor 1 Handoff: Forensic Audit Report (Verdict CLEAN), Auditor 1 Progress Log, M4 Worker 1 Dispatch Instructions, Blocked Persona (revoked access), Chief Nurse Role (chief_nurse), Emergency Deputy Manager Role (emergency_deputy_manager) (+8 more)
 
-### Community 53 - "renderActivePatientList"
-Cohesion: 0.31
-Nodes (13): applyFilter(), confirmAndDeletePatients(), esc(), formatDurationString(), formatElapsedHours(), renderAccountManagement(), renderActivePatientList(), renderShiftAnalytics() (+5 more)
-
 ### Community 54 - "M3 E2E Mock Firebase Layer"
 Cohesion: 0.24
 Nodes (10): BypassSandbox Requirement for Local Python Server & Port 3000 - sandboxed runners cannot bind sockets or spawn child servers without it, Concurrent Editing & Caret Preservation Mechanics, tests/e2e/helpers/mockFirebase.js ESM Mock Layer, Playwright Test Environment & Runtime Mechanics Analysis (Explorer 3), Tier 1-4 E2E Test Suite Expansion Plan - mock ESM routing chosen over live Firebase to avoid latency/flakiness, Multi-Viewport Test Matrix (Desktop/Tablet/Mobile), Explorer 3 Dispatch (Milestone 3), Explorer 3 Handoff Report (Milestone 3) (+2 more)
@@ -423,10 +417,6 @@ Nodes (10): BypassSandbox Requirement for Local Python Server & Port 3000 - sand
 ### Community 55 - "AI Logic iOS/Android Setup"
 Cohesion: 0.22
 Nodes (9): Firebase AI Logic iOS Setup Guide, Function Calling (Tools) via Multi-Turn Chat Session, iOS AI Logic Init Pattern (FirebaseAI.firebaseAI()), Critical Warning: No Inline Model Init Before FirebaseApp.configure() (SwiftUI @Observable pattern), Firebase AI Logic on Android (Kotlin), Android AI Logic Init Pattern (Firebase.ai, firebase-bom), Multimodal Input (Bitmap Images + Text), Firebase Auth iOS Setup Guide (+1 more)
-
-### Community 56 - "Reviewer 2 Independent Review Report"
-Cohesion: 0.17
-Nodes (11): Explorer 2 Briefing, Explorer 2 Dispatch, Explorer 2 Edge AI & Attestation Test Design Report, Explorer 2 Progress Log, Reviewer 2 Briefing, Reviewer 2 Independent Review Report, Reviewer 2 Progress Log, Clinical Attestation Gating (saveAISummaryInModal / btn-submit-discharge) (+3 more)
 
 ### Community 57 - "Production Build Script"
 Cohesion: 0.22
@@ -496,10 +486,6 @@ Nodes (5): Forensic Integrity Auditor Dispatch (Milestone 1), Milestone 1 Forens
 Cohesion: 0.40
 Nodes (5): Spec Miner 3 Briefing (Concurrency/Focus/Crypto), Spec Miner 3 Dispatch, Worker 1 Briefing (M2 Implementation), Worker 1 Dispatch (M2 Implementation), Milestone 2: Adversarial Chaos, Offline Queue Sync & Edge AI Sandbox Isolation
 
-### Community 75 - "Patient List Event Handlers"
-Cohesion: 0.60
-Nodes (5): attachPatientListHandlers(), getVal(), savePatientCardFields(), secLog(), triggerFlashAnimation()
-
 ### Community 76 - "Firestore Auth Rule Variables"
 Cohesion: 0.33
 Nodes (6): App Hosting CLI Commands, Rollout Management (apphosting:rollouts:create/list), Secrets Management via Cloud Secret Manager (apphosting:secrets:set/grantaccess), Environment Variables (BUILD/RUNTIME availability, secret binding), Exploring Firebase CLI Commands, Self-Documenting CLI via --help Discovery
@@ -553,9 +539,9 @@ Nodes (3): Six Chief Nurse Clinical Workflows, Explorer 1 (Milestone 3 Frontend 
   .agents/teamwork_preview_m2_reviewer_1/handoff.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **434 isolated node(s):** `patientsList`, `usersList`, `activeFilter`, `expandedPatientCardIds`, `modalDialogState` (+429 more)
+- **441 isolated node(s):** `patientsList`, `usersList`, `activeFilter`, `expandedPatientCardIds`, `modalDialogState` (+436 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **45 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **46 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -567,10 +553,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **What is the exact relationship between `Reviewer 1 Independent Review Report` and `Reviewer 2 Independent Review Report`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **Why does `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` connect `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` to `RBAC Test Config & Roles`, `M4 Worker 1 Dispatch Instructions`?**
-  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+  _High betweenness centrality (0.077) - this node is a cross-community bridge._
 - **Why does `Sentinel Briefing` connect `Original User Request: IMC ER Multi-Role Testing & RBAC Verification` to `Orchestrator Handoffs & Gates`, `M4 Worker & Gate Status`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **Why does `TEST_INFRA.md (Test Infrastructure Documentation)` connect `Orchestrator Handoffs & Gates` to `Original User Request: IMC ER Multi-Role Testing & RBAC Verification`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+  _High betweenness centrality (0.048) - this node is a cross-community bridge._
 - **What connects `patientsList`, `usersList`, `activeFilter` to the rest of the system?**
-  _434 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _441 weakly-connected nodes found - possible documentation gaps or missing edges._

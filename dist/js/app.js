@@ -1957,8 +1957,35 @@ function attachPatientListHandlers() {
     });
   });
 
-  // Save changes on change
-  document.querySelectorAll('.card-details input, .card-details select, .card-details textarea, [id^="custom_dept_"], [id^="dept_sel_"], [id^="loc_"]').forEach(el => {
+  // Explicitly handle radio buttons for workup boxes
+  document.querySelectorAll('.workup-boxes input[type="radio"]').forEach(radio => {
+    radio.addEventListener('click', (e) => {
+      console.log(`[DEBUG] Radio clicked - ID: ${e.target.dataset.id}, Value: ${e.target.value}`);
+    });
+    radio.addEventListener('change', async (e) => {
+      const id = e.target.dataset.id;
+      const field = e.target.dataset.field;
+      const value = e.target.value;
+      console.log(`[DEBUG] Radio changed - ID: ${id}, Field: ${field}, Value: ${value}`);
+      
+      if (!id || !field) {
+        console.warn("[DEBUG] Missing id or field on radio button", e.target);
+        return;
+      }
+      
+      try {
+        console.log(`[DEBUG] Attempting to update patient ${id} with { ${field}: "${value}" }`);
+        await updatePatientRecord(id, { [field]: value });
+        console.log(`[DEBUG] Update successful! Triggering flash animation.`);
+        triggerFlashAnimation(e.target);
+      } catch (err) {
+        console.error("[DEBUG] Failed to update radio button state:", err);
+      }
+    });
+  });
+
+  // Save changes on change (for everything else)
+  document.querySelectorAll('.card-details input:not([type="radio"]), .card-details select, .card-details textarea, [id^="custom_dept_"], [id^="dept_sel_"], [id^="loc_"]').forEach(el => {
     el.addEventListener('change', async (e) => {
       const id = e.target.dataset.id;
       if (!id) return;
@@ -1969,6 +1996,7 @@ function attachPatientListHandlers() {
         return; // Don't trigger auto-save or re-render when revealing the custom action input!
       }
       
+      console.log(`[DEBUG] Generic input changed - ID: ${id}, Field: ${e.target.dataset.field}, Value: ${e.target.value}`);
       await savePatientCardFields(id, e.target);
     });
   });
