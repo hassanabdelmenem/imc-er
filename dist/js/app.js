@@ -1682,25 +1682,21 @@ async function savePatientCardFields(cardId, targetElement = null) {
   if (!cardId || !$(`details_${cardId}`)) return;
   const patient = patientsList.find(p => p.id === cardId) || {};
 
-  const actionSelect = $(`action_${cardId}`);
-  const isCustomHidden = actionSelect ? actionSelect.classList.contains('hidden') : false;
-  const actionSelectVal = getVal(`action_${cardId}`);
-  const finalAction = (isCustomHidden || actionSelectVal === 'Custom...') ? (getVal(`custom_action_${cardId}`) || 'Other') : actionSelectVal;
 
-  const deptSelect = $(`dept_sel_${cardId}`);
-  const isCustomDeptHidden = deptSelect ? deptSelect.classList.contains('hidden') : false;
-  const deptSelectVal = getVal(`dept_sel_${cardId}`);
-  const existingDept = patient.primaryDepartment || 'Internal Medicine';
-  const finalDept = (isCustomDeptHidden || deptSelectVal === 'Other...') ? (getVal(`custom_dept_${cardId}`) || existingDept) : (deptSelectVal || existingDept);
-
-  // A workup dropdown that is currently hidden is not being edited — leave
-  // whatever is stored alone rather than blanking it.
   const visibleBoxValue = (boxId) => {
     const box = $(boxId);
     if (!box || box.classList.contains('hidden')) return undefined;
     const checkedRadio = box.querySelector(`input[type="radio"]:checked`);
     return checkedRadio ? checkedRadio.value : '';
   };
+
+  const finalDept = $(`dept_sel_${cardId}`)?.value === 'Other...' 
+    ? getVal(`custom_dept_${cardId}`)
+    : getVal(`dept_sel_${cardId}`);
+  
+  const finalAction = $(`action_${cardId}`)?.value === 'Custom...'
+    ? getVal(`custom_action_${cardId}`)
+    : getVal(`action_${cardId}`);
 
   const allCandidates = {
     name: getVal(`name_${cardId}`),
@@ -1719,11 +1715,25 @@ async function savePatientCardFields(cardId, targetElement = null) {
   };
 
   const targetField = targetElement?.dataset?.field;
-  const candidates = (targetField && targetField in allCandidates)
-    ? { [targetField]: allCandidates[targetField] }
-    : allCandidates;
+  let updateData = {};
+  
+  // If we know exactly what field triggered the event, isolate the update to be 100% bulletproof
+  if (targetField) {
+    let newVal;
+    if (targetElement.type === 'radio') {
+      newVal = targetElement.value; // Bypass DOM querying for radio buttons
+    } else {
+      newVal = allCandidates[targetField] !== undefined ? allCandidates[targetField] : targetElement.value;
+    }
+    const raw = patient[targetField];
+    const stored = raw === undefined || raw === null ? '' : String(raw);
+    if (newVal !== stored) {
+      updateData[targetField] = newVal;
+    }
+  } else {
+    updateData = diffPatientFields(patient, allCandidates);
+  }
 
-  const updateData = diffPatientFields(patient, candidates);
   if (Object.keys(updateData).length === 0) return;
 
   try {
