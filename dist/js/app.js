@@ -783,16 +783,44 @@ export function setupEventListeners() {
     const primaryDepartment = getVal('reg-dept') || 'Internal Medicine';
     const time = getVal('reg-time');
     
+    // Inline error helper
+    const showError = (id, msg) => {
+      let el = $(id);
+      let parent = el.parentElement;
+      let err = parent.querySelector('.inline-error');
+      if (!err) {
+        err = document.createElement('div');
+        err.className = 'inline-error';
+        err.style.color = 'var(--danger)';
+        err.style.fontSize = '12px';
+        err.style.marginTop = '4px';
+        parent.appendChild(err);
+        el.addEventListener('input', () => err.remove(), {once: true});
+        el.style.borderColor = 'var(--danger)';
+        el.addEventListener('input', () => el.style.borderColor = '', {once: true});
+      }
+      err.innerText = msg;
+    };
+
+    let hasError = false;
+    document.querySelectorAll('.inline-error').forEach(e => e.remove());
+    document.querySelectorAll('.input-field').forEach(e => e.style.borderColor = '');
+
     if (!/^[\u0600-\u06FF\s]+$/.test(name)) {
-      return alert(currentLang === 'en' ? 'Arabic Name Only.' : 'الاسم عربي فقط.');
+      showError('reg-name', currentLang === 'en' ? 'Arabic Name Only.' : 'الاسم عربي فقط.');
+      hasError = true;
     }
     if (!/^[A-Z]\d{9}$/.test(hospitalId)) {
-      return alert(currentLang === 'en' ? 'ID: 1 Letter + 9 Nums.' : 'حرف + 9 أرقام.');
+      showError('reg-hospital-id', currentLang === 'en' ? 'ID: 1 Letter + 9 Nums.' : 'حرف + 9 أرقام.');
+      hasError = true;
     }
     if (nationalId && !/^\d{14}$/.test(nationalId)) {
-      return alert(currentLang === 'en' ? 'NID: 14 Digits.' : 'القومي: 14 رقم.');
+      showError('reg-national-id', currentLang === 'en' ? 'NID: 14 Digits.' : 'القومي: 14 رقم.');
+      hasError = true;
     }
     
+    if (hasError) return;
+
     try {
       await registerPatient({
         name,
@@ -807,7 +835,7 @@ export function setupEventListeners() {
       $('reg-national-id').value = '';
       closeModalDialog($('modal-register'));
     } catch (err) {
-      alert(err.message);
+      showError('reg-name', err.message);
     }
   };
   
@@ -1572,39 +1600,39 @@ function renderActivePatientList() {
               
               <div class="workup-boxes" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:8px;margin-top:8px;">
                 <div id="referral_box_${esc(p.id)}" class="alert-box alert-warning alert-box-referral ${isWaitlistAction ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
-                  <label class="alert-label alert-label-referral">🔄 ${tr('rL')}</label>
-                  <select id="ref_${esc(p.id)}" class="select-alert select-alert-inline select-alert-referral" data-id="${esc(p.id)}" data-field="hasReferral" style="width:100%;margin-top:8px;padding:8px;">
-                    <option value="" ${!p.hasReferral ? 'selected' : ''}>${currentLang === 'en' ? '-- No Referral --' : '-- بدون تحويل --'}</option>
-                    <option value="Yes" ${p.hasReferral === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Referral Sent)' : 'نعم (تم إرسال التحويل)'}</option>
-                    <option value="No" ${p.hasReferral === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                  </select>
+                  <label class="alert-label alert-label-referral" style="margin-bottom:8px;display:block;">🔄 ${tr('rL')}</label>
+                  <div class="radio-group" style="display:flex;gap:12px;font-size:13px;align-items:center;">
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="ref_${esc(p.id)}" data-id="${esc(p.id)}" data-field="hasReferral" value="" ${!p.hasReferral ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Pending' : 'في الانتظار'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="ref_${esc(p.id)}" data-id="${esc(p.id)}" data-field="hasReferral" value="Yes" ${p.hasReferral === 'Yes' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Yes (Sent)' : 'نعم'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="ref_${esc(p.id)}" data-id="${esc(p.id)}" data-field="hasReferral" value="No" ${p.hasReferral === 'No' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'No' : 'لا'}</span></label>
+                  </div>
                 </div>
                 
                 <div id="sepsis_box_${esc(p.id)}" class="alert-box alert-danger alert-box-sepsis ${isSepsisSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
-                  <label class="alert-label alert-label-sepsis">🦠 ${tr('sepW')}</label>
-                  <select id="sepsis_${esc(p.id)}" class="select-alert select-alert-inline select-alert-sepsis" data-id="${esc(p.id)}" data-field="sepsisWorkup" style="width:100%;margin-top:8px;padding:8px;">
-                    <option value="" ${!p.sepsisWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending Workup --' : '-- في انتظار التحاليل --'}</option>
-                    <option value="Yes" ${p.sepsisWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Protocol Initiated)' : 'نعم (تم تفعيل البروتوكول)'}</option>
-                    <option value="No" ${p.sepsisWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                  </select>
+                  <label class="alert-label alert-label-sepsis" style="margin-bottom:8px;display:block;">🦠 ${tr('sepW')}</label>
+                  <div class="radio-group" style="display:flex;gap:12px;font-size:13px;align-items:center;">
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="sepsis_${esc(p.id)}" data-id="${esc(p.id)}" data-field="sepsisWorkup" value="" ${!p.sepsisWorkup ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Pending' : 'في الانتظار'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="sepsis_${esc(p.id)}" data-id="${esc(p.id)}" data-field="sepsisWorkup" value="Yes" ${p.sepsisWorkup === 'Yes' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Yes' : 'نعم'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="sepsis_${esc(p.id)}" data-id="${esc(p.id)}" data-field="sepsisWorkup" value="No" ${p.sepsisWorkup === 'No' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'No' : 'لا'}</span></label>
+                  </div>
                 </div>
   
                 <div id="mi_box_${esc(p.id)}" class="alert-box alert-danger alert-box-mi ${isMiSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
-                  <label class="alert-label alert-label-mi">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
-                  <select id="mi_${esc(p.id)}" class="select-alert select-alert-inline select-alert-mi" data-id="${esc(p.id)}" data-field="miCodeWorkup" style="width:100%;margin-top:8px;padding:8px;">
-                    <option value="" ${!p.miCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending ECG/Trop --' : '-- في انتظار رسم القلب والإنزيمات --'}</option>
-                    <option value="Yes" ${p.miCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Cath Alerted)' : 'نعم (تم إبلاغ القسطرة)'}</option>
-                    <option value="No" ${p.miCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                  </select>
+                  <label class="alert-label alert-label-mi" style="margin-bottom:8px;display:block;">🫀 ${currentLang === 'en' ? 'MI Code Workup' : 'كود جلطة القلب'}</label>
+                  <div class="radio-group" style="display:flex;gap:12px;font-size:13px;align-items:center;">
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="mi_${esc(p.id)}" data-id="${esc(p.id)}" data-field="miCodeWorkup" value="" ${!p.miCodeWorkup ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Pending' : 'في الانتظار'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="mi_${esc(p.id)}" data-id="${esc(p.id)}" data-field="miCodeWorkup" value="Yes" ${p.miCodeWorkup === 'Yes' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Yes (Alerted)' : 'نعم'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="mi_${esc(p.id)}" data-id="${esc(p.id)}" data-field="miCodeWorkup" value="No" ${p.miCodeWorkup === 'No' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'No' : 'لا'}</span></label>
+                  </div>
                 </div>
   
                 <div id="stroke_box_${esc(p.id)}" class="alert-box alert-warning alert-box-stroke ${isStrokeSuspected ? '' : 'hidden'}" style="border-radius:8px;padding:12px;">
-                  <label class="alert-label alert-label-stroke">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
-                  <select id="stroke_${esc(p.id)}" class="select-alert select-alert-inline select-alert-stroke" data-id="${esc(p.id)}" data-field="strokeCodeWorkup" style="width:100%;margin-top:8px;padding:8px;">
-                    <option value="" ${!p.strokeCodeWorkup ? 'selected' : ''}>${currentLang === 'en' ? '-- Pending CT Brain --' : '-- في انتظار الأشعة المقطعية --'}</option>
-                    <option value="Yes" ${p.strokeCodeWorkup === 'Yes' ? 'selected' : ''}>${currentLang === 'en' ? 'Yes (Neuro Alerted)' : 'نعم (تم إبلاغ المخ والأعصاب)'}</option>
-                    <option value="No" ${p.strokeCodeWorkup === 'No' ? 'selected' : ''}>${currentLang === 'en' ? 'No' : 'لا'}</option>
-                  </select>
+                  <label class="alert-label alert-label-stroke" style="margin-bottom:8px;display:block;">🧠 ${currentLang === 'en' ? 'Stroke Code Workup' : 'كود جلطة المخ'}</label>
+                  <div class="radio-group" style="display:flex;gap:12px;font-size:13px;align-items:center;">
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="stroke_${esc(p.id)}" data-id="${esc(p.id)}" data-field="strokeCodeWorkup" value="" ${!p.strokeCodeWorkup ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Pending' : 'في الانتظار'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="stroke_${esc(p.id)}" data-id="${esc(p.id)}" data-field="strokeCodeWorkup" value="Yes" ${p.strokeCodeWorkup === 'Yes' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'Yes (Alerted)' : 'نعم'}</span></label>
+                    <label style="cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="stroke_${esc(p.id)}" data-id="${esc(p.id)}" data-field="strokeCodeWorkup" value="No" ${p.strokeCodeWorkup === 'No' ? 'checked' : ''}> <span>${currentLang === 'en' ? 'No' : 'لا'}</span></label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1667,9 +1695,11 @@ async function savePatientCardFields(cardId, targetElement = null) {
 
   // A workup dropdown that is currently hidden is not being edited — leave
   // whatever is stored alone rather than blanking it.
-  const visibleBoxValue = (boxId, selectId) => {
+  const visibleBoxValue = (boxId, radioName) => {
     const box = $(boxId);
-    return box && !box.classList.contains('hidden') ? getVal(selectId) : undefined;
+    if (!box || box.classList.contains('hidden')) return undefined;
+    const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
+    return checkedRadio ? checkedRadio.value : '';
   };
 
   const allCandidates = {
