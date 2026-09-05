@@ -1695,10 +1695,10 @@ async function savePatientCardFields(cardId, targetElement = null) {
 
   // A workup dropdown that is currently hidden is not being edited — leave
   // whatever is stored alone rather than blanking it.
-  const visibleBoxValue = (boxId, radioName) => {
+  const visibleBoxValue = (boxId) => {
     const box = $(boxId);
     if (!box || box.classList.contains('hidden')) return undefined;
-    const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
+    const checkedRadio = box.querySelector(`input[type="radio"]:checked`);
     return checkedRadio ? checkedRadio.value : '';
   };
 
@@ -1711,10 +1711,10 @@ async function savePatientCardFields(cardId, targetElement = null) {
     supportiveTx: getVal(`supp_${cardId}`),
     primaryDepartment: finalDept,
     pendingAction: finalAction,
-    hasReferral: visibleBoxValue(`referral_box_${cardId}`, `ref_${cardId}`),
-    sepsisWorkup: visibleBoxValue(`sepsis_box_${cardId}`, `sepsis_${cardId}`),
-    miCodeWorkup: visibleBoxValue(`mi_box_${cardId}`, `mi_${cardId}`),
-    strokeCodeWorkup: visibleBoxValue(`stroke_box_${cardId}`, `stroke_${cardId}`),
+    hasReferral: visibleBoxValue(`referral_box_${cardId}`),
+    sepsisWorkup: visibleBoxValue(`sepsis_box_${cardId}`),
+    miCodeWorkup: visibleBoxValue(`mi_box_${cardId}`),
+    strokeCodeWorkup: visibleBoxValue(`stroke_box_${cardId}`),
     registrationTime: getVal(`regtime_${cardId}`) || undefined
   };
 

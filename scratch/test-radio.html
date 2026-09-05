@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="sepsis_box_123" class="alert-box">
+  <input type="radio" name="sepsis_123" data-id="123" data-field="sepsisWorkup" value="">
+  <input type="radio" name="sepsis_123" data-id="123" data-field="sepsisWorkup" value="Yes">
+  <input type="radio" name="sepsis_123" data-id="123" data-field="sepsisWorkup" value="No">
+</div>
+<script>
+  function $(id) { return document.getElementById(id); }
+  const visibleBoxValue = (boxId, radioName) => {
+    const box = $(boxId);
+    if (!box || box.classList.contains('hidden')) return undefined;
+    const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
+    return checkedRadio ? checkedRadio.value : '';
+  };
+
+  document.querySelectorAll('input').forEach(el => {
+    el.addEventListener('change', (e) => {
+      // test startsWith on empty id
+      let idStr = e.target.id || "";
+      if (idStr.startsWith('action_')) return;
+      
+      const val = visibleBoxValue('sepsis_box_123', 'sepsis_123');
+      console.log('Target field:', e.target.dataset.field);
+      console.log('Value read:', val);
+    });
+  });
+</script>
+</body>
+</html>
