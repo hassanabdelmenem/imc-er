@@ -1763,3 +1763,15 @@ textarea:focus-visible, [role="dialog"]:focus-visible, [tabindex="0"]:focus-visi
   border-color: var(--danger) !important;
   color: var(--danger) !important;
 }
+
+/* Custom Radio Button Styles */
+input[type="radio"] {
+  appearance: auto;
+  width: auto;
+  min-height: auto !important;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--primary);
+  width: 18px;
+  height: 18px;
+}

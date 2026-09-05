@@ -42,9 +42,9 @@
     "semantic_hash": "5bd80ee150641e8b45843ca19d7a972a"
   },
   "public/js/app.js": {
-    "mtime": 1788633286.2814837,
-    "seen": 1788633287.735136,
-    "ast_hash": "9e906e8654b05667e5187c137ce27e5b",
+    "mtime": 1788635044.864008,
+    "seen": 1788635046.242413,
+    "ast_hash": "2ae6f020900da97874ef538d58bb01c7",
     "semantic_hash": ""
   },
   "public/js/components/ui-components.js": {
@@ -2172,8 +2172,8 @@
     "semantic_hash": "0a27a4163254fc8fce870c8cc3a3f94f"
   },
   "public/index.html": {
-    "mtime": 1788633286.2782829,
-    "seen": 1788633287.735374,
+    "mtime": 1788635044.86179,
+    "seen": 1788635046.242678,
     "ast_hash": "4e9d08fcd5c78dd747e6a5babb98acd9",
     "semantic_hash": ""
   },
@@ -2211,6 +2211,18 @@
     "mtime": 1788632465.450467,
     "seen": 1788632753.825863,
     "ast_hash": "9fd3e42af1487449f91cc5fcbe6898b9",
+    "semantic_hash": ""
+  },
+  "scratch/patch.cjs": {
+    "mtime": 1788634820.0151865,
+    "seen": 1788635046.242423,
+    "ast_hash": "535d3d5e0860224a1c8bbb7fcb680160",
+    "semantic_hash": ""
+  },
+  "scratch/test-app.cjs": {
+    "mtime": 1788633695.6277335,
+    "seen": 1788635046.242424,
+    "ast_hash": "364c9370c1b5b54b82a4d6813a4e7d47",
     "semantic_hash": ""
   }
 }
